@@ -13,7 +13,7 @@ const port=Number(process.env.PORT||8787);if(!Number.isInteger(port)||port<1||po
 await mkdir(resolve(root,'.data'),{recursive:true});
 const db=openDatabase(process.env.DB_PATH||resolve(root,'.data/mastermind.sqlite'));
 const origin=`http://127.0.0.1:${port}`,publicRoot=resolve(root,'public');
-const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.json':'application/json','.svg':'image/svg+xml'};
+const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.json':'application/json','.svg':'image/svg+xml','.woff2':'font/woff2','.txt':'text/plain; charset=utf-8'};
 const assets={async fetch(request){
   const url=new URL(request.url);if(!['GET','HEAD'].includes(request.method))return new Response('Method not allowed',{status:405});
   const pathname=decodeURIComponent(url.pathname),entry=pathname==='/'||pathname==='/play/mastermind'?'/index.html':pathname;

@@ -1,25 +1,28 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#101718"><meta name="description" content="A two-leg Mastermind duel with inspectable JEV decisions and exhaustive post-match deduction analytics.">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0e1017"><meta name="description" content="A two-leg Mastermind duel with inspectable JEV decisions and exhaustive post-match deduction analytics.">
 <title>Mastermind · JEV Arcade</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect rx='16' width='64' height='64' fill='%23101718'/%3E%3Ccircle cx='23' cy='23' r='9' fill='%237ce5bf'/%3E%3Ccircle cx='43' cy='23' r='9' fill='%23e5b77c'/%3E%3Ccircle cx='23' cy='43' r='9' fill='%23a99bea'/%3E%3Ccircle cx='43' cy='43' r='9' fill='%237caee5'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="/game.css"><script type="module" src="/game.js"></script>
+<link rel="preload" href="/brand/inter-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" type="image/svg+xml" href="/brand/icon.svg">
+<link rel="apple-touch-icon" href="/brand/icon.svg">
+<link rel="stylesheet" href="/brand/brand.css">
+<link rel="stylesheet" href="/game.css">
+<script type="module" src="/brand/brand.js"></script><script type="module" src="/game.js"></script>
 </head>
 <body>
-<a class="skip" href="#main">Skip to game</a>
-<div class="shell">
-<header class="topbar"><a class="brand" href="/" aria-label="JEV Arcade home"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>JEV<span class="light">ARCADE</span></span></a><div class="top-actions"><span id="identity" class="muted">Guest session</span><button id="login" class="small">Sign in with Discord</button><button id="logout" class="small hidden">Sign out</button></div></header>
-<nav class="tabs" aria-label="Main sections"><button class="tab active" data-page="play" aria-current="page">Play</button><button class="tab" data-page="analysis">Match analytics</button><button class="tab" data-page="record">My record</button><button class="tab" data-page="leaderboards">Leaderboards</button><button class="tab" data-page="benchmarks">Benchmark lab</button></nav>
-<main id="main">
+<a class="jv-skip" href="#main">Skip to game</a>
+<div class="jv-app">
+<header class="jv-header"><a class="jv-brand" href="/" aria-label="JEV Arcade home"><img class="jv-mark" src="/brand/mark.svg" alt="" width="28" height="28"><span class="jv-wordmark">JEV ARCADE</span><span class="jv-sep" aria-hidden="true"></span><span class="jv-title">Mastermind</span></a><span class="jv-status"><span class="jv-dot"></span><span id="modeBadge">CONNECTING</span></span><button class="jv-icon-btn jv-menu-btn" id="jv-menu" type="button" aria-expanded="false" aria-controls="jv-sheet" aria-label="Menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></header>
+<main class="jv-main" id="main">
 <div id="notice" class="notice" role="status" aria-live="polite">Connecting to your session…</div>
 <section id="page-play" class="page">
-<div class="hero"><div><div class="eyebrow">DEDUCTION / 4 POSITIONS / 6 SYMBOLS</div><h1>Mastermind<span class="accent">.</span></h1><p class="intro">Break the code. Then defend yours.<br>Two legs. Ten guesses. Every decision counts.</p></div><div class="hero-meta"><span id="modeBadge" class="pill">CONNECTING</span><div class="meta-numbers"><strong>1,296</strong><span>possible codes</span></div><a href="#rules" class="text-link">How to play ↗</a></div></div>
+<div class="hero jv-hero"><div><div class="eyebrow">DEDUCTION / 4 POSITIONS / 6 SYMBOLS</div><h1>Mastermind<span class="accent">.</span></h1><p class="intro">Break the code. Then defend yours.<br>Two legs. Ten guesses. Every decision counts.</p></div><div class="hero-meta"><div class="meta-numbers"><strong>1,296</strong><span>possible codes</span></div><a href="#rules" class="text-link">How to play ↗</a></div></div>
 <section id="setup" class="panel setup-panel" aria-labelledby="setup-title"><div class="section-heading"><div><div class="eyebrow">01 / SET THE CHALLENGE</div><h2 id="setup-title">Choose the code JEV will break</h2></div><span class="tag">Repeats allowed</span></div>
 <div class="setup-grid"><div><label for="difficulty">Difficulty</label><select id="difficulty"><option value="easy">Easy · 8 candidates</option><option value="normal" selected>Normal · 32 candidates</option><option value="hard">Hard · expected-value analysis</option><option value="jev">JEV · minimax-filtered</option></select><label class="checkbox"><input id="ranked" type="checkbox" disabled> Ranked match <span class="muted">Discord required</span></label></div><div><div class="composer-label"><span>Your secret code</span><button id="randomSecret" class="text-button">Randomize</button></div><div id="secretSlots" class="slots" aria-label="Choose your secret code"></div><div id="secretPalette" class="palette" aria-label="Secret code symbols"></div></div><div class="setup-start"><button id="start" class="primary" disabled>Start match <span aria-hidden="true">→</span></button><button id="localStart" class="secondary">Browser practice</button><p class="tiny muted">Browser practice uses a local solver, not JEV, and never ranks.</p></div></div></section>
 <section id="matchStatus" class="match-status hidden" aria-live="polite"><div><span id="phaseLabel" class="eyebrow"></span><h2 id="resultTitle"></h2><p id="resultSubtitle" class="muted"></p></div><div class="action-row"><button id="resign" class="danger">Resign</button><button id="nextMatch" class="hidden">New match</button><button id="reviewMatch" class="primary hidden">Review analytics →</button></div></section>
-<div class="boards"><section class="panel board-panel" aria-labelledby="human-title"><div class="board-heading"><div class="board-name"><span class="avatar human-avatar">Y</span><div><div class="eyebrow">CODEBREAKER / LEG 1</div><h2 id="human-title">You</h2></div></div><span id="humanScore" class="counter">0 / 10</span></div><div class="board-columns"><span>GUESS</span><span>CODE</span><span>EXACT / NEAR</span></div><div id="humanBoard" class="board" aria-label="Your guesses"></div></section>
+<div class="boards jv-first"><section class="panel board-panel" aria-labelledby="human-title"><div class="board-heading"><div class="board-name"><span class="avatar human-avatar">Y</span><div><div class="eyebrow">CODEBREAKER / LEG 1</div><h2 id="human-title">You</h2></div></div><span id="humanScore" class="counter">0 / 10</span></div><div class="board-columns"><span>GUESS</span><span>CODE</span><span>EXACT / NEAR</span></div><div id="humanBoard" class="board" aria-label="Your guesses"></div></section>
 <section class="panel board-panel opponent-panel" aria-labelledby="jev-title"><div class="board-heading"><div class="board-name"><span class="avatar jev-avatar">J</span><div><div class="eyebrow">CODEBREAKER / LEG 2</div><h2 id="jev-title">JEV</h2></div></div><span id="jevScore" class="counter">0 / 10</span></div><div class="board-columns"><span>GUESS</span><span>CODE</span><span>EXACT / NEAR</span></div><div id="jevBoard" class="board" aria-label="Opponent guesses"></div></section></div>
 <section id="guessComposer" class="panel composer hidden" aria-labelledby="guess-title"><div><div class="eyebrow">YOUR MOVE</div><h2 id="guess-title">Make a deduction</h2><p class="muted tiny">A–F to choose · arrows to move · Enter to submit</p></div><div><div id="guessSlots" class="slots"></div><div id="guessPalette" class="palette"></div></div><div><button id="submitGuess" class="primary">Submit guess →</button><p id="repeatWarning" class="tiny warning"></p></div></section>
 <section id="jevControls" class="panel jev-controls hidden"><p>The opponent receives only its own guesses and feedback—not your secret.</p><label class="checkbox"><input id="autoJev" type="checkbox" checked> Advance automatically</label><button id="stepJev" class="primary">Next opponent guess</button></section>
@@ -37,5 +40,14 @@ npm run bench:smoke
 
 # Explicitly authorized live-provider benchmark (requires a key):
 node bench/run.mjs --live --confirm-spend --secrets=16 --max-calls=100</pre><p class="muted">Deterministic selectors are baselines and ablations—not JEV. Live runs require your TypeSafe credentials and an explicit call budget. Compare JEV against the identical shortlist with deterministic selection to isolate its contribution.</p><p class="tiny muted">See the ZIP’s reports for raw per-secret, per-turn, code-pattern, paired, and summary exports. Provider latency measures wall-clock inference; local compute timings are reported separately.</p></section></section>
-</main><footer><span>JEV ARCADE / MASTERMIND</span><span>Rules control reality. Analytics expose the result.</span><span class="tiny">No third-party tracking.</span></footer></div>
+</main>
+<footer><span>JEV ARCADE / MASTERMIND</span><span>Rules control reality. Analytics expose the result.</span><span class="tiny">No third-party tracking.</span></footer>
+<div class="jv-scrim" id="jv-scrim"></div>
+<div class="jv-sheet jv-secondary" id="jv-sheet" role="dialog" aria-modal="true" aria-label="Menu">
+<p class="jv-sheet-label" id="jv-nav-label">Sections</p>
+<nav class="tabstrip" aria-labelledby="jv-nav-label"><button class="tab jv-sheet-item active" data-page="play" aria-current="page">Play</button><button class="tab jv-sheet-item" data-page="analysis">Match analytics</button><button class="tab jv-sheet-item" data-page="record">My record</button><button class="tab jv-sheet-item" data-page="leaderboards">Leaderboards</button><button class="tab jv-sheet-item" data-page="benchmarks">Benchmark lab</button></nav>
+<p class="jv-sheet-label">Account</p>
+<div class="jv-account"><span id="identity" class="muted">Guest session</span><button id="login" class="small jv-sheet-item">Sign in with Discord</button><button id="logout" class="small jv-sheet-item hidden">Sign out</button></div>
+</div>
+</div>
 </body></html>
