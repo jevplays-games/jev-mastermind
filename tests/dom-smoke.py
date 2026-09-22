@@ -18,7 +18,9 @@ def module(path):
     source=re.sub(r"(from\s*['\"])([^'\"]+)(['\"])",lambda m:m[1]+module(path.parent/m[2])+m[3],source)
     url='data:text/javascript;base64,'+base64.b64encode(source.encode()).decode()
     modules[path]=url;return url
-html=(PUBLIC/'index.html').read_text().replace('<link rel="stylesheet" href="/game.css">','<style>'+(PUBLIC/'game.css').read_text()+'</style>')
+html=(PUBLIC/'index.html').read_text().replace('<link rel="stylesheet" href="/brand/brand.css">','<style>'+(PUBLIC/'brand/brand.css').read_text()+'</style>')
+html=html.replace('<link rel="stylesheet" href="/game.css">','<style>'+(PUBLIC/'game.css').read_text()+'</style>')
+html=html.replace('<script type="module" src="/brand/brand.js"></script>','')
 html=html.replace('<script type="module" src="/game.js"></script>','')
 checks=[];errors=[]
 def check(name,condition=True):
@@ -47,6 +49,9 @@ def setup(context,api_enabled=True):
       window.__exports=[];const blobs=new Map(),nativeURL=URL.createObjectURL.bind(URL);URL.createObjectURL=b=>{const u=nativeURL(b);blobs.set(u,b);return u;};
       HTMLAnchorElement.prototype.click=function(){if(this.download&&blobs.has(this.href)){const name=this.download;blobs.get(this.href).text().then(text=>__exports.push({name,text}));}else throw Error('Unexpected navigation in offline DOM harness');};
     }""",{'workerURL':module(PUBLIC/'mastermind/analytics-worker.js')})
+    # brand.js owns the header/sheet behaviour and moves #jv-controls into the
+    # header above 900px, so the desktop nav only exists once it has run.
+    page.evaluate("async(url)=>{await import(url)}",module(PUBLIC/'brand/brand.js'))
     page.evaluate("async(url)=>{await import(url)}",module(PUBLIC/'game.js'))
     return page
 with sync_playwright() as p:
