@@ -20,7 +20,7 @@ The engine filters possible secrets and calculates numeric partitions; JEV choos
 
 ## E. JEV State Encoding
 
-One structured TypeSafe Choice question maps action IDs to candidate features. The state includes only the opponent's feedback history and attempt metadata. Strict response validation checks model, choice membership, maximum probability, complete probability map and confidence. Deterministic tie handling uses numeric ID. The accepted action and request hash are recorded; a replay never asks the provider to choose again.
+One structured TypeSafe Choice question maps action IDs to candidate features. The state includes only the opponent's feedback history and attempt metadata. Strict response validation checks model, choice membership, maximum probability, complete probability map and confidence. The provider reports probabilities on a 0.01 grain (`PROBABILITY_GRAIN`), so the probability map must sum to 1 within `candidateCount × grain/2` — the worst-case accumulation of that rounding, not arbitrary slack. Deterministic tie handling uses numeric ID. The accepted action and request hash are recorded; a replay never asks the provider to choose again.
 
 ## F. Architecture
 

@@ -2,6 +2,8 @@ import { getJevView, parseActionId } from '../public/mastermind/rules.js';
 import { buildCandidates, selectDeterministic, fallbackGuess, CODES, partitionMetrics, consistentSecrets } from '../public/mastermind/strategy.js';
 import { sha256 } from '../public/mastermind/verify.js';
 export const PROVIDER_URL='https://api.typesafe.ai/v1/systemone';
+// Smallest increment the provider reports probabilities on.
+export const PROBABILITY_GRAIN=0.01;
 const instructions={
   easy:'Choose one consistent Mastermind code. Prefer covering unused symbols, then useful symbol variety. Codes use four positions, six symbols, and repeats. Use only the supplied observations and choices.',
   normal:'Choose a Mastermind guess using the exact supplied metrics. Prefer low expectedRemaining and worstBucket, then a possible secret. These are uniform-reference metrics, not a model of the human. Never infer a hidden code from outside the history.',
@@ -22,7 +24,11 @@ export function validateChoice(data,built,model) {
   if(answer?.type!=='choice'||typeof answer.choice!=='string')throw new Error('invalid_answer');
   const ids=built.candidates.map(c=>c.actionId),p=answer.probabilities;
   if(!p||typeof p!=='object'||Array.isArray(p)||Object.keys(p).length!==ids.length||!ids.every(id=>Object.hasOwn(p,id)))throw new Error('invalid_probability_keys');
-  if(!ids.every(id=>Number.isFinite(p[id])&&p[id]>=0&&p[id]<=1)||Math.abs(ids.reduce((a,id)=>a+p[id],0)-1)>.001)throw new Error('invalid_probabilities');
+  // Each probability is reported rounded to PROBABILITY_GRAIN, so the sum can drift by half a
+  // grain per candidate. This is the worst-case accumulation of that rounding, not slack for
+  // arbitrary drift; a genuinely inconsistent distribution still fails closed.
+  const sumTolerance=ids.length*(PROBABILITY_GRAIN/2);
+  if(!ids.every(id=>Number.isFinite(p[id])&&p[id]>=0&&p[id]<=1)||Math.abs(ids.reduce((a,id)=>a+p[id],0)-1)>sumTolerance)throw new Error('invalid_probabilities');
   if(!Number.isFinite(answer.confidence)||answer.confidence<0||answer.confidence>1)throw new Error('invalid_confidence');
   const max=Math.max(...ids.map(id=>p[id]));
   if(!ids.includes(answer.choice)||p[answer.choice]!==max)throw new Error('invalid_choice');

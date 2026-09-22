@@ -1,11 +1,12 @@
 import test from 'node:test';import assert from 'node:assert/strict';
 import {readdirSync} from 'node:fs';import {resolve} from 'node:path';import {spawnSync} from 'node:child_process';
-import {harness,createBody,actionBody,fakeJev} from './helpers.mjs';
+import {harness,createBody,actionBody,fakeJev,roundedJev,roundedDistribution} from './helpers.mjs';
 import {one,run,getMatch,quota} from '../server/db.js';
 import {analyzeMatch} from '../public/mastermind/analytics.js';
 import {createInitialState,applyAction} from '../public/mastermind/rules.js';
 import {randomToken,sha256} from '../public/mastermind/verify.js';
 import {handle} from '../server/worker.js';
+import {validateChoice,PROBABILITY_GRAIN} from '../server/jev.js';
 const root=resolve(import.meta.dirname,'..');
 test('all shipped JavaScript parses, including browser-only controller',()=>{
   for(const dir of ['public','public/mastermind','server','scripts','bench'])for(const file of readdirSync(resolve(root,dir))){if(!/\.(mjs|js)$/.test(file))continue;const p=spawnSync(process.execPath,['--check',resolve(root,dir,file)],{encoding:'utf8'});assert.equal(p.status,0,p.stderr);}
@@ -57,5 +58,34 @@ test('signed Discord launch creates a personal single-use ticket; duplicates do 
     const second=await(await call()).json();assert.ok(second.data.content.includes('already handled'));assert.equal((await one(h.db,'SELECT COUNT(*) AS n FROM launch_tickets')).n,1);
     await h.signIn();const r=await h.request('/api/context/redeem',{method:'POST',body:{ticket}});assert.equal(r.status,200);assert.equal(r.data.context.channelId,payload.channel_id);
     assert.equal((await h.request('/api/context/redeem',{method:'POST',body:{ticket}})).status,403);
+  }finally{h.close();}
+});
+test('provider-rounded probability distributions validate and still fail closed',()=>{
+  const built={candidates:[{actionId:'g:0007',guessId:7},{actionId:'g:0014',guessId:14},{actionId:'g:0021',guessId:21},{actionId:'g:0028',guessId:28},{actionId:'g:0035',guessId:35}]};
+  const ids=built.candidates.map(c=>c.actionId);
+  // Real 0.01-grain response: the rounded buckets sum to 1.01, outside the old fixed 0.001 window.
+  const probabilities=roundedDistribution(ids,0);
+  const sum=Object.values(probabilities).reduce((a,b)=>a+b,0);
+  assert.ok(Math.abs(sum-1)>0.001,'fixture must drift past the old tolerance to be a regression test');
+  assert.ok(Math.abs(sum-1)<=ids.length*(PROBABILITY_GRAIN/2));
+  const ok=validateChoice({model:'jev-1.13.0',answers:{choose_guess:{type:'choice',choice:'g:0007',confidence:0.41,probabilities}}},built,'jev-1.13.0');
+  assert.equal(ok.guessId,7);
+  // A genuinely inconsistent distribution is still rejected: rounding cannot explain this gap.
+  const broken=Object.fromEntries(ids.map((id,i)=>[id,i===0?0.4:0]));
+  assert.throws(()=>validateChoice({model:'jev-1.13.0',answers:{choose_guess:{type:'choice',choice:'g:0007',confidence:0.41,probabilities:broken}}},built,'jev-1.13.0'),/invalid_probabilities/);
+});
+test('a rounded-distribution provider produces jev decisions, not fallbacks',async()=>{
+  const h=await harness({provider:roundedJev()});
+  try{
+    const r=await h.request('/api/matches',{method:'POST',body:createBody({difficulty:'jev'})});assert.equal(r.status,201,JSON.stringify(r.data));
+    let m=r.data;const stored=await getMatch(h.db,m.matchId);
+    const first=await h.request('/api/matches/'+m.matchId+'/actions',{method:'POST',body:actionBody(m.revision,{type:'GUESS',guess:stored.secrets.targetForHuman})});
+    m=first.data;
+    while(m.phase==='jev_break')m=(await h.request('/api/matches/'+m.matchId+'/actions',{method:'POST',body:actionBody(m.revision,{type:'STEP_JEV'})})).data;
+    assert.ok(m.decisions.length>0);
+    // 'forced' is the single-candidate solution and stays labeled as such; nothing may fall back.
+    assert.ok(m.decisions.some(d=>d.source==='jev'));
+    assert.ok(m.decisions.every(d=>d.source==='jev'||d.source==='forced'),JSON.stringify(m.decisions.map(d=>[d.source,d.reason])));
+    assert.ok(m.decisions.every(d=>!d.errors?.length),JSON.stringify(m.decisions.map(d=>d.errors)));
   }finally{h.close();}
 });

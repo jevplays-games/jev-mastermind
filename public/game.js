@@ -295,7 +295,7 @@ async function loadBenchmarks(){
 }
 // Native controls, no inline handlers, HTML injection, drag dependency, or third-party UI code.
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
-$('difficulty').value=storage.get('difficulty','normal');if(!$('difficulty').value)$('difficulty').value='normal';
+$('difficulty').value=storage.get('difficulty','jev');if(!$('difficulty').value)$('difficulty').value='jev';
 $('difficulty').addEventListener('change',()=>storage.set('difficulty',$('difficulty').value));
 $('showEvidence').checked=storage.get('evidence',true);$('showEvidence').addEventListener('change',()=>{storage.set('evidence',$('showEvidence').checked);renderEvidence();});
 $('randomSecret').addEventListener('click',()=>{view.secret=randomCode();storage.set('secret',view.secret);renderEditor('secret');});

@@ -9,6 +9,22 @@ export function fakeJev({failure=null,select=null}={}) {
     return Response.json({model:input.model,answers:{choose_guess:{type:'choice',choice:id,confidence:1,probabilities:Object.fromEntries(ids.map(k=>[k,Number(k===id)]))}},usage:{input_tokens:100,output_tokens:10}});
   };
 }
+/** A realistically rounded distribution: the provider reports on a 0.01 grain, never one-hot. */
+export function roundedDistribution(ids,chosenIndex=0) {
+  // Decaying raw weights, normalized exactly, then rounded to the 0.01 grain the provider uses.
+  // The rounding is what makes the reported sum drift away from 1.
+  const raw=ids.map((_,i)=>1/(i+1)),total=raw.reduce((a,b)=>a+b,0);
+  const order=[chosenIndex,...ids.map((_,i)=>i).filter(i=>i!==chosenIndex)];
+  const p={};order.forEach((index,rank)=>{p[ids[index]]=Math.round(raw[rank]/total*100)/100;});
+  return p;
+}
+export function roundedJev({select=null}={}) {
+  return async(_url,options)=>{
+    const input=JSON.parse(options.body),ids=Object.keys(input.questions.choose_guess.criteria);
+    const id=select?select(input):ids[0],probabilities=roundedDistribution(ids,ids.indexOf(id));
+    return Response.json({model:input.model,answers:{choose_guess:{type:'choice',choice:id,confidence:0.41,probabilities}},usage:{input_tokens:26510,output_tokens:2206}});
+  };
+}
 export async function harness({production=false,provider=null}={}) {
   const db=openDatabase(),env={DB:db,APP_ORIGIN:production?'https://game.test':'http://127.0.0.1:8787',LOCAL_DEV:production?'false':'true',QUOTA_SALT:'test-only-salt',JEV_MODEL:'jev-1.13.0',
     RANKED_ENABLED:production?'true':'false',TYPESAFE_API_KEY:provider?'fake-test-only-key':'',DISCORD_CLIENT_ID:production?'123456789012345678':'',DISCORD_CLIENT_SECRET:production?'fake-test-secret':'',
