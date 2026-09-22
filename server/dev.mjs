@@ -1,7 +1,7 @@
 /** No npm install required for local play. Binds loopback only; not a production Node server. */
 import { createServer } from 'node:http';
 import { readFile,stat,mkdir } from 'node:fs/promises';
-import { resolve,extname } from 'node:path';
+import { resolve,extname,sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { openDatabase } from './node-db.mjs';
 import { handle } from './worker.js';
@@ -17,7 +17,7 @@ const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8'
 const assets={async fetch(request){
   const url=new URL(request.url);if(!['GET','HEAD'].includes(request.method))return new Response('Method not allowed',{status:405});
   const pathname=decodeURIComponent(url.pathname),entry=pathname==='/'||pathname==='/play/mastermind'?'/index.html':pathname;
-  const path=resolve(publicRoot,'.'+entry);if(!path.startsWith(publicRoot+'/'))return new Response('Forbidden',{status:403});
+  const path=resolve(publicRoot,'.'+entry);if(!path.startsWith(publicRoot+sep))return new Response('Forbidden',{status:403});
   try{if(!(await stat(path)).isFile())return new Response('Not found',{status:404});return new Response(request.method==='HEAD'?null:await readFile(path),{headers:{'Content-Type':types[extname(path)]||'application/octet-stream','Cache-Control':'no-cache'}});}
   catch{return new Response('Not found',{status:404});}
 }};
