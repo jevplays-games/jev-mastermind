@@ -1,0 +1,1094 @@
+{
+  "generatedAt": "2026-09-22T05:32:54.358Z",
+  "node": "v22.16.0",
+  "seed": 20260922,
+  "live": false,
+  "requestedSecrets": 1296,
+  "completedGames": 10368,
+  "providerCalls": 0,
+  "budgetStopped": false,
+  "coverage": "Every one of the 1,296 possible codes for every selected policy.",
+  "comparisonCoverage": "Counterfactual one-step move metrics compare all 1,296 legal guesses at each recorded state.",
+  "elapsedMs": 32626.989315999996,
+  "policies": [
+    {
+      "policy": "local-easy",
+      "secrets": 1296,
+      "solved": 1296,
+      "solveRate": 1,
+      "meanCost": 4.564814814814815,
+      "maxCost": 7,
+      "p50Cost": 5,
+      "p95Cost": 6,
+      "meanSolvedGuesses": 4.564814814814815,
+      "providerCalls": 0,
+      "fallbackMoves": 0,
+      "invalidResponses": 0,
+      "meanInformationRegretBits": 0.15535224561159341,
+      "guessHistogram": [
+        {
+          "cost": 1,
+          "count": 1
+        },
+        {
+          "cost": 2,
+          "count": 12
+        },
+        {
+          "cost": 3,
+          "count": 100
+        },
+        {
+          "cost": 4,
+          "count": 443
+        },
+        {
+          "cost": 5,
+          "count": 627
+        },
+        {
+          "cost": 6,
+          "count": 107
+        },
+        {
+          "cost": 7,
+          "count": 6
+        },
+        {
+          "cost": 8,
+          "count": 0
+        },
+        {
+          "cost": 9,
+          "count": 0
+        },
+        {
+          "cost": 10,
+          "count": 0
+        },
+        {
+          "cost": 11,
+          "count": 0
+        }
+      ]
+    },
+    {
+      "policy": "local-normal",
+      "secrets": 1296,
+      "solved": 1296,
+      "solveRate": 1,
+      "meanCost": 4.416666666666667,
+      "maxCost": 6,
+      "p50Cost": 4,
+      "p95Cost": 5,
+      "meanSolvedGuesses": 4.416666666666667,
+      "providerCalls": 0,
+      "fallbackMoves": 0,
+      "invalidResponses": 0,
+      "meanInformationRegretBits": 0.05863602882763411,
+      "guessHistogram": [
+        {
+          "cost": 1,
+          "count": 1
+        },
+        {
+          "cost": 2,
+          "count": 13
+        },
+        {
+          "cost": 3,
+          "count": 114
+        },
+        {
+          "cost": 4,
+          "count": 529
+        },
+        {
+          "cost": 5,
+          "count": 595
+        },
+        {
+          "cost": 6,
+          "count": 44
+        },
+        {
+          "cost": 7,
+          "count": 0
+        },
+        {
+          "cost": 8,
+          "count": 0
+        },
+        {
+          "cost": 9,
+          "count": 0
+        },
+        {
+          "cost": 10,
+          "count": 0
+        },
+        {
+          "cost": 11,
+          "count": 0
+        }
+      ]
+    },
+    {
+      "policy": "local-hard",
+      "secrets": 1296,
+      "solved": 1296,
+      "solveRate": 1,
+      "meanCost": 4.397376543209877,
+      "maxCost": 6,
+      "p50Cost": 4,
+      "p95Cost": 5,
+      "meanSolvedGuesses": 4.397376543209877,
+      "providerCalls": 0,
+      "fallbackMoves": 0,
+      "invalidResponses": 0,
+      "meanInformationRegretBits": 0.0066469273759024936,
+      "guessHistogram": [
+        {
+          "cost": 1,
+          "count": 1
+        },
+        {
+          "cost": 2,
+          "count": 10
+        },
+        {
+          "cost": 3,
+          "count": 52
+        },
+        {
+          "cost": 4,
+          "count": 646
+        },
+        {
+          "cost": 5,
+          "count": 584
+        },
+        {
+          "cost": 6,
+          "count": 3
+        },
+        {
+          "cost": 7,
+          "count": 0
+        },
+        {
+          "cost": 8,
+          "count": 0
+        },
+        {
+          "cost": 9,
+          "count": 0
+        },
+        {
+          "cost": 10,
+          "count": 0
+        },
+        {
+          "cost": 11,
+          "count": 0
+        }
+      ]
+    },
+    {
+      "policy": "local-jev",
+      "secrets": 1296,
+      "solved": 1296,
+      "solveRate": 1,
+      "meanCost": 4.458333333333333,
+      "maxCost": 5,
+      "p50Cost": 5,
+      "p95Cost": 5,
+      "meanSolvedGuesses": 4.458333333333333,
+      "providerCalls": 0,
+      "fallbackMoves": 0,
+      "invalidResponses": 0,
+      "meanInformationRegretBits": 0.055785263644246,
+      "guessHistogram": [
+        {
+          "cost": 1,
+          "count": 1
+        },
+        {
+          "cost": 2,
+          "count": 6
+        },
+        {
+          "cost": 3,
+          "count": 55
+        },
+        {
+          "cost": 4,
+          "count": 570
+        },
+        {
+          "cost": 5,
+          "count": 664
+        },
+        {
+          "cost": 6,
+          "count": 0
+        },
+        {
+          "cost": 7,
+          "count": 0
+        },
+        {
+          "cost": 8,
+          "count": 0
+        },
+        {
+          "cost": 9,
+          "count": 0
+        },
+        {
+          "cost": 10,
+          "count": 0
+        },
+        {
+          "cost": 11,
+          "count": 0
+        }
+      ]
+    },
+    {
+      "policy": "reference-minimax",
+      "secrets": 1296,
+      "solved": 1296,
+      "solveRate": 1,
+      "meanCost": 4.458333333333333,
+      "maxCost": 5,
+      "p50Cost": 5,
+      "p95Cost": 5,
+      "meanSolvedGuesses": 4.458333333333333,
+      "providerCalls": 0,
+      "fallbackMoves": 0,
+      "invalidResponses": 0,
+      "meanInformationRegretBits": 0.055785263644246,
+      "guessHistogram": [
+        {
+          "cost": 1,
+          "count": 1
+        },
+        {
+          "cost": 2,
+          "count": 6
+        },
+        {
+          "cost": 3,
+          "count": 55
+        },
+        {
+          "cost": 4,
+          "count": 570
+        },
+        {
+          "cost": 5,
+          "count": 664
+        },
+        {
+          "cost": 6,
+          "count": 0
+        },
+        {
+          "cost": 7,
+          "count": 0
+        },
+        {
+          "cost": 8,
+          "count": 0
+        },
+        {
+          "cost": 9,
+          "count": 0
+        },
+        {
+          "cost": 10,
+          "count": 0
+        },
+        {
+          "cost": 11,
+          "count": 0
+        }
+      ]
+    },
+    {
+      "policy": "reference-expected",
+      "secrets": 1296,
+      "solved": 1296,
+      "solveRate": 1,
+      "meanCost": 4.397376543209877,
+      "maxCost": 6,
+      "p50Cost": 4,
+      "p95Cost": 5,
+      "meanSolvedGuesses": 4.397376543209877,
+      "providerCalls": 0,
+      "fallbackMoves": 0,
+      "invalidResponses": 0,
+      "meanInformationRegretBits": 0.0066469273759024936,
+      "guessHistogram": [
+        {
+          "cost": 1,
+          "count": 1
+        },
+        {
+          "cost": 2,
+          "count": 10
+        },
+        {
+          "cost": 3,
+          "count": 52
+        },
+        {
+          "cost": 4,
+          "count": 646
+        },
+        {
+          "cost": 5,
+          "count": 584
+        },
+        {
+          "cost": 6,
+          "count": 3
+        },
+        {
+          "cost": 7,
+          "count": 0
+        },
+        {
+          "cost": 8,
+          "count": 0
+        },
+        {
+          "cost": 9,
+          "count": 0
+        },
+        {
+          "cost": 10,
+          "count": 0
+        },
+        {
+          "cost": 11,
+          "count": 0
+        }
+      ]
+    },
+    {
+      "policy": "random-consistent",
+      "secrets": 1296,
+      "solved": 1296,
+      "solveRate": 1,
+      "meanCost": 4.645833333333333,
+      "maxCost": 7,
+      "p50Cost": 5,
+      "p95Cost": 6,
+      "meanSolvedGuesses": 4.645833333333333,
+      "providerCalls": 0,
+      "fallbackMoves": 0,
+      "invalidResponses": 0,
+      "meanInformationRegretBits": 0.2053779148722783,
+      "guessHistogram": [
+        {
+          "cost": 1,
+          "count": 0
+        },
+        {
+          "cost": 2,
+          "count": 12
+        },
+        {
+          "cost": 3,
+          "count": 113
+        },
+        {
+          "cost": 4,
+          "count": 399
+        },
+        {
+          "cost": 5,
+          "count": 584
+        },
+        {
+          "cost": 6,
+          "count": 174
+        },
+        {
+          "cost": 7,
+          "count": 14
+        },
+        {
+          "cost": 8,
+          "count": 0
+        },
+        {
+          "cost": 9,
+          "count": 0
+        },
+        {
+          "cost": 10,
+          "count": 0
+        },
+        {
+          "cost": 11,
+          "count": 0
+        }
+      ]
+    },
+    {
+      "policy": "random-legal",
+      "secrets": 1296,
+      "solved": 1267,
+      "solveRate": 0.9776234567901234,
+      "meanCost": 6.264660493827161,
+      "maxCost": 11,
+      "p50Cost": 6,
+      "p95Cost": 9,
+      "meanSolvedGuesses": 6.156274664561957,
+      "providerCalls": 0,
+      "fallbackMoves": 0,
+      "invalidResponses": 0,
+      "meanInformationRegretBits": 0.5249874471482404,
+      "guessHistogram": [
+        {
+          "cost": 1,
+          "count": 0
+        },
+        {
+          "cost": 2,
+          "count": 2
+        },
+        {
+          "cost": 3,
+          "count": 11
+        },
+        {
+          "cost": 4,
+          "count": 107
+        },
+        {
+          "cost": 5,
+          "count": 341
+        },
+        {
+          "cost": 6,
+          "count": 368
+        },
+        {
+          "cost": 7,
+          "count": 215
+        },
+        {
+          "cost": 8,
+          "count": 121
+        },
+        {
+          "cost": 9,
+          "count": 71
+        },
+        {
+          "cost": 10,
+          "count": 31
+        },
+        {
+          "cost": 11,
+          "count": 29
+        }
+      ]
+    }
+  ],
+  "patterns": [
+    {
+      "policy": "local-easy",
+      "pattern": "4",
+      "secrets": 6,
+      "solved": 6,
+      "meanCost": 4.166666666666667,
+      "maxCost": 5
+    },
+    {
+      "policy": "local-easy",
+      "pattern": "3+1",
+      "secrets": 120,
+      "solved": 120,
+      "meanCost": 4.825,
+      "maxCost": 7
+    },
+    {
+      "policy": "local-easy",
+      "pattern": "2+2",
+      "secrets": 90,
+      "solved": 90,
+      "meanCost": 4.644444444444445,
+      "maxCost": 6
+    },
+    {
+      "policy": "local-easy",
+      "pattern": "2+1+1",
+      "secrets": 720,
+      "solved": 720,
+      "meanCost": 4.684722222222222,
+      "maxCost": 7
+    },
+    {
+      "policy": "local-easy",
+      "pattern": "1+1+1+1",
+      "secrets": 360,
+      "solved": 360,
+      "meanCost": 4.225,
+      "maxCost": 6
+    },
+    {
+      "policy": "local-normal",
+      "pattern": "4",
+      "secrets": 6,
+      "solved": 6,
+      "meanCost": 3.8333333333333335,
+      "maxCost": 5
+    },
+    {
+      "policy": "local-normal",
+      "pattern": "3+1",
+      "secrets": 120,
+      "solved": 120,
+      "meanCost": 4.416666666666667,
+      "maxCost": 6
+    },
+    {
+      "policy": "local-normal",
+      "pattern": "2+2",
+      "secrets": 90,
+      "solved": 90,
+      "meanCost": 4.5,
+      "maxCost": 6
+    },
+    {
+      "policy": "local-normal",
+      "pattern": "2+1+1",
+      "secrets": 720,
+      "solved": 720,
+      "meanCost": 4.434722222222222,
+      "maxCost": 6
+    },
+    {
+      "policy": "local-normal",
+      "pattern": "1+1+1+1",
+      "secrets": 360,
+      "solved": 360,
+      "meanCost": 4.3694444444444445,
+      "maxCost": 6
+    },
+    {
+      "policy": "local-hard",
+      "pattern": "4",
+      "secrets": 6,
+      "solved": 6,
+      "meanCost": 3.6666666666666665,
+      "maxCost": 4
+    },
+    {
+      "policy": "local-hard",
+      "pattern": "3+1",
+      "secrets": 120,
+      "solved": 120,
+      "meanCost": 4.325,
+      "maxCost": 5
+    },
+    {
+      "policy": "local-hard",
+      "pattern": "2+2",
+      "secrets": 90,
+      "solved": 90,
+      "meanCost": 4.277777777777778,
+      "maxCost": 6
+    },
+    {
+      "policy": "local-hard",
+      "pattern": "2+1+1",
+      "secrets": 720,
+      "solved": 720,
+      "meanCost": 4.4222222222222225,
+      "maxCost": 6
+    },
+    {
+      "policy": "local-hard",
+      "pattern": "1+1+1+1",
+      "secrets": 360,
+      "solved": 360,
+      "meanCost": 4.413888888888889,
+      "maxCost": 6
+    },
+    {
+      "policy": "local-jev",
+      "pattern": "4",
+      "secrets": 6,
+      "solved": 6,
+      "meanCost": 4.166666666666667,
+      "maxCost": 5
+    },
+    {
+      "policy": "local-jev",
+      "pattern": "3+1",
+      "secrets": 120,
+      "solved": 120,
+      "meanCost": 4.375,
+      "maxCost": 5
+    },
+    {
+      "policy": "local-jev",
+      "pattern": "2+2",
+      "secrets": 90,
+      "solved": 90,
+      "meanCost": 4.411111111111111,
+      "maxCost": 5
+    },
+    {
+      "policy": "local-jev",
+      "pattern": "2+1+1",
+      "secrets": 720,
+      "solved": 720,
+      "meanCost": 4.448611111111111,
+      "maxCost": 5
+    },
+    {
+      "policy": "local-jev",
+      "pattern": "1+1+1+1",
+      "secrets": 360,
+      "solved": 360,
+      "meanCost": 4.522222222222222,
+      "maxCost": 5
+    },
+    {
+      "policy": "reference-minimax",
+      "pattern": "4",
+      "secrets": 6,
+      "solved": 6,
+      "meanCost": 4.166666666666667,
+      "maxCost": 5
+    },
+    {
+      "policy": "reference-minimax",
+      "pattern": "3+1",
+      "secrets": 120,
+      "solved": 120,
+      "meanCost": 4.375,
+      "maxCost": 5
+    },
+    {
+      "policy": "reference-minimax",
+      "pattern": "2+2",
+      "secrets": 90,
+      "solved": 90,
+      "meanCost": 4.411111111111111,
+      "maxCost": 5
+    },
+    {
+      "policy": "reference-minimax",
+      "pattern": "2+1+1",
+      "secrets": 720,
+      "solved": 720,
+      "meanCost": 4.448611111111111,
+      "maxCost": 5
+    },
+    {
+      "policy": "reference-minimax",
+      "pattern": "1+1+1+1",
+      "secrets": 360,
+      "solved": 360,
+      "meanCost": 4.522222222222222,
+      "maxCost": 5
+    },
+    {
+      "policy": "reference-expected",
+      "pattern": "4",
+      "secrets": 6,
+      "solved": 6,
+      "meanCost": 3.6666666666666665,
+      "maxCost": 4
+    },
+    {
+      "policy": "reference-expected",
+      "pattern": "3+1",
+      "secrets": 120,
+      "solved": 120,
+      "meanCost": 4.325,
+      "maxCost": 5
+    },
+    {
+      "policy": "reference-expected",
+      "pattern": "2+2",
+      "secrets": 90,
+      "solved": 90,
+      "meanCost": 4.277777777777778,
+      "maxCost": 6
+    },
+    {
+      "policy": "reference-expected",
+      "pattern": "2+1+1",
+      "secrets": 720,
+      "solved": 720,
+      "meanCost": 4.4222222222222225,
+      "maxCost": 6
+    },
+    {
+      "policy": "reference-expected",
+      "pattern": "1+1+1+1",
+      "secrets": 360,
+      "solved": 360,
+      "meanCost": 4.413888888888889,
+      "maxCost": 6
+    },
+    {
+      "policy": "random-consistent",
+      "pattern": "4",
+      "secrets": 6,
+      "solved": 6,
+      "meanCost": 4.666666666666667,
+      "maxCost": 5
+    },
+    {
+      "policy": "random-consistent",
+      "pattern": "3+1",
+      "secrets": 120,
+      "solved": 120,
+      "meanCost": 4.633333333333334,
+      "maxCost": 7
+    },
+    {
+      "policy": "random-consistent",
+      "pattern": "2+2",
+      "secrets": 90,
+      "solved": 90,
+      "meanCost": 4.4,
+      "maxCost": 6
+    },
+    {
+      "policy": "random-consistent",
+      "pattern": "2+1+1",
+      "secrets": 720,
+      "solved": 720,
+      "meanCost": 4.6875,
+      "maxCost": 7
+    },
+    {
+      "policy": "random-consistent",
+      "pattern": "1+1+1+1",
+      "secrets": 360,
+      "solved": 360,
+      "meanCost": 4.627777777777778,
+      "maxCost": 7
+    },
+    {
+      "policy": "random-legal",
+      "pattern": "4",
+      "secrets": 6,
+      "solved": 6,
+      "meanCost": 4.833333333333333,
+      "maxCost": 6
+    },
+    {
+      "policy": "random-legal",
+      "pattern": "3+1",
+      "secrets": 120,
+      "solved": 117,
+      "meanCost": 6.316666666666666,
+      "maxCost": 11
+    },
+    {
+      "policy": "random-legal",
+      "pattern": "2+2",
+      "secrets": 90,
+      "solved": 89,
+      "meanCost": 6.2,
+      "maxCost": 11
+    },
+    {
+      "policy": "random-legal",
+      "pattern": "2+1+1",
+      "secrets": 720,
+      "solved": 699,
+      "meanCost": 6.368055555555555,
+      "maxCost": 11
+    },
+    {
+      "policy": "random-legal",
+      "pattern": "1+1+1+1",
+      "secrets": 360,
+      "solved": 356,
+      "meanCost": 6.080555555555556,
+      "maxCost": 11
+    }
+  ],
+  "pairs": [
+    {
+      "policyA": "local-easy",
+      "policyB": "local-normal",
+      "pairedSecrets": 1296,
+      "aFewerGuesses": 298,
+      "ties": 540,
+      "bFewerGuesses": 458,
+      "meanCostDifferenceAminusB": 0.14814814814814814
+    },
+    {
+      "policyA": "local-easy",
+      "policyB": "local-hard",
+      "pairedSecrets": 1296,
+      "aFewerGuesses": 296,
+      "ties": 523,
+      "bFewerGuesses": 477,
+      "meanCostDifferenceAminusB": 0.16743827160493827
+    },
+    {
+      "policyA": "local-easy",
+      "policyB": "local-jev",
+      "pairedSecrets": 1296,
+      "aFewerGuesses": 316,
+      "ties": 543,
+      "bFewerGuesses": 437,
+      "meanCostDifferenceAminusB": 0.10648148148148148
+    },
+    {
+      "policyA": "local-easy",
+      "policyB": "reference-minimax",
+      "pairedSecrets": 1296,
+      "aFewerGuesses": 316,
+      "ties": 543,
+      "bFewerGuesses": 437,
+      "meanCostDifferenceAminusB": 0.10648148148148148
+    },
+    {
+      "policyA": "local-easy",
+      "policyB": "reference-expected",
+      "pairedSecrets": 1296,
+      "aFewerGuesses": 296,
+      "ties": 523,
+      "bFewerGuesses": 477,
+      "meanCostDifferenceAminusB": 0.16743827160493827
+    },
+    {
+      "policyA": "local-easy",
+      "policyB": "random-consistent",
+      "pairedSecrets": 1296,
+      "aFewerGuesses": 462,
+      "ties": 438,
+      "bFewerGuesses": 396,
+      "meanCostDifferenceAminusB": -0.08101851851851852
+    },
+    {
+      "policyA": "local-easy",
+      "policyB": "random-legal",
+      "pairedSecrets": 1296,
+      "aFewerGuesses": 972,
+      "ties": 225,
+      "bFewerGuesses": 99,
+      "meanCostDifferenceAminusB": -1.6998456790123457
+    },
+    {
+      "policyA": "local-normal",
+      "policyB": "local-hard",
+      "pairedSecrets": 1296,
+      "aFewerGuesses": 331,
+      "ties": 590,
+      "bFewerGuesses": 375,
+      "meanCostDifferenceAminusB": 0.019290123456790122
+    },
+    {
+      "policyA": "local-normal",
+      "policyB": "local-jev",
+      "pairedSecrets": 1296,
+      "aFewerGuesses": 360,
+      "ties": 605,
+      "bFewerGuesses": 331,
+      "meanCostDifferenceAminusB": -0.041666666666666664
+    },
+    {
+      "policyA": "local-normal",
+      "policyB": "reference-minimax",
+      "pairedSecrets": 1296,
+      "aFewerGuesses": 360,
+      "ties": 605,
+      "bFewerGuesses": 331,
+      "meanCostDifferenceAminusB": -0.041666666666666664
+    },
+    {
+      "policyA": "local-normal",
+      "policyB": "reference-expected",
+      "pairedSecrets": 1296,
+      "aFewerGuesses": 331,
+      "ties": 590,
+      "bFewerGuesses": 375,
+      "meanCostDifferenceAminusB": 0.019290123456790122
+    },
+    {
+      "policyA": "local-normal",
+      "policyB": "random-consistent",
+      "pairedSecrets": 1296,
+      "aFewerGuesses": 519,
+      "ties": 443,
+      "bFewerGuesses": 334,
+      "meanCostDifferenceAminusB": -0.22916666666666666
+    },
+    {
+      "policyA": "local-normal",
+      "policyB": "random-legal",
+      "pairedSecrets": 1296,
+      "aFewerGuesses": 1030,
+      "ties": 195,
+      "bFewerGuesses": 71,
+      "meanCostDifferenceAminusB": -1.8479938271604939
+    },
+    {
+      "policyA": "local-hard",
+      "policyB": "local-jev",
+      "pairedSecrets": 1296,
+      "aFewerGuesses": 335,
+      "ties": 703,
+      "bFewerGuesses": 258,
+      "meanCostDifferenceAminusB": -0.06095679012345679
+    },
+    {
+      "policyA": "local-hard",
+      "policyB": "reference-minimax",
+      "pairedSecrets": 1296,
+      "aFewerGuesses": 335,
+      "ties": 703,
+      "bFewerGuesses": 258,
+      "meanCostDifferenceAminusB": -0.06095679012345679
+    },
+    {
+      "policyA": "local-hard",
+      "policyB": "reference-expected",
+      "pairedSecrets": 1296,
+      "aFewerGuesses": 0,
+      "ties": 1296,
+      "bFewerGuesses": 0,
+      "meanCostDifferenceAminusB": 0
+    },
+    {
+      "policyA": "local-hard",
+      "policyB": "random-consistent",
+      "pairedSecrets": 1296,
+      "aFewerGuesses": 531,
+      "ties": 465,
+      "bFewerGuesses": 300,
+      "meanCostDifferenceAminusB": -0.24845679012345678
+    },
+    {
+      "policyA": "local-hard",
+      "policyB": "random-legal",
+      "pairedSecrets": 1296,
+      "aFewerGuesses": 1036,
+      "ties": 201,
+      "bFewerGuesses": 59,
+      "meanCostDifferenceAminusB": -1.867283950617284
+    },
+    {
+      "policyA": "local-jev",
+      "policyB": "reference-minimax",
+      "pairedSecrets": 1296,
+      "aFewerGuesses": 0,
+      "ties": 1296,
+      "bFewerGuesses": 0,
+      "meanCostDifferenceAminusB": 0
+    },
+    {
+      "policyA": "local-jev",
+      "policyB": "reference-expected",
+      "pairedSecrets": 1296,
+      "aFewerGuesses": 258,
+      "ties": 703,
+      "bFewerGuesses": 335,
+      "meanCostDifferenceAminusB": 0.06095679012345679
+    },
+    {
+      "policyA": "local-jev",
+      "policyB": "random-consistent",
+      "pairedSecrets": 1296,
+      "aFewerGuesses": 506,
+      "ties": 459,
+      "bFewerGuesses": 331,
+      "meanCostDifferenceAminusB": -0.1875
+    },
+    {
+      "policyA": "local-jev",
+      "policyB": "random-legal",
+      "pairedSecrets": 1296,
+      "aFewerGuesses": 996,
+      "ties": 239,
+      "bFewerGuesses": 61,
+      "meanCostDifferenceAminusB": -1.8063271604938271
+    },
+    {
+      "policyA": "reference-minimax",
+      "policyB": "reference-expected",
+      "pairedSecrets": 1296,
+      "aFewerGuesses": 258,
+      "ties": 703,
+      "bFewerGuesses": 335,
+      "meanCostDifferenceAminusB": 0.06095679012345679
+    },
+    {
+      "policyA": "reference-minimax",
+      "policyB": "random-consistent",
+      "pairedSecrets": 1296,
+      "aFewerGuesses": 506,
+      "ties": 459,
+      "bFewerGuesses": 331,
+      "meanCostDifferenceAminusB": -0.1875
+    },
+    {
+      "policyA": "reference-minimax",
+      "policyB": "random-legal",
+      "pairedSecrets": 1296,
+      "aFewerGuesses": 996,
+      "ties": 239,
+      "bFewerGuesses": 61,
+      "meanCostDifferenceAminusB": -1.8063271604938271
+    },
+    {
+      "policyA": "reference-expected",
+      "policyB": "random-consistent",
+      "pairedSecrets": 1296,
+      "aFewerGuesses": 531,
+      "ties": 465,
+      "bFewerGuesses": 300,
+      "meanCostDifferenceAminusB": -0.24845679012345678
+    },
+    {
+      "policyA": "reference-expected",
+      "policyB": "random-legal",
+      "pairedSecrets": 1296,
+      "aFewerGuesses": 1036,
+      "ties": 201,
+      "bFewerGuesses": 59,
+      "meanCostDifferenceAminusB": -1.867283950617284
+    },
+    {
+      "policyA": "random-consistent",
+      "policyB": "random-legal",
+      "pairedSecrets": 1296,
+      "aFewerGuesses": 946,
+      "ties": 235,
+      "bFewerGuesses": 115,
+      "meanCostDifferenceAminusB": -1.6188271604938271
+    }
+  ],
+  "sourceHashes": {
+    "public/mastermind/rules.js": "477a3ca43fcabd61feb5e49a557eb49d566609754041532ecc1d49a38a040528",
+    "public/mastermind/strategy.js": "40b0fb181c13c6d2f309cb7afb17de8bb18f88c250da82309375c7f9070c791d",
+    "public/mastermind/analytics.js": "15da9170b4ee586e7796dfc0f8ab9ec4f01aae307dace66edd0bd0ea9755b29d",
+    "server/jev.js": "85091a87b472e8844ed9e975796fd814122e58fcabe71e5e04a5d63a17851087",
+    "bench/run.mjs": "2d73feb25f67c9f2eb960510e19163be08f8c97b2c25e208d7e7c749984b1272"
+  },
+  "limitations": [
+    "Local policies are deterministic selector ablations, not live JEV measurements.",
+    "Exhaustive enumeration needs no sampling confidence interval for this finite configuration.",
+    "Human-selected secret distributions can differ from uniform enumeration.",
+    "Cached selector timings are not inference latency; cacheHit is exported per turn.",
+    "Fallback-containing live games are identifiable and are not pure model-strength observations.",
+    "Pairs compare codebreaking on matched secrets, not human codemaker skill."
+  ]
+}

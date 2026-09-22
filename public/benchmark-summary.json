@@ -1,0 +1,495 @@
+{
+  "generatedAt": "2026-09-22T05:32:54.358Z",
+  "coverage": "Every one of the 1,296 possible codes for every selected policy.",
+  "live": false,
+  "policies": [
+    {
+      "policy": "local-easy",
+      "secrets": 1296,
+      "solved": 1296,
+      "solveRate": 1,
+      "meanCost": 4.564814814814815,
+      "maxCost": 7,
+      "p50Cost": 5,
+      "p95Cost": 6,
+      "meanSolvedGuesses": 4.564814814814815,
+      "providerCalls": 0,
+      "fallbackMoves": 0,
+      "invalidResponses": 0,
+      "meanInformationRegretBits": 0.15535224561159341,
+      "guessHistogram": [
+        {
+          "cost": 1,
+          "count": 1
+        },
+        {
+          "cost": 2,
+          "count": 12
+        },
+        {
+          "cost": 3,
+          "count": 100
+        },
+        {
+          "cost": 4,
+          "count": 443
+        },
+        {
+          "cost": 5,
+          "count": 627
+        },
+        {
+          "cost": 6,
+          "count": 107
+        },
+        {
+          "cost": 7,
+          "count": 6
+        },
+        {
+          "cost": 8,
+          "count": 0
+        },
+        {
+          "cost": 9,
+          "count": 0
+        },
+        {
+          "cost": 10,
+          "count": 0
+        },
+        {
+          "cost": 11,
+          "count": 0
+        }
+      ]
+    },
+    {
+      "policy": "local-normal",
+      "secrets": 1296,
+      "solved": 1296,
+      "solveRate": 1,
+      "meanCost": 4.416666666666667,
+      "maxCost": 6,
+      "p50Cost": 4,
+      "p95Cost": 5,
+      "meanSolvedGuesses": 4.416666666666667,
+      "providerCalls": 0,
+      "fallbackMoves": 0,
+      "invalidResponses": 0,
+      "meanInformationRegretBits": 0.05863602882763411,
+      "guessHistogram": [
+        {
+          "cost": 1,
+          "count": 1
+        },
+        {
+          "cost": 2,
+          "count": 13
+        },
+        {
+          "cost": 3,
+          "count": 114
+        },
+        {
+          "cost": 4,
+          "count": 529
+        },
+        {
+          "cost": 5,
+          "count": 595
+        },
+        {
+          "cost": 6,
+          "count": 44
+        },
+        {
+          "cost": 7,
+          "count": 0
+        },
+        {
+          "cost": 8,
+          "count": 0
+        },
+        {
+          "cost": 9,
+          "count": 0
+        },
+        {
+          "cost": 10,
+          "count": 0
+        },
+        {
+          "cost": 11,
+          "count": 0
+        }
+      ]
+    },
+    {
+      "policy": "local-hard",
+      "secrets": 1296,
+      "solved": 1296,
+      "solveRate": 1,
+      "meanCost": 4.397376543209877,
+      "maxCost": 6,
+      "p50Cost": 4,
+      "p95Cost": 5,
+      "meanSolvedGuesses": 4.397376543209877,
+      "providerCalls": 0,
+      "fallbackMoves": 0,
+      "invalidResponses": 0,
+      "meanInformationRegretBits": 0.0066469273759024936,
+      "guessHistogram": [
+        {
+          "cost": 1,
+          "count": 1
+        },
+        {
+          "cost": 2,
+          "count": 10
+        },
+        {
+          "cost": 3,
+          "count": 52
+        },
+        {
+          "cost": 4,
+          "count": 646
+        },
+        {
+          "cost": 5,
+          "count": 584
+        },
+        {
+          "cost": 6,
+          "count": 3
+        },
+        {
+          "cost": 7,
+          "count": 0
+        },
+        {
+          "cost": 8,
+          "count": 0
+        },
+        {
+          "cost": 9,
+          "count": 0
+        },
+        {
+          "cost": 10,
+          "count": 0
+        },
+        {
+          "cost": 11,
+          "count": 0
+        }
+      ]
+    },
+    {
+      "policy": "local-jev",
+      "secrets": 1296,
+      "solved": 1296,
+      "solveRate": 1,
+      "meanCost": 4.458333333333333,
+      "maxCost": 5,
+      "p50Cost": 5,
+      "p95Cost": 5,
+      "meanSolvedGuesses": 4.458333333333333,
+      "providerCalls": 0,
+      "fallbackMoves": 0,
+      "invalidResponses": 0,
+      "meanInformationRegretBits": 0.055785263644246,
+      "guessHistogram": [
+        {
+          "cost": 1,
+          "count": 1
+        },
+        {
+          "cost": 2,
+          "count": 6
+        },
+        {
+          "cost": 3,
+          "count": 55
+        },
+        {
+          "cost": 4,
+          "count": 570
+        },
+        {
+          "cost": 5,
+          "count": 664
+        },
+        {
+          "cost": 6,
+          "count": 0
+        },
+        {
+          "cost": 7,
+          "count": 0
+        },
+        {
+          "cost": 8,
+          "count": 0
+        },
+        {
+          "cost": 9,
+          "count": 0
+        },
+        {
+          "cost": 10,
+          "count": 0
+        },
+        {
+          "cost": 11,
+          "count": 0
+        }
+      ]
+    },
+    {
+      "policy": "reference-minimax",
+      "secrets": 1296,
+      "solved": 1296,
+      "solveRate": 1,
+      "meanCost": 4.458333333333333,
+      "maxCost": 5,
+      "p50Cost": 5,
+      "p95Cost": 5,
+      "meanSolvedGuesses": 4.458333333333333,
+      "providerCalls": 0,
+      "fallbackMoves": 0,
+      "invalidResponses": 0,
+      "meanInformationRegretBits": 0.055785263644246,
+      "guessHistogram": [
+        {
+          "cost": 1,
+          "count": 1
+        },
+        {
+          "cost": 2,
+          "count": 6
+        },
+        {
+          "cost": 3,
+          "count": 55
+        },
+        {
+          "cost": 4,
+          "count": 570
+        },
+        {
+          "cost": 5,
+          "count": 664
+        },
+        {
+          "cost": 6,
+          "count": 0
+        },
+        {
+          "cost": 7,
+          "count": 0
+        },
+        {
+          "cost": 8,
+          "count": 0
+        },
+        {
+          "cost": 9,
+          "count": 0
+        },
+        {
+          "cost": 10,
+          "count": 0
+        },
+        {
+          "cost": 11,
+          "count": 0
+        }
+      ]
+    },
+    {
+      "policy": "reference-expected",
+      "secrets": 1296,
+      "solved": 1296,
+      "solveRate": 1,
+      "meanCost": 4.397376543209877,
+      "maxCost": 6,
+      "p50Cost": 4,
+      "p95Cost": 5,
+      "meanSolvedGuesses": 4.397376543209877,
+      "providerCalls": 0,
+      "fallbackMoves": 0,
+      "invalidResponses": 0,
+      "meanInformationRegretBits": 0.0066469273759024936,
+      "guessHistogram": [
+        {
+          "cost": 1,
+          "count": 1
+        },
+        {
+          "cost": 2,
+          "count": 10
+        },
+        {
+          "cost": 3,
+          "count": 52
+        },
+        {
+          "cost": 4,
+          "count": 646
+        },
+        {
+          "cost": 5,
+          "count": 584
+        },
+        {
+          "cost": 6,
+          "count": 3
+        },
+        {
+          "cost": 7,
+          "count": 0
+        },
+        {
+          "cost": 8,
+          "count": 0
+        },
+        {
+          "cost": 9,
+          "count": 0
+        },
+        {
+          "cost": 10,
+          "count": 0
+        },
+        {
+          "cost": 11,
+          "count": 0
+        }
+      ]
+    },
+    {
+      "policy": "random-consistent",
+      "secrets": 1296,
+      "solved": 1296,
+      "solveRate": 1,
+      "meanCost": 4.645833333333333,
+      "maxCost": 7,
+      "p50Cost": 5,
+      "p95Cost": 6,
+      "meanSolvedGuesses": 4.645833333333333,
+      "providerCalls": 0,
+      "fallbackMoves": 0,
+      "invalidResponses": 0,
+      "meanInformationRegretBits": 0.2053779148722783,
+      "guessHistogram": [
+        {
+          "cost": 1,
+          "count": 0
+        },
+        {
+          "cost": 2,
+          "count": 12
+        },
+        {
+          "cost": 3,
+          "count": 113
+        },
+        {
+          "cost": 4,
+          "count": 399
+        },
+        {
+          "cost": 5,
+          "count": 584
+        },
+        {
+          "cost": 6,
+          "count": 174
+        },
+        {
+          "cost": 7,
+          "count": 14
+        },
+        {
+          "cost": 8,
+          "count": 0
+        },
+        {
+          "cost": 9,
+          "count": 0
+        },
+        {
+          "cost": 10,
+          "count": 0
+        },
+        {
+          "cost": 11,
+          "count": 0
+        }
+      ]
+    },
+    {
+      "policy": "random-legal",
+      "secrets": 1296,
+      "solved": 1267,
+      "solveRate": 0.9776234567901234,
+      "meanCost": 6.264660493827161,
+      "maxCost": 11,
+      "p50Cost": 6,
+      "p95Cost": 9,
+      "meanSolvedGuesses": 6.156274664561957,
+      "providerCalls": 0,
+      "fallbackMoves": 0,
+      "invalidResponses": 0,
+      "meanInformationRegretBits": 0.5249874471482404,
+      "guessHistogram": [
+        {
+          "cost": 1,
+          "count": 0
+        },
+        {
+          "cost": 2,
+          "count": 2
+        },
+        {
+          "cost": 3,
+          "count": 11
+        },
+        {
+          "cost": 4,
+          "count": 107
+        },
+        {
+          "cost": 5,
+          "count": 341
+        },
+        {
+          "cost": 6,
+          "count": 368
+        },
+        {
+          "cost": 7,
+          "count": 215
+        },
+        {
+          "cost": 8,
+          "count": 121
+        },
+        {
+          "cost": 9,
+          "count": 71
+        },
+        {
+          "cost": 10,
+          "count": 31
+        },
+        {
+          "cost": 11,
+          "count": 29
+        }
+      ]
+    }
+  ]
+}

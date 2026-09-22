@@ -1,0 +1,6 @@
+{
+  "valid": true,
+  "matchId": "5ae356fd-0601-40da-a796-91c6264661f9",
+  "outcome": "loss",
+  "proves": "Internal replay and commitment consistency only; official eligibility is server-side."
+}

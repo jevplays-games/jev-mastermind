@@ -1,0 +1,890 @@
+{
+  "analyticsVersion": "mm-analytics-v1",
+  "basis": "Actual scripted local sample; not a formal exhaustive provider schema",
+  "fields": [
+    {
+      "path": "$",
+      "observedType": "object"
+    },
+    {
+      "path": "analyticsVersion",
+      "observedType": "string"
+    },
+    {
+      "path": "rulesVersion",
+      "observedType": "string"
+    },
+    {
+      "path": "configId",
+      "observedType": "string"
+    },
+    {
+      "path": "difficulty",
+      "observedType": "string"
+    },
+    {
+      "path": "matchId",
+      "observedType": "string"
+    },
+    {
+      "path": "phase",
+      "observedType": "string"
+    },
+    {
+      "path": "outcome",
+      "observedType": "string"
+    },
+    {
+      "path": "finishReason",
+      "observedType": "string"
+    },
+    {
+      "path": "comparison",
+      "observedType": "string"
+    },
+    {
+      "path": "referenceDistribution",
+      "observedType": "string"
+    },
+    {
+      "path": "human",
+      "observedType": "object"
+    },
+    {
+      "path": "human.rows",
+      "observedType": "array",
+      "sampleLength": 5
+    },
+    {
+      "path": "human.rows[]",
+      "observedType": "object"
+    },
+    {
+      "path": "human.rows[].turn",
+      "observedType": "number"
+    },
+    {
+      "path": "human.rows[].guessId",
+      "observedType": "number"
+    },
+    {
+      "path": "human.rows[].code",
+      "observedType": "string"
+    },
+    {
+      "path": "human.rows[].exact",
+      "observedType": "number"
+    },
+    {
+      "path": "human.rows[].misplaced",
+      "observedType": "number"
+    },
+    {
+      "path": "human.rows[].candidatesBefore",
+      "observedType": "number"
+    },
+    {
+      "path": "human.rows[].candidatesAfter",
+      "observedType": "number"
+    },
+    {
+      "path": "human.rows[].eliminated",
+      "observedType": "number"
+    },
+    {
+      "path": "human.rows[].eliminationRate",
+      "observedType": "number"
+    },
+    {
+      "path": "human.rows[].priorEntropyBits",
+      "observedType": "number"
+    },
+    {
+      "path": "human.rows[].posteriorEntropyBits",
+      "observedType": "number"
+    },
+    {
+      "path": "human.rows[].realizedInformationBits",
+      "observedType": "number"
+    },
+    {
+      "path": "human.rows[].expectedInformationBits",
+      "observedType": "number"
+    },
+    {
+      "path": "human.rows[].expectedRemaining",
+      "observedType": "number"
+    },
+    {
+      "path": "human.rows[].worstBucket",
+      "observedType": "number"
+    },
+    {
+      "path": "human.rows[].feedbackOutcomes",
+      "observedType": "number"
+    },
+    {
+      "path": "human.rows[].feedbackProbability",
+      "observedType": "number"
+    },
+    {
+      "path": "human.rows[].surpriseBits",
+      "observedType": "number"
+    },
+    {
+      "path": "human.rows[].uniformSolveProbability",
+      "observedType": "number"
+    },
+    {
+      "path": "human.rows[].canBeSecret",
+      "observedType": "boolean"
+    },
+    {
+      "path": "human.rows[].isProbe",
+      "observedType": "boolean"
+    },
+    {
+      "path": "human.rows[].repeated",
+      "observedType": "boolean"
+    },
+    {
+      "path": "human.rows[].newSymbols",
+      "observedType": "number"
+    },
+    {
+      "path": "human.rows[].symbolCoverage",
+      "observedType": "number"
+    },
+    {
+      "path": "human.rows[].distinctSymbols",
+      "observedType": "number"
+    },
+    {
+      "path": "human.rows[].bestExpectedRemaining",
+      "observedType": "number"
+    },
+    {
+      "path": "human.rows[].bestExpectedGuessId",
+      "observedType": "number"
+    },
+    {
+      "path": "human.rows[].bestWorstBucket",
+      "observedType": "number"
+    },
+    {
+      "path": "human.rows[].bestWorstGuessId",
+      "observedType": "number"
+    },
+    {
+      "path": "human.rows[].bestInformationBits",
+      "observedType": "number"
+    },
+    {
+      "path": "human.rows[].bestInformationGuessId",
+      "observedType": "number"
+    },
+    {
+      "path": "human.rows[].expectedRegret",
+      "observedType": "number"
+    },
+    {
+      "path": "human.rows[].worstCaseRegret",
+      "observedType": "number"
+    },
+    {
+      "path": "human.rows[].informationRegretBits",
+      "observedType": "number"
+    },
+    {
+      "path": "human.rows[].feedbackBuckets",
+      "observedType": "array",
+      "sampleLength": 13
+    },
+    {
+      "path": "human.rows[].feedbackBuckets[]",
+      "observedType": "object"
+    },
+    {
+      "path": "human.rows[].feedbackBuckets[].exact",
+      "observedType": "number"
+    },
+    {
+      "path": "human.rows[].feedbackBuckets[].misplaced",
+      "observedType": "number"
+    },
+    {
+      "path": "human.rows[].feedbackBuckets[].count",
+      "observedType": "number"
+    },
+    {
+      "path": "human.summary",
+      "observedType": "object"
+    },
+    {
+      "path": "human.summary.guesses",
+      "observedType": "number"
+    },
+    {
+      "path": "human.summary.solved",
+      "observedType": "boolean"
+    },
+    {
+      "path": "human.summary.finalCandidates",
+      "observedType": "number"
+    },
+    {
+      "path": "human.summary.remainingEntropyBits",
+      "observedType": "number"
+    },
+    {
+      "path": "human.summary.totalInformationBits",
+      "observedType": "number"
+    },
+    {
+      "path": "human.summary.repeatedGuesses",
+      "observedType": "number"
+    },
+    {
+      "path": "human.summary.probes",
+      "observedType": "number"
+    },
+    {
+      "path": "human.summary.noEliminationGuesses",
+      "observedType": "number"
+    },
+    {
+      "path": "human.summary.meanExpectedInformationBits",
+      "observedType": "number"
+    },
+    {
+      "path": "human.summary.meanInformationRegretBits",
+      "observedType": "number"
+    },
+    {
+      "path": "human.summary.meanExpectedRegret",
+      "observedType": "number"
+    },
+    {
+      "path": "human.summary.minimaxOptimalMoves",
+      "observedType": "number"
+    },
+    {
+      "path": "human.summary.expectedOptimalMoves",
+      "observedType": "number"
+    },
+    {
+      "path": "human.summary.symbolCoverage",
+      "observedType": "number"
+    },
+    {
+      "path": "jev",
+      "observedType": "object"
+    },
+    {
+      "path": "jev.rows",
+      "observedType": "array",
+      "sampleLength": 2
+    },
+    {
+      "path": "jev.rows[]",
+      "observedType": "object"
+    },
+    {
+      "path": "jev.rows[].turn",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.rows[].guessId",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.rows[].code",
+      "observedType": "string"
+    },
+    {
+      "path": "jev.rows[].exact",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.rows[].misplaced",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.rows[].candidatesBefore",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.rows[].candidatesAfter",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.rows[].eliminated",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.rows[].eliminationRate",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.rows[].priorEntropyBits",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.rows[].posteriorEntropyBits",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.rows[].realizedInformationBits",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.rows[].expectedInformationBits",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.rows[].expectedRemaining",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.rows[].worstBucket",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.rows[].feedbackOutcomes",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.rows[].feedbackProbability",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.rows[].surpriseBits",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.rows[].uniformSolveProbability",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.rows[].canBeSecret",
+      "observedType": "boolean"
+    },
+    {
+      "path": "jev.rows[].isProbe",
+      "observedType": "boolean"
+    },
+    {
+      "path": "jev.rows[].repeated",
+      "observedType": "boolean"
+    },
+    {
+      "path": "jev.rows[].newSymbols",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.rows[].symbolCoverage",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.rows[].distinctSymbols",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.rows[].bestExpectedRemaining",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.rows[].bestExpectedGuessId",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.rows[].bestWorstBucket",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.rows[].bestWorstGuessId",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.rows[].bestInformationBits",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.rows[].bestInformationGuessId",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.rows[].expectedRegret",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.rows[].worstCaseRegret",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.rows[].informationRegretBits",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.rows[].feedbackBuckets",
+      "observedType": "array",
+      "sampleLength": 14
+    },
+    {
+      "path": "jev.rows[].feedbackBuckets[]",
+      "observedType": "object"
+    },
+    {
+      "path": "jev.rows[].feedbackBuckets[].exact",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.rows[].feedbackBuckets[].misplaced",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.rows[].feedbackBuckets[].count",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.summary",
+      "observedType": "object"
+    },
+    {
+      "path": "jev.summary.guesses",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.summary.solved",
+      "observedType": "boolean"
+    },
+    {
+      "path": "jev.summary.finalCandidates",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.summary.remainingEntropyBits",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.summary.totalInformationBits",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.summary.repeatedGuesses",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.summary.probes",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.summary.noEliminationGuesses",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.summary.meanExpectedInformationBits",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.summary.meanInformationRegretBits",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.summary.meanExpectedRegret",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.summary.minimaxOptimalMoves",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.summary.expectedOptimalMoves",
+      "observedType": "number"
+    },
+    {
+      "path": "jev.summary.symbolCoverage",
+      "observedType": "number"
+    },
+    {
+      "path": "codePatterns",
+      "observedType": "object"
+    },
+    {
+      "path": "codePatterns.targetForHuman",
+      "observedType": "string"
+    },
+    {
+      "path": "codePatterns.targetForJev",
+      "observedType": "string"
+    },
+    {
+      "path": "score",
+      "observedType": "object"
+    },
+    {
+      "path": "score.humanCost",
+      "observedType": "number"
+    },
+    {
+      "path": "score.jevCost",
+      "observedType": "number"
+    },
+    {
+      "path": "decisions",
+      "observedType": "array",
+      "sampleLength": 2
+    },
+    {
+      "path": "decisions[]",
+      "observedType": "object"
+    },
+    {
+      "path": "decisions[].policyVersion",
+      "observedType": "string"
+    },
+    {
+      "path": "decisions[].modelVersion",
+      "observedType": "string"
+    },
+    {
+      "path": "decisions[].promptVersion",
+      "observedType": "string"
+    },
+    {
+      "path": "decisions[].requestHash",
+      "observedType": "string"
+    },
+    {
+      "path": "decisions[].remainingCount",
+      "observedType": "number"
+    },
+    {
+      "path": "decisions[].evaluatedCount",
+      "observedType": "number"
+    },
+    {
+      "path": "decisions[].candidateCount",
+      "observedType": "number"
+    },
+    {
+      "path": "decisions[].candidateIds",
+      "observedType": "array",
+      "sampleLength": 32
+    },
+    {
+      "path": "decisions[].candidateIds[]",
+      "observedType": "string"
+    },
+    {
+      "path": "decisions[].requestBytes",
+      "observedType": "number"
+    },
+    {
+      "path": "decisions[].attempts",
+      "observedType": "number"
+    },
+    {
+      "path": "decisions[].invalidResponses",
+      "observedType": "number"
+    },
+    {
+      "path": "decisions[].errors",
+      "observedType": "array",
+      "sampleLength": 0
+    },
+    {
+      "path": "decisions[].usage",
+      "observedType": "null"
+    },
+    {
+      "path": "decisions[].usageComplete",
+      "observedType": "boolean"
+    },
+    {
+      "path": "decisions[].reason",
+      "observedType": "string"
+    },
+    {
+      "path": "decisions[].guessId",
+      "observedType": "number"
+    },
+    {
+      "path": "decisions[].source",
+      "observedType": "string"
+    },
+    {
+      "path": "decisions[].selectedFeatures",
+      "observedType": "object"
+    },
+    {
+      "path": "decisions[].selectedFeatures.guessId",
+      "observedType": "number"
+    },
+    {
+      "path": "decisions[].selectedFeatures.actionId",
+      "observedType": "string"
+    },
+    {
+      "path": "decisions[].selectedFeatures.guess",
+      "observedType": "array",
+      "sampleLength": 4
+    },
+    {
+      "path": "decisions[].selectedFeatures.guess[]",
+      "observedType": "number"
+    },
+    {
+      "path": "decisions[].selectedFeatures.canBeSecret",
+      "observedType": "boolean"
+    },
+    {
+      "path": "decisions[].selectedFeatures.distinctSymbols",
+      "observedType": "number"
+    },
+    {
+      "path": "decisions[].selectedFeatures.unusedSymbolCount",
+      "observedType": "number"
+    },
+    {
+      "path": "decisions[].selectedFeatures.worstBucket",
+      "observedType": "number"
+    },
+    {
+      "path": "decisions[].selectedFeatures.expectedNumerator",
+      "observedType": "number"
+    },
+    {
+      "path": "decisions[].selectedFeatures.expectedRemaining",
+      "observedType": "number"
+    },
+    {
+      "path": "decisions[].selectedFeatures.feedbackOutcomes",
+      "observedType": "number"
+    },
+    {
+      "path": "decisions[].selectedFeatures.expectedRank",
+      "observedType": "number"
+    },
+    {
+      "path": "decisions[].selectedFeatures.worstRank",
+      "observedType": "number"
+    },
+    {
+      "path": "decisions[].latencyMs",
+      "observedType": "number"
+    },
+    {
+      "path": "decisions[].decisionRef",
+      "observedType": "string"
+    },
+    {
+      "path": "timing",
+      "observedType": "object"
+    },
+    {
+      "path": "timing.serverObservedHumanIntervalsMs",
+      "observedType": "object"
+    },
+    {
+      "path": "timing.serverObservedHumanIntervalsMs.count",
+      "observedType": "number"
+    },
+    {
+      "path": "timing.serverObservedHumanIntervalsMs.mean",
+      "observedType": "number"
+    },
+    {
+      "path": "timing.serverObservedHumanIntervalsMs.min",
+      "observedType": "number"
+    },
+    {
+      "path": "timing.serverObservedHumanIntervalsMs.max",
+      "observedType": "number"
+    },
+    {
+      "path": "timing.serverObservedHumanIntervalsMs.p50",
+      "observedType": "number"
+    },
+    {
+      "path": "timing.serverObservedHumanIntervalsMs.p90",
+      "observedType": "number"
+    },
+    {
+      "path": "timing.serverObservedHumanIntervalsMs.p95",
+      "observedType": "number"
+    },
+    {
+      "path": "timing.serverObservedHumanIntervalsMs.p99",
+      "observedType": "number"
+    },
+    {
+      "path": "timing.serverObservedHumanIntervalsMs.sampleStdDev",
+      "observedType": "number"
+    },
+    {
+      "path": "timing.jevDecisionLatencyMs",
+      "observedType": "object"
+    },
+    {
+      "path": "timing.jevDecisionLatencyMs.count",
+      "observedType": "number"
+    },
+    {
+      "path": "timing.jevDecisionLatencyMs.mean",
+      "observedType": "number"
+    },
+    {
+      "path": "timing.jevDecisionLatencyMs.min",
+      "observedType": "number"
+    },
+    {
+      "path": "timing.jevDecisionLatencyMs.max",
+      "observedType": "number"
+    },
+    {
+      "path": "timing.jevDecisionLatencyMs.p50",
+      "observedType": "number"
+    },
+    {
+      "path": "timing.jevDecisionLatencyMs.p90",
+      "observedType": "number"
+    },
+    {
+      "path": "timing.jevDecisionLatencyMs.p95",
+      "observedType": "number"
+    },
+    {
+      "path": "timing.jevDecisionLatencyMs.p99",
+      "observedType": "number"
+    },
+    {
+      "path": "timing.jevDecisionLatencyMs.sampleStdDev",
+      "observedType": "number"
+    },
+    {
+      "path": "provider",
+      "observedType": "object"
+    },
+    {
+      "path": "provider.decisionCount",
+      "observedType": "number"
+    },
+    {
+      "path": "provider.jevCalls",
+      "observedType": "number"
+    },
+    {
+      "path": "provider.forcedMoves",
+      "observedType": "number"
+    },
+    {
+      "path": "provider.localMoves",
+      "observedType": "number"
+    },
+    {
+      "path": "provider.fallbackMoves",
+      "observedType": "number"
+    },
+    {
+      "path": "provider.invalidResponses",
+      "observedType": "number"
+    },
+    {
+      "path": "provider.inputTokensReported",
+      "observedType": "number"
+    },
+    {
+      "path": "provider.outputTokensReported",
+      "observedType": "number"
+    },
+    {
+      "path": "provider.usageIncomplete",
+      "observedType": "boolean"
+    },
+    {
+      "path": "provider.choiceConfidence",
+      "observedType": "object"
+    },
+    {
+      "path": "provider.choiceConfidence.count",
+      "observedType": "number"
+    },
+    {
+      "path": "provider.choiceConfidence.mean",
+      "observedType": "null"
+    },
+    {
+      "path": "provider.choiceConfidence.min",
+      "observedType": "null"
+    },
+    {
+      "path": "provider.choiceConfidence.max",
+      "observedType": "null"
+    },
+    {
+      "path": "provider.choiceConfidence.p50",
+      "observedType": "null"
+    },
+    {
+      "path": "provider.choiceConfidence.p90",
+      "observedType": "null"
+    },
+    {
+      "path": "provider.choiceConfidence.p95",
+      "observedType": "null"
+    },
+    {
+      "path": "provider.choiceConfidence.p99",
+      "observedType": "null"
+    },
+    {
+      "path": "provider.choiceConfidence.sampleStdDev",
+      "observedType": "null"
+    },
+    {
+      "path": "provider.selectedProbability",
+      "observedType": "object"
+    },
+    {
+      "path": "provider.selectedProbability.count",
+      "observedType": "number"
+    },
+    {
+      "path": "provider.selectedProbability.mean",
+      "observedType": "null"
+    },
+    {
+      "path": "provider.selectedProbability.min",
+      "observedType": "null"
+    },
+    {
+      "path": "provider.selectedProbability.max",
+      "observedType": "null"
+    },
+    {
+      "path": "provider.selectedProbability.p50",
+      "observedType": "null"
+    },
+    {
+      "path": "provider.selectedProbability.p90",
+      "observedType": "null"
+    },
+    {
+      "path": "provider.selectedProbability.p95",
+      "observedType": "null"
+    },
+    {
+      "path": "provider.selectedProbability.p99",
+      "observedType": "null"
+    },
+    {
+      "path": "provider.selectedProbability.sampleStdDev",
+      "observedType": "null"
+    },
+    {
+      "path": "provider.confidenceMeaning",
+      "observedType": "string"
+    }
+  ]
+}

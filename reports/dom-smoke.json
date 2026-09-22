@@ -1,0 +1,159 @@
+{
+  "generatedAt": "2026-09-22T05:32:19.253681+00:00",
+  "harness": "Python Playwright offline DOM + real module worker + loopback HTTP bridge",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "checks": [
+    {
+      "name": "Twenty game rows render",
+      "passed": true
+    },
+    {
+      "name": "Board pegs remain circular",
+      "passed": true
+    },
+    {
+      "name": "Local opponent attribution is explicit",
+      "passed": true
+    },
+    {
+      "name": "Discord sign-in disabled without credentials",
+      "passed": true
+    },
+    {
+      "name": "Incomplete secret disables starting",
+      "passed": true
+    },
+    {
+      "name": "Completing secret re-enables starting",
+      "passed": true
+    },
+    {
+      "name": "Actual API withholds hidden target",
+      "passed": true
+    },
+    {
+      "name": "Keyboard guess accepted 1",
+      "passed": true
+    },
+    {
+      "name": "Keyboard guess accepted 2",
+      "passed": true
+    },
+    {
+      "name": "Keyboard guess accepted 3",
+      "passed": true
+    },
+    {
+      "name": "Keyboard guess accepted 4",
+      "passed": true
+    },
+    {
+      "name": "Keyboard guess accepted 5",
+      "passed": true
+    },
+    {
+      "name": "Human leg transitions correctly",
+      "passed": true
+    },
+    {
+      "name": "Live human counterfactual panel withheld",
+      "passed": true
+    },
+    {
+      "name": "Actual two-leg server match completed",
+      "passed": true
+    },
+    {
+      "name": "Local result internally verified and unranked",
+      "passed": true
+    },
+    {
+      "name": "All-1296 counterfactual coverage displayed",
+      "passed": true
+    },
+    {
+      "name": "SVG entropy chart rendered",
+      "passed": true
+    },
+    {
+      "name": "Export generated sample-analytics.json",
+      "passed": true
+    },
+    {
+      "name": "Export generated sample-moves.csv",
+      "passed": true
+    },
+    {
+      "name": "Export generated sample-decisions.csv",
+      "passed": true
+    },
+    {
+      "name": "Export generated sample-replay.json",
+      "passed": true
+    },
+    {
+      "name": "Export generated sample-all-alternatives.csv",
+      "passed": true
+    },
+    {
+      "name": "Both actors and exhaustive quality exported",
+      "passed": true
+    },
+    {
+      "name": "Turn drilldown populated",
+      "passed": true
+    },
+    {
+      "name": "Valid replay imported and verified",
+      "passed": true
+    },
+    {
+      "name": "Tampered commitment rejected",
+      "passed": true
+    },
+    {
+      "name": "Server record displayed",
+      "passed": true
+    },
+    {
+      "name": "Local score absent from official board",
+      "passed": true
+    },
+    {
+      "name": "Unverified community access rejected",
+      "passed": true
+    },
+    {
+      "name": "390px layout has no viewport overflow",
+      "passed": true
+    },
+    {
+      "name": "Reduced-motion preference available",
+      "passed": true
+    },
+    {
+      "name": "Browser-only practice works without API",
+      "passed": true
+    },
+    {
+      "name": "Offline forfeit replay and analysis complete",
+      "passed": true
+    },
+    {
+      "name": "No JavaScript runtime errors",
+      "passed": true
+    }
+  ],
+  "passed": 35,
+  "failed": 0,
+  "runtimeErrors": [],
+  "liveDiscordTested": false,
+  "liveJevTested": false,
+  "cloudflareDeploymentTested": false,
+  "limitations": [
+    "Native Chromium HTTP navigation was blocked by administrator URL policy; the policy was not changed.",
+    "The DOM harness loads unchanged module logic through data URLs; API transport, storage, downloads, and Web Crypto digest are test bridges.",
+    "Cookie, CSRF, origin, and CSP header behavior is covered by separate native integration tests, not this offline DOM test.",
+    "The sample match uses a scripted reference solver; this is not human-subject data or live JEV."
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "target": "global",
+  "command": {
+    "name": "play",
+    "type": 1,
+    "description": "Play Mastermind against JEV",
+    "options": [
+      {
+        "name": "game",
+        "description": "Choose a game",
+        "type": 3,
+        "required": true,
+        "choices": [
+          {
+            "name": "Mastermind",
+            "value": "mastermind"
+          }
+        ]
+      }
+    ],
+    "integration_types": [
+      0
+    ],
+    "contexts": [
+      0
+    ]
+  }
+}

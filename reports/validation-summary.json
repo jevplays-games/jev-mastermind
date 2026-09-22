@@ -1,0 +1,52 @@
+{
+  "generatedAt": "2026-09-22T05:34:42.830709+00:00",
+  "nativeUnitIntegrationTests": {
+    "passed": 77,
+    "failed": 0,
+    "skipped": 0
+  },
+  "cleanCopyNativeTests": {
+    "passed": 77,
+    "failed": 0
+  },
+  "exhaustiveFeedback": {
+    "generatedAt": "2026-09-22T05:32:20.217Z",
+    "node": "v22.16.0",
+    "codeRoundTrips": 1296,
+    "secretGuessPairs": 1679616,
+    "assertionsPerPair": 6,
+    "independentAlgorithm": "Remove exact matches, then consume unmatched secret symbols one at a time.",
+    "passed": true,
+    "elapsedMs": 604
+  },
+  "offlineDomWorkflow": {
+    "passed": 35,
+    "failed": 0,
+    "limitations": [
+      "Native Chromium HTTP navigation was blocked by administrator URL policy; the policy was not changed.",
+      "The DOM harness loads unchanged module logic through data URLs; API transport, storage, downloads, and Web Crypto digest are test bridges.",
+      "Cookie, CSRF, origin, and CSP header behavior is covered by separate native integration tests, not this offline DOM test.",
+      "The sample match uses a scripted reference solver; this is not human-subject data or live JEV."
+    ]
+  },
+  "baselineBenchmark": {
+    "completeCodebreakingRuns": 10368,
+    "secretsPerPolicy": 1296,
+    "policies": 8,
+    "perMoveRows": 48705,
+    "liveProviderCalls": 0,
+    "sourceHashesVerified": true
+  },
+  "sampleAlternativesRows": 9072,
+  "freshLocalStartupPassed": true,
+  "replayVerificationPassed": true,
+  "tamperedReplayRejected": true,
+  "unperformed": [
+    "Real TypeSafe/JEV requests",
+    "Real Discord OAuth and command installation",
+    "Cloudflare deployment/D1 runtime test",
+    "Conventional HTTP-origin browser E2E",
+    "npm dependency installation/lockfile resolution",
+    "Independent security/accessibility audit"
+  ]
+}

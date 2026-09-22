@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-09-22T05:34:42.564843+00:00",
+  "nativeTestsPassed": 77,
+  "serverHealth": {
+    "ok": true,
+    "game": "mastermind",
+    "rulesVersion": "mm-4x6-10-v1"
+  },
+  "newUnrankedMatchCreated": true,
+  "secretWithheld": true,
+  "staticShellServed": true,
+  "dependenciesInstalled": false,
+  "note": "Ran from a fresh copy with no .data, .env, node_modules, or Cloudflare account."
+}

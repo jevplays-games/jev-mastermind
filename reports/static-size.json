@@ -1,0 +1,44 @@
+{
+  "compression": "Independent gzip estimates, not measured HTTP transfer sizes",
+  "javascript": [
+    {
+      "path": "public/game.js",
+      "bytes": 36041,
+      "gzipBytes": 11502
+    },
+    {
+      "path": "public/mastermind/rules.js",
+      "bytes": 7342,
+      "gzipBytes": 2537
+    },
+    {
+      "path": "public/mastermind/verify.js",
+      "bytes": 1959,
+      "gzipBytes": 836
+    },
+    {
+      "path": "public/mastermind/analytics-worker.js",
+      "bytes": 566,
+      "gzipBytes": 301
+    },
+    {
+      "path": "public/mastermind/analytics.js",
+      "bytes": 9432,
+      "gzipBytes": 3342
+    },
+    {
+      "path": "public/mastermind/strategy.js",
+      "bytes": 6526,
+      "gzipBytes": 2290
+    }
+  ],
+  "css": [
+    {
+      "path": "public/game.css",
+      "bytes": 14296,
+      "gzipBytes": 3854
+    }
+  ],
+  "javascriptGzipTotal": 20808,
+  "cssGzipTotal": 3854
+}

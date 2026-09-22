@@ -1,0 +1,480 @@
+TAP version 13
+# Subtest: analysis checks all 1,296 alternatives and nonnegative regrets
+ok 1 - analysis checks all 1,296 alternatives and nonnegative regrets
+  ---
+  duration_ms: 149.27428
+  type: 'test'
+  ...
+# Subtest: realized information telescopes to total uncertainty reduction
+ok 2 - realized information telescopes to total uncertainty reduction
+  ---
+  duration_ms: 12.959764
+  type: 'test'
+  ...
+# Subtest: repeated non-solving guess gains no new information
+ok 3 - repeated non-solving guess gains no new information
+  ---
+  duration_ms: 13.60809
+  type: 'test'
+  ...
+# Subtest: empty transcript retains full entropy and null averages
+ok 4 - empty transcript retains full entropy and null averages
+  ---
+  duration_ms: 0.407423
+  type: 'test'
+  ...
+# Subtest: match analytics cannot expose active-game counterfactuals
+ok 5 - match analytics cannot expose active-game counterfactuals
+  ---
+  duration_ms: 1.481477
+  type: 'test'
+  ...
+# Subtest: forfeit analytics does not invent a JEV score
+ok 6 - forfeit analytics does not invent a JEV score
+  ---
+  duration_ms: 0.940995
+  type: 'test'
+  ...
+# Subtest: descriptive quantiles use linear interpolation and retain nulls for no observations
+ok 7 - descriptive quantiles use linear interpolation and retain nulls for no observations
+  ---
+  duration_ms: 0.502387
+  type: 'test'
+  ...
+# Subtest: Wilson interval is bounded and explicitly null for no observations
+ok 8 - Wilson interval is bounded and explicitly null for no observations
+  ---
+  duration_ms: 0.318819
+  type: 'test'
+  ...
+# Subtest: code pattern classification covers repeated-symbol structures
+ok 9 - code pattern classification covers repeated-symbol structures
+  ---
+  duration_ms: 0.622426
+  type: 'test'
+  ...
+# Subtest: CSV quotes nested values and neutralizes spreadsheet formulas
+ok 10 - CSV quotes nested values and neutralizes spreadsheet formulas
+  ---
+  duration_ms: 1.175777
+  type: 'test'
+  ...
+# Subtest: all-alternative export includes 1296 rows per played turn and selected flag
+ok 11 - all-alternative export includes 1296 rows per played turn and selected flag
+  ---
+  duration_ms: 23.641942
+  type: 'test'
+  ...
+# Subtest: numeric negative CSV values remain numbers, while string formulas are escaped
+ok 12 - numeric negative CSV values remain numbers, while string formulas are escaped
+  ---
+  duration_ms: 0.337333
+  type: 'test'
+  ...
+# (node:2092) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: guest session has HTTP-only cookie and production security headers
+ok 13 - guest session has HTTP-only cookie and production security headers
+  ---
+  duration_ms: 79.36492
+  type: 'test'
+  ...
+# Subtest: match creation keeps secret and salts private
+ok 14 - match creation keeps secret and salts private
+  ---
+  duration_ms: 18.738201
+  type: 'test'
+  ...
+# Subtest: creation retries are idempotent and reject body mismatch
+ok 15 - creation retries are idempotent and reject body mismatch
+  ---
+  duration_ms: 15.974941
+  type: 'test'
+  ...
+# Subtest: duplicate human HTTP action consumes exactly one guess
+ok 16 - duplicate human HTTP action consumes exactly one guess
+  ---
+  duration_ms: 16.186941
+  type: 'test'
+  ...
+# Subtest: parallel actions cannot both apply against one revision
+ok 17 - parallel actions cannot both apply against one revision
+  ---
+  duration_ms: 15.796291
+  type: 'test'
+  ...
+# Subtest: CSRF, cross-origin mutation, and client-forged actor are blocked
+ok 18 - CSRF, cross-origin mutation, and client-forged actor are blocked
+  ---
+  duration_ms: 16.045966
+  type: 'test'
+  ...
+# Subtest: browser-supplied community identity and score endpoints are rejected
+ok 19 - browser-supplied community identity and score endpoints are rejected
+  ---
+  duration_ms: 7.785652
+  type: 'test'
+  ...
+# Subtest: active-match analytics and replay are withheld
+ok 20 - active-match analytics and replay are withheld
+  ---
+  duration_ms: 23.896472
+  type: 'test'
+  ...
+# Subtest: full local-server match verifies replay and exposes analysis only at completion
+ok 21 - full local-server match verifies replay and exposes analysis only at completion
+  ---
+  duration_ms: 146.458744
+  type: 'test'
+  ...
+# Subtest: guest cannot request ranked eligibility
+ok 22 - guest cannot request ranked eligibility
+  ---
+  duration_ms: 6.109853
+  type: 'test'
+  ...
+# Subtest: production-mode authenticated JEV result can rank
+ok 23 - production-mode authenticated JEV result can rank
+  ---
+  duration_ms: 67.028218
+  type: 'test'
+  ...
+# Subtest: a provider fallback excludes the entire match from ranked standings
+ok 24 - a provider fallback excludes the entire match from ranked standings
+  ---
+  duration_ms: 37.670088
+  type: 'test'
+  ...
+# Subtest: only one active ranked match per account
+ok 25 - only one active ranked match per account
+  ---
+  duration_ms: 13.942145
+  type: 'test'
+  ...
+# Subtest: resignation records a verified forfeit without fabricating JEV cost
+ok 26 - resignation records a verified forfeit without fabricating JEV cost
+  ---
+  duration_ms: 9.454081
+  type: 'test'
+  ...
+# Subtest: scheduled maintenance expires human leg, not a waiting JEV leg
+ok 27 - scheduled maintenance expires human leg, not a waiting JEV leg
+  ---
+  duration_ms: 10.970471
+  type: 'test'
+  ...
+# Subtest: stale lease recovery does not duplicate provider calls
+ok 28 - stale lease recovery does not duplicate provider calls
+  ---
+  duration_ms: 30.073629
+  type: 'test'
+  ...
+# Subtest: two concurrent JEV requests apply one leased action only
+ok 29 - two concurrent JEV requests apply one leased action only
+  ---
+  duration_ms: 49.57372
+  type: 'test'
+  ...
+# Subtest: another session cannot read a match or its revealed replay
+ok 30 - another session cannot read a match or its revealed replay
+  ---
+  duration_ms: 10.190777
+  type: 'test'
+  ...
+# Subtest: oversized and malformed request bodies fail safely
+ok 31 - oversized and malformed request bodies fail safely
+  ---
+  duration_ms: 8.797481
+  type: 'test'
+  ...
+# Subtest: admin analytics is not exposed to ordinary sessions
+ok 32 - admin analytics is not exposed to ordinary sessions
+  ---
+  duration_ms: 5.109965
+  type: 'test'
+  ...
+# Subtest: structured events never contain secrets or raw provider credentials
+ok 33 - structured events never contain secrets or raw provider credentials
+  ---
+  duration_ms: 16.97834
+  type: 'test'
+  ...
+# (node:2093) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: OAuth requests identify only and uses single-use state
+ok 34 - OAuth requests identify only and uses single-use state
+  ---
+  duration_ms: 110.839733
+  type: 'test'
+  ...
+# Subtest: OAuth callback rotates the session and discards provider tokens
+ok 35 - OAuth callback rotates the session and discards provider tokens
+  ---
+  duration_ms: 29.284198
+  type: 'test'
+  ...
+# Subtest: logout revokes the server-side session
+ok 36 - logout revokes the server-side session
+  ---
+  duration_ms: 9.561233
+  type: 'test'
+  ...
+# Subtest: Discord signature verifies raw bytes and rejects mutations or stale timestamps
+ok 37 - Discord signature verifies raw bytes and rejects mutations or stale timestamps
+  ---
+  duration_ms: 17.296826
+  type: 'test'
+  ...
+# Subtest: launch ticket requires matching user, expires, and redeems only once
+ok 38 - launch ticket requires matching user, expires, and redeems only once
+  ---
+  duration_ms: 4.293395
+  type: 'test'
+  ...
+# Subtest: community access is denied without a fresh verified context
+ok 39 - community access is denied without a fresh verified context
+  ---
+  duration_ms: 15.23647
+  type: 'test'
+  ...
+# Subtest: atomic quota cannot be bypassed by parallel requests
+ok 40 - atomic quota cannot be bypassed by parallel requests
+  ---
+  duration_ms: 3.761435
+  type: 'test'
+  ...
+# Subtest: event metadata uses a strict allowlist
+ok 41 - event metadata uses a strict allowlist
+  ---
+  duration_ms: 5.967262
+  type: 'test'
+  ...
+# (node:2124) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: all shipped JavaScript parses, including browser-only controller
+ok 42 - all shipped JavaScript parses, including browser-only controller
+  ---
+  duration_ms: 2756.540877
+  type: 'test'
+  ...
+# Subtest: unobserved reserved inference attempts keep usage incomplete
+ok 43 - unobserved reserved inference attempts keep usage incomplete
+  ---
+  duration_ms: 101.821213
+  type: 'test'
+  ...
+# Subtest: a quota reservation cannot exceed the limit on its first insertion
+ok 44 - a quota reservation cannot exceed the limit on its first insertion
+  ---
+  duration_ms: 78.707599
+  type: 'test'
+  ...
+# Subtest: late JEV response cannot change a resigned match
+ok 45 - late JEV response cannot change a resigned match
+  ---
+  duration_ms: 51.812729
+  type: 'test'
+  ...
+# Subtest: leaderboards preserve shared ranks and isolate community, difficulty, and configuration
+ok 46 - leaderboards preserve shared ranks and isolate community, difficulty, and configuration
+  ---
+  duration_ms: 34.641421
+  type: 'test'
+  ...
+# Subtest: signed Discord launch creates a personal single-use ticket; duplicates do not multiply launches
+ok 47 - signed Discord launch creates a personal single-use ticket; duplicates do not multiply launches
+  ---
+  duration_ms: 20.204769
+  type: 'test'
+  ...
+# Subtest: all 1,296 code and action-ID round trips
+ok 48 - all 1,296 code and action-ID round trips
+  ---
+  duration_ms: 18.777598
+  type: 'test'
+  ...
+# Subtest: reject invalid codes and IDs
+ok 49 - reject invalid codes and IDs
+  ---
+  duration_ms: 1.219647
+  type: 'test'
+  ...
+# Subtest: duplicate-aware feedback fixtures
+ok 50 - duplicate-aware feedback fixtures
+  ---
+  duration_ms: 2.380665
+  type: 'test'
+  ...
+# Subtest: two first-guess solves draw and lock terminal state
+ok 51 - two first-guess solves draw and lock terminal state
+  ---
+  duration_ms: 1.973349
+  type: 'test'
+  ...
+# Subtest: ten failures advance the leg and still allow a JEV win
+ok 52 - ten failures advance the leg and still allow a JEV win
+  ---
+  duration_ms: 8.384184
+  type: 'test'
+  ...
+# Subtest: tenth-guess solve is a solve, not a failure
+ok 53 - tenth-guess solve is a solve, not a failure
+  ---
+  duration_ms: 0.952796
+  type: 'test'
+  ...
+# Subtest: both players failing produces draw
+ok 54 - both players failing produces draw
+  ---
+  duration_ms: 2.601709
+  type: 'test'
+  ...
+# Subtest: repeated guesses are legal separate moves
+ok 55 - repeated guesses are legal separate moves
+  ---
+  duration_ms: 0.256976
+  type: 'test'
+  ...
+# Subtest: reject wrong actor, forged action type and missing AI source
+ok 56 - reject wrong actor, forged action type and missing AI source
+  ---
+  duration_ms: 1.000829
+  type: 'test'
+  ...
+# Subtest: reducer does not mutate inputs
+ok 57 - reducer does not mutate inputs
+  ---
+  duration_ms: 1.08129
+  type: 'test'
+  ...
+# Subtest: JEV projection never receives the human transcript or code
+ok 58 - JEV projection never receives the human transcript or code
+  ---
+  duration_ms: 0.679281
+  type: 'test'
+  ...
+# Subtest: browser projection withholds reveal until match terminal
+ok 59 - browser projection withholds reveal until match terminal
+  ---
+  duration_ms: 0.623357
+  type: 'test'
+  ...
+# Subtest: full replay verifies commitments and detects tampering
+ok 60 - full replay verifies commitments and detects tampering
+  ---
+  duration_ms: 23.395053
+  type: 'test'
+  ...
+# Subtest: forfeit replay preserves actual action history
+ok 61 - forfeit replay preserves actual action history
+  ---
+  duration_ms: 3.192178
+  type: 'test'
+  ...
+# (node:2152) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: difficulty shortlists obey documented caps
+ok 62 - difficulty shortlists obey documented caps
+  ---
+  duration_ms: 196.300415
+  type: 'test'
+  ...
+# Subtest: easy omits partition metrics while normal includes them
+ok 63 - easy omits partition metrics while normal includes them
+  ---
+  duration_ms: 0.685759
+  type: 'test'
+  ...
+# Subtest: highest-difficulty shortlist is truly minimax-filtered
+ok 64 - highest-difficulty shortlist is truly minimax-filtered
+  ---
+  duration_ms: 58.756303
+  type: 'test'
+  ...
+# Subtest: feedback updates never remove the actual secret
+ok 65 - feedback updates never remove the actual secret
+  ---
+  duration_ms: 3.563751
+  type: 'test'
+  ...
+# Subtest: inconsistent and impossible feedback is rejected
+ok 66 - inconsistent and impossible feedback is rejected
+  ---
+  duration_ms: 0.79701
+  type: 'test'
+  ...
+# Subtest: candidate ordering and local selection are deterministic
+ok 67 - candidate ordering and local selection are deterministic
+  ---
+  duration_ms: 129.758361
+  type: 'test'
+  ...
+# Subtest: last attempt permits only possible secrets
+ok 68 - last attempt permits only possible secrets
+  ---
+  duration_ms: 46.085093
+  type: 'test'
+  ...
+# Subtest: fallback is lowest-ID untried consistent code
+ok 69 - fallback is lowest-ID untried consistent code
+  ---
+  duration_ms: 0.423337
+  type: 'test'
+  ...
+# Subtest: request projection removes all supplied extra hidden fields
+ok 70 - request projection removes all supplied extra hidden fields
+  ---
+  duration_ms: 2.587559
+  type: 'test'
+  ...
+# Subtest: strict probability response validator and deterministic tie handling
+ok 71 - strict probability response validator and deterministic tie handling
+  ---
+  duration_ms: 2.722193
+  type: 'test'
+  ...
+# Subtest: adapter uses actual structured fake-provider response in integration test
+ok 72 - adapter uses actual structured fake-provider response in integration test
+  ---
+  duration_ms: 77.478264
+  type: 'test'
+  ...
+# Subtest: no key returns explicitly local source
+ok 73 - no key returns explicitly local source
+  ---
+  duration_ms: 5.477692
+  type: 'test'
+  ...
+# Subtest: 429 with out-of-budget Retry-After uses a disclosed fallback
+ok 74 - 429 with out-of-budget Retry-After uses a disclosed fallback
+  ---
+  duration_ms: 6.569686
+  type: 'test'
+  ...
+# Subtest: malformed output is retried once and then falls back
+ok 75 - malformed output is retried once and then falls back
+  ---
+  duration_ms: 104.798
+  type: 'test'
+  ...
+# Subtest: timeout aborts within a bounded budget
+ok 76 - timeout aborts within a bounded budget
+  ---
+  duration_ms: 59.462635
+  type: 'test'
+  ...
+# Subtest: model mismatch is rejected, never silently reassigned
+ok 77 - model mismatch is rejected, never silently reassigned
+  ---
+  duration_ms: 0.498805
+  type: 'test'
+  ...
+1..77
+# tests 77
+# suites 0
+# pass 77
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3816.83405

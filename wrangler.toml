@@ -1,0 +1,33 @@
+name = "jev-mastermind"
+main = "server/worker.js"
+compatibility_date = "2026-02-13"
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+# Route every request through the security-header wrapper. This favors consistent CSP over a bypass.
+run_worker_first = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "mastermind"
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+migrations_dir = "schema"
+
+[vars]
+APP_ORIGIN = "https://mastermind.example.com"
+JEV_MODEL = "jev-1.13.0"
+RANKED_ENABLED = "false"
+MAX_STARTS_PER_HOUR = "2000"
+MAX_PROVIDER_ATTEMPTS_PER_DAY = "10000"
+
+[triggers]
+crons = ["*/5 * * * *"]
+
+[limits]
+cpu_ms = 1000
+
+[observability]
+enabled = true
+# Do not enable request-header/body capture. Application events use an explicit safe-field allowlist.
