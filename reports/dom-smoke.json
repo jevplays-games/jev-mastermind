@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-22T05:32:19.253681+00:00",
+  "generatedAt": "2026-09-22T07:35:18.567867+00:00",
   "harness": "Python Playwright offline DOM + real module worker + loopback HTTP bridge",
-  "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "platform": "Windows-11-10.0.26200-SP0",
   "checks": [
     {
       "name": "Twenty game rows render",

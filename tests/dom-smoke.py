@@ -5,10 +5,10 @@ separately by native integration tests, not claimed by this DOM harness.
 Requires Python Playwright and Chromium. Start `npm start` first.
 """
 from pathlib import Path
-import json, re, base64, hashlib, http.cookiejar, urllib.request, urllib.error, platform
+import json, re, base64, hashlib, http.cookiejar, urllib.request, urllib.error, platform, os
 from datetime import datetime, timezone
 from playwright.sync_api import sync_playwright
-ROOT=Path(__file__).resolve().parents[1];PUBLIC=ROOT/'public';OUT=ROOT/'reports';BASE='http://127.0.0.1:8787'
+ROOT=Path(__file__).resolve().parents[1];PUBLIC=ROOT/'public';OUT=ROOT/'reports';BASE=os.environ.get('BASE_URL','http://127.0.0.1:8787')
 (OUT/'screenshots').mkdir(parents=True,exist_ok=True);(OUT/'examples').mkdir(exist_ok=True)
 modules={}
 def module(path):
@@ -55,7 +55,7 @@ def setup(context,api_enabled=True):
     page.evaluate("async(url)=>{await import(url)}",module(PUBLIC/'game.js'))
     return page
 with sync_playwright() as p:
-    browser=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox'])
+    browser=p.chromium.launch(executable_path=os.environ.get('CHROMIUM_PATH','/usr/bin/chromium'),headless=True,args=['--no-sandbox'])
     page=setup(browser.new_context(viewport={'width':1440,'height':1080}))
     page.wait_for_function("!document.querySelector('#start').disabled")
     check('Twenty game rows render',page.locator('.guess-row').count()==20)

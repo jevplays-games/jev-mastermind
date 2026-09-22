@@ -3,7 +3,7 @@
   "rulesVersion": "mm-4x6-10-v1",
   "configId": "mm-118f378e1c8d3f67abd3d254",
   "difficulty": "normal",
-  "matchId": "5ae356fd-0601-40da-a796-91c6264661f9",
+  "matchId": "13aee958-2265-4f32-b228-de22cb2faaf1",
   "phase": "complete",
   "outcome": "loss",
   "finishReason": "normal",
@@ -119,20 +119,20 @@
         "guessId": 309,
         "code": "BCDD",
         "exact": 0,
-        "misplaced": 2,
+        "misplaced": 1,
         "candidatesBefore": 256,
-        "candidatesAfter": 41,
-        "eliminated": 215,
-        "eliminationRate": 0.83984375,
+        "candidatesAfter": 44,
+        "eliminated": 212,
+        "eliminationRate": 0.828125,
         "priorEntropyBits": 8,
-        "posteriorEntropyBits": 5.357552004618084,
-        "realizedInformationBits": 2.642447995381916,
+        "posteriorEntropyBits": 5.459431618637297,
+        "realizedInformationBits": 2.5405683813627027,
         "expectedInformationBits": 3.2240324377279337,
         "expectedRemaining": 31.546875,
         "worstBucket": 44,
         "feedbackOutcomes": 13,
-        "feedbackProbability": 0.16015625,
-        "surpriseBits": 2.642447995381916,
+        "feedbackProbability": 0.171875,
+        "surpriseBits": 2.5405683813627027,
         "uniformSolveProbability": 0.00390625,
         "canBeSecret": true,
         "isProbe": false,
@@ -219,44 +219,44 @@
       },
       {
         "turn": 3,
-        "guessId": 917,
-        "code": "EBCF",
-        "exact": 1,
+        "guessId": 581,
+        "code": "CEAF",
+        "exact": 0,
         "misplaced": 2,
-        "candidatesBefore": 41,
-        "candidatesAfter": 5,
-        "eliminated": 36,
-        "eliminationRate": 0.8780487804878049,
-        "priorEntropyBits": 5.357552004618084,
-        "posteriorEntropyBits": 2.321928094887362,
-        "realizedInformationBits": 3.0356239097307216,
-        "expectedInformationBits": 3.314903078719195,
-        "expectedRemaining": 4.414634146341464,
-        "worstBucket": 6,
-        "feedbackOutcomes": 11,
-        "feedbackProbability": 0.12195121951219512,
-        "surpriseBits": 3.035623909730721,
-        "uniformSolveProbability": 0.024390243902439025,
+        "candidatesBefore": 44,
+        "candidatesAfter": 6,
+        "eliminated": 38,
+        "eliminationRate": 0.8636363636363636,
+        "priorEntropyBits": 5.459431618637297,
+        "posteriorEntropyBits": 2.584962500721156,
+        "realizedInformationBits": 2.8744691179161412,
+        "expectedInformationBits": 3.4447679160442477,
+        "expectedRemaining": 4.5,
+        "worstBucket": 7,
+        "feedbackOutcomes": 13,
+        "feedbackProbability": 0.13636363636363635,
+        "surpriseBits": 2.8744691179161412,
+        "uniformSolveProbability": 0.022727272727272728,
         "canBeSecret": true,
         "isProbe": false,
         "repeated": false,
         "newSymbols": 2,
         "symbolCoverage": 6,
         "distinctSymbols": 4,
-        "bestExpectedRemaining": 4.170731707317073,
-        "bestExpectedGuessId": 544,
-        "bestWorstBucket": 6,
-        "bestWorstGuessId": 484,
-        "bestInformationBits": 3.469114883515143,
-        "bestInformationGuessId": 544,
-        "expectedRegret": 0.24390243902439046,
+        "bestExpectedRemaining": 4.5,
+        "bestExpectedGuessId": 580,
+        "bestWorstBucket": 7,
+        "bestWorstGuessId": 364,
+        "bestInformationBits": 3.4600186992955457,
+        "bestInformationGuessId": 580,
+        "expectedRegret": 0,
         "worstCaseRegret": 0,
-        "informationRegretBits": 0.1542118047959482,
+        "informationRegretBits": 0.015250783251298028,
         "feedbackBuckets": [
           {
             "exact": 0,
             "misplaced": 1,
-            "count": 4
+            "count": 1
           },
           {
             "exact": 0,
@@ -264,24 +264,34 @@
             "count": 6
           },
           {
+            "exact": 0,
+            "misplaced": 3,
+            "count": 4
+          },
+          {
+            "exact": 0,
+            "misplaced": 4,
+            "count": 1
+          },
+          {
             "exact": 1,
             "misplaced": 0,
-            "count": 2
+            "count": 1
           },
           {
             "exact": 1,
             "misplaced": 1,
-            "count": 6
-          },
-          {
-            "exact": 1,
-            "misplaced": 2,
             "count": 5
           },
           {
             "exact": 1,
+            "misplaced": 2,
+            "count": 7
+          },
+          {
+            "exact": 1,
             "misplaced": 3,
-            "count": 2
+            "count": 3
           },
           {
             "exact": 2,
@@ -312,36 +322,36 @@
       },
       {
         "turn": 4,
-        "guessId": 88,
-        "code": "ACCE",
-        "exact": 0,
-        "misplaced": 1,
-        "candidatesBefore": 5,
+        "guessId": 1144,
+        "code": "FBEE",
+        "exact": 2,
+        "misplaced": 2,
+        "candidatesBefore": 6,
         "candidatesAfter": 1,
-        "eliminated": 4,
-        "eliminationRate": 0.8,
-        "priorEntropyBits": 2.321928094887362,
+        "eliminated": 5,
+        "eliminationRate": 0.8333333333333334,
+        "priorEntropyBits": 2.584962500721156,
         "posteriorEntropyBits": 0,
-        "realizedInformationBits": 2.321928094887362,
-        "expectedInformationBits": 2.321928094887362,
+        "realizedInformationBits": 2.584962500721156,
+        "expectedInformationBits": 2.584962500721156,
         "expectedRemaining": 1,
         "worstBucket": 1,
-        "feedbackOutcomes": 5,
-        "feedbackProbability": 0.2,
-        "surpriseBits": 2.321928094887362,
-        "uniformSolveProbability": 0,
-        "canBeSecret": false,
-        "isProbe": true,
+        "feedbackOutcomes": 6,
+        "feedbackProbability": 0.16666666666666666,
+        "surpriseBits": 2.584962500721156,
+        "uniformSolveProbability": 0.16666666666666666,
+        "canBeSecret": true,
+        "isProbe": false,
         "repeated": false,
         "newSymbols": 0,
         "symbolCoverage": 6,
         "distinctSymbols": 3,
         "bestExpectedRemaining": 1,
-        "bestExpectedGuessId": 88,
+        "bestExpectedGuessId": 213,
         "bestWorstBucket": 1,
-        "bestWorstGuessId": 88,
-        "bestInformationBits": 2.321928094887362,
-        "bestInformationGuessId": 88,
+        "bestWorstGuessId": 213,
+        "bestInformationBits": 2.584962500721156,
+        "bestInformationGuessId": 213,
         "expectedRegret": 0,
         "worstCaseRegret": 0,
         "informationRegretBits": 0,
@@ -349,16 +359,6 @@
           {
             "exact": 0,
             "misplaced": 1,
-            "count": 1
-          },
-          {
-            "exact": 0,
-            "misplaced": 2,
-            "count": 1
-          },
-          {
-            "exact": 0,
-            "misplaced": 3,
             "count": 1
           },
           {
@@ -370,13 +370,28 @@
             "exact": 1,
             "misplaced": 1,
             "count": 1
+          },
+          {
+            "exact": 2,
+            "misplaced": 2,
+            "count": 1
+          },
+          {
+            "exact": 3,
+            "misplaced": 0,
+            "count": 1
+          },
+          {
+            "exact": 4,
+            "misplaced": 0,
+            "count": 1
           }
         ]
       },
       {
         "turn": 5,
-        "guessId": 1148,
-        "code": "FBFC",
+        "guessId": 934,
+        "code": "EBFE",
         "exact": 4,
         "misplaced": 0,
         "candidatesBefore": 1,
@@ -424,13 +439,13 @@
       "remainingEntropyBits": 0,
       "totalInformationBits": 10.339850002884624,
       "repeatedGuesses": 0,
-      "probes": 1,
+      "probes": 0,
       "noEliminationGuesses": 0,
-      "meanExpectedInformationBits": 2.3491931572563183,
-      "meanInformationRegretBits": 0.07293786042758424,
-      "meanExpectedRegret": 3.902175549533278,
+      "meanExpectedInformationBits": 2.4277730058880875,
+      "meanInformationRegretBits": 0.0451456561186542,
+      "meanExpectedRegret": 3.8533950617284005,
       "minimaxOptimalMoves": 5,
-      "expectedOptimalMoves": 3,
+      "expectedOptimalMoves": 4,
       "symbolCoverage": 6
     }
   },
@@ -729,8 +744,8 @@
         "expectedRank": 1,
         "worstRank": 2
       },
-      "latencyMs": 6.98,
-      "decisionRef": "3f04d2a893a0cb801d87a523"
+      "latencyMs": 56,
+      "decisionRef": "2c72751df9a7fe719e9f503f"
     },
     {
       "policyVersion": "mm-policy-v1",
@@ -802,32 +817,32 @@
         "expectedRank": 1,
         "worstRank": 2
       },
-      "latencyMs": 0.89,
-      "decisionRef": "10dd6913fcdd183c96db646e"
+      "latencyMs": 0.68,
+      "decisionRef": "fd10db00d5ac2cce8c25d574"
     }
   ],
   "timing": {
     "serverObservedHumanIntervalsMs": {
       "count": 5,
-      "mean": 270.4,
-      "min": 230,
-      "max": 350,
-      "p50": 258,
-      "p90": 320,
-      "p95": 335,
-      "p99": 347,
-      "sampleStdDev": 47.773423574200756
+      "mean": 206.2,
+      "min": 114,
+      "max": 256,
+      "p50": 230,
+      "p90": 255.2,
+      "p95": 255.6,
+      "p99": 255.92,
+      "sampleStdDev": 60.59042828698276
     },
     "jevDecisionLatencyMs": {
       "count": 2,
-      "mean": 3.935,
-      "min": 0.89,
-      "max": 6.98,
-      "p50": 3.9350000000000005,
-      "p90": 6.371,
-      "p95": 6.6755,
-      "p99": 6.9191,
-      "sampleStdDev": 4.306280297426075
+      "mean": 28.34,
+      "min": 0.68,
+      "max": 56,
+      "p50": 28.34,
+      "p90": 50.468,
+      "p95": 53.233999999999995,
+      "p99": 55.446799999999996,
+      "sampleStdDev": 39.11714713523981
     }
   },
   "provider": {
