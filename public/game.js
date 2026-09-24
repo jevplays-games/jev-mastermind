@@ -112,6 +112,21 @@ async function bootstrap(){
     if(resume)try{await loadMatch(resume);}catch{storage.set('currentMatchId',null);}
     render();
   }catch(error){notice('The server is unavailable. Browser practice works locally and never submits official scores.',true);render();}
+  await autoStart();
+}
+/* Auto-start: the board is playable as soon as the page is, with no click.
+   It returns early once any match is loaded, because bootstrap() has just
+   rejoined an active match (or the last stored one) -- so a reload resumes
+   rather than opening a second match beside it.
+   The human's own code is required to start; view.secret is always a complete
+   code (stored, or the [0,0,2,5] default), and the player can still change it
+   and start again. Ranked follows the checkbox's own gate (signed in AND ranked
+   capability). With no session at all this starts browser practice, which
+   labels its opponent "not JEV". */
+async function autoStart(){
+  if(view.busy||view.match)return;
+  if(!$('ranked').disabled)$('ranked').checked=true;
+  await startMatch(!view.session);
 }
 async function startMatch(browserOnly=false){
   view.busy=true;render();
