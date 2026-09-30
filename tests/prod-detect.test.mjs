@@ -19,7 +19,9 @@ test('https non-loopback APP_ORIGIN selects production mode even with NODE_ENV=d
   try{
     assert.match(s.out(),/Production mode/);
     assert.equal((await get(port,'game.example.test','/api/health')).status,200);
-    assert.equal((await get(port,'127.0.0.1:'+port,'/api/health')).status,421);
+    assert.equal((await get(port,'127.0.0.1:'+port,'/api/activity/config')).status,421);
+    assert.equal((await get(port,'preview.example.test','/api/health')).status,200);
+    assert.equal((await get(port,'preview.example.test','/api/activity/config')).status,421);
   }finally{await stop(s);}
 });
 test('loopback origin stays local dev',async()=>{
