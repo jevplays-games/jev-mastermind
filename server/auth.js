@@ -2,10 +2,12 @@ import { check,cookie,sessionCookie,randomToken,sha256,HttpError,validSnowflake 
 import { one,run,all,quota,event } from './db.js';
 const DISCORD='https://discord.com/api/v10';
 export async function loadSession(request,db,cfg,{create=false,bucket='unknown'}={}) {
-  const token=cookie(request,cfg.cookieName);
+  // Inside a Discord Activity the browser will not send our SameSite cookie, so the game holds the session token in memory.
+  const bearer=/^Bearer ([a-f0-9]{64})$/.exec(request.headers.get('authorization')||'')?.[1]||null;
+  const token=bearer??cookie(request,cfg.cookieName);
   if(token&&/^[a-f0-9]{64}$/.test(token)) {
     const row=await one(db,'SELECT * FROM web_sessions WHERE token_hash=? AND expires_at>?',await sha256(token),Date.now());
-    if(row)return {...row,setCookie:null};
+    if(row)return {...row,setCookie:null,...(bearer?{via:'bearer'}:{})};
   }
   if(!create)return null;
   await quota(db,`session:${bucket}`,30,3600000);
@@ -21,6 +23,23 @@ export async function beginOAuth(session,db,cfg,env) {
   url.search=new URLSearchParams({client_id:env.DISCORD_CLIENT_ID,response_type:'code',redirect_uri:cfg.origin+'/api/auth/discord/callback',scope:'identify',state}).toString();
   return new Response(null,{status:302,headers:{Location:url.href,...(session.setCookie?{'Set-Cookie':session.setCookie}:{})}});
 }
+// Exchanges an authorization code, looks up the Discord identity and upserts the user. Provider tokens are never persisted.
+export async function discordUser(env,code,fetchImpl,redirectUri=null) {
+  const form={client_id:env.DISCORD_CLIENT_ID,client_secret:env.DISCORD_CLIENT_SECRET,grant_type:'authorization_code',code};
+  if(redirectUri)form.redirect_uri=redirectUri;
+  const tokenResponse=await fetchImpl(DISCORD+'/oauth2/token',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(form),signal:AbortSignal.timeout(8000)});
+  check(tokenResponse.ok,502,'Discord authorization exchange failed.');
+  const token=await tokenResponse.json();check(typeof token.access_token==='string',502,'Discord did not return an access token.');
+  const identityResponse=await fetchImpl(DISCORD+'/users/@me',{headers:{Authorization:`Bearer ${token.access_token}`},signal:AbortSignal.timeout(8000)});
+  check(identityResponse.ok,502,'Discord identity lookup failed.');
+  const user=await identityResponse.json();check(validSnowflake(user.id),502,'Invalid Discord identity.');
+  return {id:user.id,accessToken:token.access_token,displayName:String(user.global_name||user.username||'Discord player').slice(0,80),avatar:typeof user.avatar==='string'?user.avatar.slice(0,80):null};
+}
+export async function upsertDiscordUser(db,user) {
+  const now=Date.now();
+  await run(db,`INSERT INTO users(discord_user_id,display_name,avatar_ref,created_at,last_seen_at) VALUES(?,?,?,?,?)
+    ON CONFLICT(discord_user_id) DO UPDATE SET display_name=excluded.display_name,avatar_ref=excluded.avatar_ref,last_seen_at=excluded.last_seen_at`,user.id,user.displayName,user.avatar,now,now);
+}
 export async function oauthCallback(request,session,db,cfg,env,fetchImpl=fetch) {
   check(session,400,'Sign-in browser session is missing.');
   const url=new URL(request.url),state=url.searchParams.get('state'),code=url.searchParams.get('code');
@@ -30,18 +49,9 @@ export async function oauthCallback(request,session,db,cfg,env,fetchImpl=fetch) 
   check(consumed,400,'OAuth state has expired or was already used.');
   if(url.searchParams.has('error'))return new Response(null,{status:302,headers:{Location:cfg.origin+'/?auth=cancelled'}});
   check(code&&code.length<=2048,400,'Authorization code is missing.');
-  const tokenResponse=await fetchImpl(DISCORD+'/oauth2/token',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},
-    body:new URLSearchParams({client_id:env.DISCORD_CLIENT_ID,client_secret:env.DISCORD_CLIENT_SECRET,grant_type:'authorization_code',code,
-      redirect_uri:cfg.origin+'/api/auth/discord/callback'}),signal:AbortSignal.timeout(8000)});
-  check(tokenResponse.ok,502,'Discord authorization exchange failed.');
-  const token=await tokenResponse.json();check(typeof token.access_token==='string',502,'Discord did not return an access token.');
-  const identityResponse=await fetchImpl(DISCORD+'/users/@me',{headers:{Authorization:`Bearer ${token.access_token}`},signal:AbortSignal.timeout(8000)});
-  check(identityResponse.ok,502,'Discord identity lookup failed.');
-  const user=await identityResponse.json();check(validSnowflake(user.id),502,'Invalid Discord identity.');
-  const name=String(user.global_name||user.username||'Discord player').slice(0,80),now=Date.now();
-  await run(db,`INSERT INTO users(discord_user_id,display_name,avatar_ref,created_at,last_seen_at) VALUES(?,?,?,?,?)
-    ON CONFLICT(discord_user_id) DO UPDATE SET display_name=excluded.display_name,avatar_ref=excluded.avatar_ref,last_seen_at=excluded.last_seen_at`,user.id,name,typeof user.avatar==='string'?user.avatar.slice(0,80):null,now,now);
-  const raw=randomToken(),hash=await sha256(raw),csrf=randomToken();
+  const user=await discordUser(env,code,fetchImpl,cfg.origin+'/api/auth/discord/callback');
+  await upsertDiscordUser(db,user);
+  const now=Date.now(),raw=randomToken(),hash=await sha256(raw),csrf=randomToken();
   await db.batch([
     db.prepare(`INSERT INTO web_sessions(token_hash,owner_key,discord_user_id,csrf,created_at,expires_at) VALUES(?,?,?,?,?,?)`).bind(hash,session.owner_key,user.id,csrf,now,now+30*86400000),
     db.prepare('DELETE FROM web_sessions WHERE token_hash=?').bind(session.token_hash)

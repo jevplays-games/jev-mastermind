@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+Discord Activity mode: bearer-token sessions, an `/api/activity/*` sign-in exchange and frame_id-gated framing headers, described in `docs/ACTIVITY.md`. Game rules, policy, prompt and model behavior are unchanged, so no version was bumped.
+
 Default match difficulty is now `jev` (minimax-filtered) instead of `normal`; a difficulty the player has already chosen is still restored from local storage. Leaderboard and analytics filters are unchanged, and browser practice remains an explicitly local, unranked solver.
 
 Response validation now derives the probability-sum tolerance from the provider's 0.01 reporting grain. The previous fixed 0.001 window rejected every real response, so live JEV decisions silently fell back; the test fixtures returned exact one-hot distributions and could not catch it.

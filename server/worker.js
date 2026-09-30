@@ -1,6 +1,7 @@
 import {config,json,secureHeaders,HttpError,check,readJson,requireCsrf,requireOrigin,clientBucket,constantTimeEqual,sessionCookie,onlyKeys} from './security.js';
 import {loadSession,beginOAuth,oauthCallback,me} from './auth.js';
 import {handleInteraction,redeemContext} from './discord.js';
+import {activityConfig,createActivitySession} from './activity.js';
 import {createMatch,performAction,publicMatch,assertOwner,expireMatch,maintenance} from './matches.js';
 import {getMatch,run,quota,event} from './db.js';
 import {leaderboard,profileAnalytics,communityAnalytics,operationalAnalytics} from './analytics.js';
@@ -11,7 +12,7 @@ export async function handle(request,env,ctx={},fetchImpl=fetch) {
   try {
     cfg=config(env);const url=new URL(request.url),path=url.pathname,db=env.DB;
     check(url.origin===cfg.origin,421,'Request origin does not match APP_ORIGIN.');
-    if(!path.startsWith('/api/'))return secureHeaders(await env.ASSETS.fetch(request));
+    if(!path.startsWith('/api/'))return secureHeaders(await env.ASSETS.fetch(request),{activityFrame:url.searchParams.has('frame_id')});
     if(path==='/api/health'&&request.method==='GET')return secureHeaders(json({ok:true,game:'mastermind',rulesVersion:'mm-4x6-10-v1'}));
     check(db,503,'Database is not configured.');
     if(path==='/api/discord/interactions'&&request.method==='POST')return secureHeaders(await handleInteraction(request,db,cfg,env));
@@ -21,6 +22,8 @@ export async function handle(request,env,ctx={},fetchImpl=fetch) {
     }
     const bucket=await clientBucket(request,env,cfg);
     await quota(db,`api:${bucket}`,300,60000);
+    if(path==='/api/activity/config'&&request.method==='GET')return secureHeaders(json(activityConfig(cfg,env)));
+    if(path==='/api/activity/session'&&request.method==='POST')return secureHeaders(json(await createActivitySession(request,db,cfg,env,bucket,fetchImpl),201));
     const createSession=(path==='/api/me'||path==='/api/auth/discord')&&request.method==='GET';
     const session=await loadSession(request,db,cfg,{create:createSession,bucket});
     if(path==='/api/me'&&request.method==='GET')return secureHeaders(json(await me(session,db,cfg),200,session.setCookie?{'Set-Cookie':session.setCookie}:{}));
