@@ -31,7 +31,7 @@ const server=createServer(async(req,res)=>{
   try{
     const first=v=>String(v||'').split(',').pop().trim();
     const host=prod&&trustProxy&&req.headers['x-forwarded-host']?first(req.headers['x-forwarded-host']):req.headers.host;
-    const health=req.method==='GET'&&req.url.split('?')[0]==='/api/health';// platform health checks arrive with a preview Host; the endpoint returns no sensitive data
+    const health=req.method==='GET'&&['/api/health','/','/index.html'].includes(req.url.split('?')[0]);// platform probes arrive with a preview Host; these serve only static, non-sensitive content
     if(host!==new URL(origin).host&&!health){res.writeHead(421);res.end('Use '+origin);return;}
     const parts=[];let total=0;for await(const chunk of req){total+=chunk.length;if(total>65536){res.writeHead(413);res.end();return;}parts.push(chunk);}
     const headers={...req.headers};delete headers['cf-connecting-ip'];
