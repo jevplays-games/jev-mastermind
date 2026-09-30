@@ -1,4 +1,4 @@
-/** No npm install required. Local mode (default) binds loopback with LOCAL_DEV. NODE_ENV=production runs the Worker's production config on Node (GoDaddy): HOST/PORT, APP_ORIGIN required, no LOCAL_DEV. */
+/** No npm install required. Local mode (default) binds loopback with LOCAL_DEV. NODE_ENV=production or an https non-loopback APP_ORIGIN runs the Worker's production config on Node (GoDaddy): HOST/PORT, APP_ORIGIN required, no LOCAL_DEV. */
 import { createServer } from 'node:http';
 import { readFile,stat,mkdir } from 'node:fs/promises';
 import { resolve,extname,sep } from 'node:path';
@@ -10,7 +10,9 @@ import { maintenance } from './matches.js';
 const root=fileURLToPath(new URL('../',import.meta.url));
 try{process.loadEnvFile(resolve(root,'.env'));}catch(error){if(error.code!=='ENOENT')throw error;}
 const port=Number(process.env.PORT||8787);if(!Number.isInteger(port)||port<1||port>65535)throw new Error('Invalid PORT.');
-const prod=process.env.NODE_ENV==='production',trustProxy=process.env.TRUST_PROXY==='1';
+// GoDaddy's runtime may not set NODE_ENV, so an https non-loopback APP_ORIGIN also selects production mode.
+const remoteOrigin=(()=>{try{const u=new URL(process.env.APP_ORIGIN);return u.protocol==='https:'&&!['localhost','127.0.0.1','[::1]'].includes(u.hostname);}catch{return false;}})();
+const prod=process.env.NODE_ENV==='production'||remoteOrigin,trustProxy=process.env.TRUST_PROXY==='1';
 const dataDir=resolve(root,prod?'data':'.data');await mkdir(dataDir,{recursive:true});
 const db=openDatabase(process.env.DB_PATH||resolve(dataDir,'mastermind.sqlite'));
 if(prod&&!process.env.APP_ORIGIN)throw new Error('Production requires APP_ORIGIN.');
