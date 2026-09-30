@@ -109,7 +109,7 @@ No real account was created, no command was registered to your Discord applicati
 
 ## 8. GoDaddy Node.js hosting
 
-The same `server/dev.mjs` runs as a plain Node app when `NODE_ENV=production`. Upload a zip with `package.json` and `.env` at its root; the host runs `npm run build` (a no-op) then `npm start` (`node --env-file-if-exists=.env server/dev.mjs`).
+The same `server/dev.mjs` runs as a plain Node app in production mode. Production mode is on when `NODE_ENV=production` **or** `APP_ORIGIN` is an https origin with a non-loopback host (GoDaddy's runtime may not set `NODE_ENV`, and platform env overrides `.env`). Loopback or http origins stay in local dev mode. Upload a zip with `package.json` and `.env` at its root; the host runs `npm run build` (a no-op) then `npm start` (`node --env-file-if-exists=.env server/dev.mjs`).
 
 - Binds `HOST` (default `0.0.0.0`) on the platform-injected `PORT`. `LOCAL_DEV` is forced off, so production rules apply: `APP_ORIGIN` must be the exact HTTPS origin, `QUOTA_SALT` is required, and Discord auth, interactions and the Activity work as in the Worker. Ranked play follows `RANKED_ENABLED` (unset means off, as in `wrangler.toml`).
 - Requests whose `Host` (or `X-Forwarded-Host` when `TRUST_PROXY=1`) is not the `APP_ORIGIN` host get 421. TLS terminates at the proxy.
