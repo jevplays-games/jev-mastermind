@@ -23,8 +23,9 @@ function stat(label,value,note=''){const item=node('div',{class:'stat'});item.ap
 function download(name,text,type='application/json'){
   const url=URL.createObjectURL(new Blob([text],{type})),a=node('a',{href:url,download:name});a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
+let bearer=null; // set only inside a Discord Activity, where cookies are not sent
 async function api(path,{method='GET',body}={}){
-  const response=await fetch('/api'+path,{method,credentials:'same-origin',cache:'no-store',headers:method==='GET'?{}:{'Content-Type':'application/json','X-CSRF-Token':view.session?.csrf||''},...(body?{body:JSON.stringify(body)}:{})});
+  const response=await fetch('/api'+path,{method,credentials:'same-origin',cache:'no-store',headers:{...(bearer?{Authorization:`Bearer ${bearer}`}:{}),...(method==='GET'?{}:{'Content-Type':'application/json','X-CSRF-Token':view.session?.csrf||''})},...(body?{body:JSON.stringify(body)}:{})});
   let data;try{data=await response.json();}catch{throw new Error('The server returned an unreadable response. Your draft is preserved.');}
   if(!response.ok){const error=new Error(data.error?.message||`Request failed (${response.status}).`);error.status=response.status;error.code=data.error?.code;throw error;}
   return data;
@@ -100,6 +101,10 @@ async function bootstrap(){
   try {
     const launch=new URL(location.href).searchParams.get('launch');
     if(launch){sessionStorage.setItem('mm:launch',launch);history.replaceState(null,'',location.pathname);}
+    if(new URL(location.href).searchParams.has('frame_id')){
+      try{bearer=(await (await import('/activity.js')).signInWithDiscord(api)).token;}
+      catch(e){notice('Could not sign in through Discord. '+(e.message||''));}
+    }
     view.session=await api('/me');
     $('identity').textContent=view.session.user?.display_name||'Guest session';
     $('login').classList.toggle('hidden',!!view.session.user);$('login').disabled=!view.session.capabilities.discord;

@@ -9,16 +9,20 @@ export function config(env) {
   if(!local && !env.QUOTA_SALT) throw new Error('Production requires QUOTA_SALT.');
   const model=env.JEV_MODEL||'jev-1.13.0';
   if(!/^jev-\d+\.\d+\.\d+$/.test(model)) throw new Error('Pin an exact JEV model version.');
-  return {origin,local,model,cookieName:local?'jev_local':'__Host-jev',jevReady:Boolean(env.TYPESAFE_API_KEY),
+  const activityOrigin=/^\d{17,20}$/.test(env.DISCORD_CLIENT_ID??'')?`https://${env.DISCORD_CLIENT_ID}.discordsays.com`:null;
+  return {origin,local,model,activityOrigin,cookieName:local?'jev_local':'__Host-jev',jevReady:Boolean(env.TYPESAFE_API_KEY),
     discordReady:Boolean(env.DISCORD_CLIENT_ID&&env.DISCORD_CLIENT_SECRET),timeoutMs:4500,policyVersion:'mm-policy-v1',promptVersion:'mm-prompt-v1',
     rankedEnabled:env.RANKED_ENABLED==='true'&&!local};
 }
 export const json=(data,status=200,headers={})=>new Response(JSON.stringify(data),{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store',...headers}});
-export function secureHeaders(response) {
+// Discord shows an Activity inside its own iframe. Only a page loaded with Discord's frame_id may be framed, and only by Discord.
+export const ACTIVITY_FRAME_ANCESTORS='frame-ancestors https://discord.com https://ptb.discord.com https://canary.discord.com';
+export function secureHeaders(response,{activityFrame=false}={}) {
   const headers=new Headers(response.headers);
   headers.set('X-Content-Type-Options','nosniff');headers.set('Referrer-Policy','no-referrer');
   headers.set('X-Frame-Options','DENY');headers.set('Permissions-Policy','camera=(), microphone=(), geolocation=()');
   headers.set('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'");
+  if(activityFrame){headers.delete('X-Frame-Options');headers.set('Content-Security-Policy',headers.get('Content-Security-Policy').replace("frame-ancestors 'none'",ACTIVITY_FRAME_ANCESTORS));}
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
 }
 export function cookie(req,name) {
@@ -33,12 +37,14 @@ export function constantTimeEqual(a,b) {
   for(let i=0;i<n;i++) diff|=(a.charCodeAt(i)||0)^(b.charCodeAt(i)||0);
   return diff===0;
 }
-export function requireOrigin(request,cfg) {
-  check(request.headers.get('origin')===cfg.origin,403,'Origin is not permitted.','origin');
+export function requireOrigin(request,cfg,session=null) {
+  // The Activity origin is accepted only for bearer-authenticated requests, never for a cookie session.
+  const origin=request.headers.get('origin');
+  check(origin===cfg.origin||(session?.via==='bearer'&&cfg.activityOrigin&&origin===cfg.activityOrigin),403,'Origin is not permitted.','origin');
   const site=request.headers.get('sec-fetch-site');check(!site||site==='same-origin'||site==='none',403,'Cross-site request rejected.','origin');
 }
 export function requireCsrf(request,session,cfg) {
-  requireOrigin(request,cfg);
+  requireOrigin(request,cfg,session);
   check(session&&constantTimeEqual(request.headers.get('x-csrf-token'),session.csrf),403,'Invalid CSRF token.','csrf');
 }
 export async function boundedText(request,limit=16384) {
