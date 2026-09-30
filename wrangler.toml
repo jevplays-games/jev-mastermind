@@ -1,6 +1,7 @@
 name = "jev-mastermind"
 main = "server/worker.js"
 compatibility_date = "2026-02-13"
+routes = [{ pattern = "mastermind.jevplay.games", custom_domain = true }]
 
 [assets]
 directory = "./public"
@@ -12,21 +13,20 @@ run_worker_first = true
 [[d1_databases]]
 binding = "DB"
 database_name = "mastermind"
-database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+database_id = "7c9eab40-37fb-41d4-bd2a-943cd3ac86d8"
 migrations_dir = "schema"
 
 [vars]
-APP_ORIGIN = "https://mastermind.example.com"
+APP_ORIGIN = "https://mastermind.jevplay.games"
 JEV_MODEL = "jev-1.13.0"
 RANKED_ENABLED = "false"
 MAX_STARTS_PER_HOUR = "2000"
 MAX_PROVIDER_ATTEMPTS_PER_DAY = "10000"
 
-[triggers]
-crons = ["*/5 * * * *"]
-
-[limits]
-cpu_ms = 1000
+# Disabled: Workers Free allows 5 cron triggers per account and other games use them.
+# Without it, stalled JEV steps are not auto-recovered and expired rows are not swept. Restore on a paid plan.
+# [triggers]
+# crons = ["*/5 * * * *"]
 
 [observability]
 enabled = true
