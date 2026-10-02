@@ -1,3 +1,5 @@
+<p align="center"><img src="assets/banner.jpg" alt="Pixel-art robot Jev studying a code-breaker board of colored code pegs and black and white key pegs in a neon arcade" width="100%"></p>
+
 # Mastermind vs JEV
 
 A runnable, framework-free two-leg Mastermind game with a server-authoritative backend, Discord integration, replay verification, and exhaustive post-match deduction analytics.
