@@ -40,15 +40,15 @@ function showPage(page){
 }
 function renderEditor(kind){
   const values=kind==='secret'?view.secret:view.guess,slots=$(kind+'Slots'),palette=$(kind+'Palette');slots.replaceChildren();
-  values.forEach((value,index)=>{const button=node('button',{class:`slot ${value==null?'empty':'c'+value}${view.selected[kind]===index?' selected':''}`,
+  values.forEach((value,index)=>{const pop=view.pop&&view.pop.kind===kind&&view.pop.index===index&&value!=null;const button=node('button',{class:`slot ${value==null?'empty jv-well':'c'+value}${view.selected[kind]===index?' selected':''}${pop?' is-new':''}`,
     'aria-label':`${kind==='secret'?'Secret':'Guess'} position ${index+1}: ${value==null?'empty':SYMBOLS[value]}`,'aria-pressed':view.selected[kind]===index},value==null?'·':SYMBOLS[value]);
-    button.addEventListener('click',()=>{view.editor=kind;view.selected[kind]=index;renderEditor(kind);$(kind+'Slots').children[index].focus();});slots.append(button);});
+    button.addEventListener('click',()=>{view.editor=kind;view.selected[kind]=index;renderEditor(kind);$(kind+'Slots').children[index].focus();});slots.append(button);});view.pop=null;
   if(!palette.children.length)SYMBOLS.forEach((symbol,i)=>{const button=node('button',{class:'c'+i,'aria-label':`Use symbol ${symbol}`},symbol);button.addEventListener('click',()=>fillSymbol(kind,i));palette.append(button);});
   $('submitGuess').disabled=view.busy||view.guess.some(n=>n==null);
   if(kind==='secret'){$('start').disabled=!view.session||view.busy||view.secret.some(n=>n==null);$('localStart').disabled=view.busy||view.secret.some(n=>n==null);}
 }
 function fillSymbol(kind,value){
-  view.editor=kind;const list=kind==='secret'?view.secret:view.guess,index=view.selected[kind];list[index]=value;view.selected[kind]=(index+1)%4;
+  view.editor=kind;const list=kind==='secret'?view.secret:view.guess,index=view.selected[kind];list[index]=value;view.selected[kind]=(index+1)%4;view.pop={kind,index};
   if(kind==='secret')storage.set('secret',view.secret);else if(view.match)storage.set('draft:'+view.match.matchId,view.guess);
   renderEditor(kind);$(kind+'Slots').children[view.selected[kind]].focus();updateRepeat();
 }
@@ -56,16 +56,28 @@ function updateRepeat(){
   const repeated=view.match&&view.guess.every(n=>n!=null)&&view.match.legs.human.history.some(h=>h.guessId===encodeGuess(view.guess));
   $('repeatWarning').textContent=repeated?'Repeated guess. Submitting still consumes an attempt.':'';
 }
+const shownPegs={human:null,jev:null};
+// Rows are built once and updated in place, so a peg's placement animation plays once and a later re-render never restarts it.
+function buildBoard(board){board.replaceChildren();for(let i=0;i<10;i++){
+  const row=node('div',{class:'guess-row'});row.append(node('span',{class:'guess-number'},String(i+1).padStart(2,'0')));
+  const pegs=node('div',{class:'guess-pegs'});for(let k=0;k<4;k++)pegs.append(node('span',{class:'peg empty jv-well','aria-hidden':'true'}));
+  const feedback=node('div',{class:'feedback'});feedback.append(node('span',{class:'exact','aria-hidden':'true'}),node('span',{class:'sep','aria-hidden':'true'},'/'),node('span',{class:'near','aria-hidden':'true'}));
+  row.append(pegs,feedback);board.append(row);}}
 function drawBoard(actor){
-  const board=$(actor+'Board'),history=view.match?.legs[actor].history||[];board.replaceChildren();
+  const board=$(actor+'Board'),history=view.match?.legs[actor].history||[];if(board.children.length!==10)buildBoard(board);
+  const matchId=view.match?.matchId??null;
+  if(shownPegs[actor]?.id!==matchId||shownPegs[actor].count>history.length)shownPegs[actor]={id:matchId,count:shownPegs[actor]===null?history.length:0};
+  const fresh=shownPegs[actor].count;
   for(let i=0;i<10;i++){
-    const h=history[i],current=view.match?.phase===actor+'_break'&&i===history.length;
-    const row=node('div',{class:'guess-row'+(current?' current':'')+(h?.exact===4?' solved':'')});row.append(node('span',{class:'guess-number'},String(i+1).padStart(2,'0')));
-    const pegs=node('div',{class:'guess-pegs','aria-label':h?`Guess ${i+1}: ${codeLabel(h.guess)}`:`Guess ${i+1}: empty`});
-    for(let k=0;k<4;k++)pegs.append(node('span',{class:'peg '+(h?'c'+h.guess[k]:'empty'),'aria-hidden':'true'},h?SYMBOLS[h.guess[k]]:''));
-    const feedback=node('div',{class:'feedback','aria-label':h?`${h.exact} exact, ${h.misplaced} near`:'No feedback'});
-    feedback.append(node('span',{class:'exact','aria-hidden':'true'},h?h.exact:'—'),node('span',{'aria-hidden':'true'},'/'),node('span',{'aria-hidden':'true'},h?h.misplaced:'—'));row.append(pegs,feedback);board.append(row);
+    const h=history[i],current=view.match?.phase===actor+'_break'&&i===history.length,row=board.children[i];
+    row.className='guess-row'+(current?' current':'')+(h?.exact===4?' solved':'');
+    const pegs=row.children[1];pegs.setAttribute('aria-label',h?`Guess ${i+1}: ${codeLabel(h.guess)}`:`Guess ${i+1}: empty`);
+    for(let k=0;k<4;k++){const peg=pegs.children[k],was=peg.dataset.v??'',now=h?String(h.guess[k]):'';
+      if(was!==now){peg.dataset.v=now;peg.textContent=h?SYMBOLS[h.guess[k]]:'';peg.className='peg '+(h?'c'+h.guess[k]+(i>=fresh?' is-new':''):'empty jv-well');if(h&&i>=fresh)peg.style.animationDelay=(k*60)+'ms';else peg.style.removeProperty('animation-delay');}}
+    const feedback=row.children[2];feedback.setAttribute('aria-label',h?`${h.exact} exact, ${h.misplaced} near`:'No feedback');
+    feedback.classList.toggle('has-score',!!h);feedback.children[0].textContent=h?h.exact:'—';feedback.children[2].textContent=h?h.misplaced:'—';
   }
+  shownPegs[actor].count=history.length;
   $(actor+'Score').textContent=`${history.length} / 10`;
 }
 function renderEvidence(){
@@ -88,6 +100,7 @@ function render(){
   $('jev-title').textContent=local?'Local solver':'JEV';
   $('modeBadge').textContent=view.practice?'BROWSER PRACTICE / NOT JEV':local?'LOCAL OPPONENT / NOT JEV':m?.eligible?'RANKED / JEV':'JEV / PRACTICE';
   $('start').textContent=view.session?.capabilities.jev?'Start JEV match →':'Start local-server match →';
+  $('matchStatus').className='match-status'+(m?'':' hidden')+(terminal?` jv-plaque is-${m.outcome==='win'?'win':m.outcome==='draw'?'draw':'loss'}`:'');
   if(m){
     $('phaseLabel').textContent=terminal?'MATCH COMPLETE':m.phase==='human_break'?'LEG 1 / BREAK THE CODE':'LEG 2 / DEFEND YOUR CODE';
     $('resultTitle').textContent=terminal?m.outcome==='win'?'You broke through.':m.outcome==='draw'?'A balanced match.':'The opponent takes it.':m.phase==='human_break'?'Your codebreaking turn':'The opponent is codebreaking';

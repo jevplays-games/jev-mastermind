@@ -18,7 +18,7 @@ const db=openDatabase(process.env.DB_PATH||resolve(dataDir,'mastermind.sqlite'))
 if(prod&&!process.env.APP_ORIGIN)throw new Error('Production requires APP_ORIGIN.');
 const origin=prod?new URL(process.env.APP_ORIGIN).origin:`http://127.0.0.1:${port}`,publicRoot=resolve(root,'public');
 const bindHost=prod?(process.env.HOST||'0.0.0.0'):'127.0.0.1';
-const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.json':'application/json','.svg':'image/svg+xml','.woff2':'font/woff2','.txt':'text/plain; charset=utf-8'};
+const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.json':'application/json','.svg':'image/svg+xml','.png':'image/png','.woff2':'font/woff2','.txt':'text/plain; charset=utf-8'};
 const assets={async fetch(request){
   const url=new URL(request.url);if(!['GET','HEAD'].includes(request.method))return new Response('Method not allowed',{status:405});
   const pathname=decodeURIComponent(url.pathname),entry=pathname==='/'||pathname==='/play/mastermind'?'/index.html':pathname;
