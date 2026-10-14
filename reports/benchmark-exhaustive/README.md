@@ -1,10 +1,10 @@
-# Measured Mastermind benchmark
+# Measured Typecrack benchmark
 
-Generated 2026-09-22T05:32:54.358Z.
+Generated 2026-10-14T22:07:57.880Z.
 
 Every one of the 1,296 possible codes for every selected policy.
 
-No live JEV calls. All opponent policies are local baselines/ablations.
+No live Jev calls. All opponent policies are local baselines/ablations.
 
 ## Results
 
@@ -19,7 +19,7 @@ No live JEV calls. All opponent policies are local baselines/ablations.
 | random-consistent | 1296 | 1296 | 4.6458 | 7 |
 | random-legal | 1296 | 1267 | 6.2647 | 11 |
 
-- Local policies are deterministic selector ablations, not live JEV measurements.
+- Local policies are deterministic selector ablations, not live Jev measurements.
 - Exhaustive enumeration needs no sampling confidence interval for this finite configuration.
 - Human-selected secret distributions can differ from uniform enumeration.
 - Cached selector timings are not inference latency; cacheHit is exported per turn.

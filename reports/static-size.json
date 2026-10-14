@@ -3,42 +3,42 @@
   "javascript": [
     {
       "path": "public/game.js",
-      "bytes": 36041,
-      "gzipBytes": 11502
+      "bytes": 38652,
+      "gzipBytes": 12534
     },
     {
-      "path": "public/mastermind/rules.js",
-      "bytes": 7342,
-      "gzipBytes": 2537
+      "path": "public/typecrack/rules.js",
+      "bytes": 7642,
+      "gzipBytes": 2657
     },
     {
-      "path": "public/mastermind/verify.js",
-      "bytes": 1959,
-      "gzipBytes": 836
+      "path": "public/typecrack/verify.js",
+      "bytes": 2468,
+      "gzipBytes": 1079
     },
     {
-      "path": "public/mastermind/analytics-worker.js",
+      "path": "public/typecrack/analytics-worker.js",
       "bytes": 566,
       "gzipBytes": 301
     },
     {
-      "path": "public/mastermind/analytics.js",
+      "path": "public/typecrack/analytics.js",
       "bytes": 9432,
       "gzipBytes": 3342
     },
     {
-      "path": "public/mastermind/strategy.js",
-      "bytes": 6526,
-      "gzipBytes": 2290
+      "path": "public/typecrack/strategy.js",
+      "bytes": 11666,
+      "gzipBytes": 3206
     }
   ],
   "css": [
     {
       "path": "public/game.css",
-      "bytes": 14296,
-      "gzipBytes": 3854
+      "bytes": 28717,
+      "gzipBytes": 6364
     }
   ],
-  "javascriptGzipTotal": 20808,
-  "cssGzipTotal": 3854
+  "javascriptGzipTotal": 23119,
+  "cssGzipTotal": 6364
 }

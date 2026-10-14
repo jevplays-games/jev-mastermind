@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-22T05:32:54.358Z",
-  "node": "v22.16.0",
+  "generatedAt": "2026-10-14T22:07:57.880Z",
+  "node": "v24.15.0",
   "seed": 20260922,
   "live": false,
   "requestedSecrets": 1296,
@@ -9,7 +9,7 @@
   "budgetStopped": false,
   "coverage": "Every one of the 1,296 possible codes for every selected policy.",
   "comparisonCoverage": "Counterfactual one-step move metrics compare all 1,296 legal guesses at each recorded state.",
-  "elapsedMs": 32626.989315999996,
+  "elapsedMs": 8812.733083,
   "policies": [
     {
       "policy": "local-easy",
@@ -1077,14 +1077,14 @@
     }
   ],
   "sourceHashes": {
-    "public/mastermind/rules.js": "477a3ca43fcabd61feb5e49a557eb49d566609754041532ecc1d49a38a040528",
-    "public/mastermind/strategy.js": "40b0fb181c13c6d2f309cb7afb17de8bb18f88c250da82309375c7f9070c791d",
-    "public/mastermind/analytics.js": "15da9170b4ee586e7796dfc0f8ab9ec4f01aae307dace66edd0bd0ea9755b29d",
-    "server/jev.js": "85091a87b472e8844ed9e975796fd814122e58fcabe71e5e04a5d63a17851087",
-    "bench/run.mjs": "2d73feb25f67c9f2eb960510e19163be08f8c97b2c25e208d7e7c749984b1272"
+    "public/typecrack/rules.js": "7e7a2bfc177f98de9a648d72fc361c9a846ec7fb8415db8ec63e3271ab1026d8",
+    "public/typecrack/strategy.js": "17860eec8fdeceef2bfdf11691442b8ffaf9b9fbf6420d90618205fed4f7b784",
+    "public/typecrack/analytics.js": "15da9170b4ee586e7796dfc0f8ab9ec4f01aae307dace66edd0bd0ea9755b29d",
+    "server/jev.js": "5d911c953bd9c6b8d2739d213b98438749f154dc5600d4b43ffcdda9c3bd99e5",
+    "bench/run.mjs": "3450c2c692652c14fad800f39d91ab561b17eb4d16189a86f00fba75ca6f1501"
   },
   "limitations": [
-    "Local policies are deterministic selector ablations, not live JEV measurements.",
+    "Local policies are deterministic selector ablations, not live Jev measurements.",
     "Exhaustive enumeration needs no sampling confidence interval for this finite configuration.",
     "Human-selected secret distributions can differ from uniform enumeration.",
     "Cached selector timings are not inference latency; cacheHit is exported per turn.",
