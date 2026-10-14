@@ -12,8 +12,8 @@ export async function handle(request,env,ctx={},fetchImpl=fetch) {
   try {
     const url=new URL(request.url),path=url.pathname,db=env.DB;cfg=config(env,url.origin);
     check(url.origin===cfg.origin,421,'Request origin does not match APP_ORIGIN.');
-    // Launch links and bookmarks from before the rename. The query (launch ticket) is preserved.
-    if(path==='/play/mastermind')return secureHeaders(new Response(null,{status:301,headers:{Location:'/play/typecrack'+url.search}}));
+    // Launch links and bookmarks from before the rename (GET/HEAD only; other methods fall through as before). The query (launch ticket) is preserved.
+    if(path==='/play/mastermind'&&(request.method==='GET'||request.method==='HEAD'))return secureHeaders(new Response(null,{status:301,headers:{Location:'/play/typecrack'+url.search}}));
     if(!path.startsWith('/api/'))return secureHeaders(await env.ASSETS.fetch(request),{activityFrame:url.searchParams.has('frame_id')});
     if(path==='/api/health'&&request.method==='GET')return secureHeaders(json({ok:true,game:GAME_ID,rulesVersion:'mm-4x6-10-v1'}));
     check(db,503,'Database is not configured.');

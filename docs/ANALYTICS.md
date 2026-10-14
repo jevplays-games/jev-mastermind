@@ -131,7 +131,7 @@ Wilson 95% intervals for observed win proportions are explicitly descriptive. Re
 
 ## 9. Community and leaderboard analytics
 
-World, Server, and Channel each use one immutable opponent configuration and difficulty. Guild/channel attribution is snapshotted at match start from a verified launch, not inferred from arbitrary URL parameters. A direct site match contributes to World only.
+World, Server, and Channel each use one immutable opponent configuration and difficulty. Without `?configId=`, leaderboards and community analytics use the server's current configuration. A prompt, policy, rules, model, timeout or selector change therefore starts a new default cohort. The Typecrack rename bumped the prompt to `mm-prompt-v2` (local opponent `mm-118f378e1c8d3f67abd3d254` → `mm-f93deb5ecdf108bf4d6fb8bd`; Jev `mm-9e42af838644c074c3cf8938` → `mm-f576f9cb98a973f69b670fc8`), so pre-rename matches leave the default views; query them with `?configId=<old id>`. The personal record is not filtered and keeps them as separate configuration groups. Guild/channel attribution is snapshotted at match start from a verified launch, not inferred from arbitrary URL parameters. A direct site match contributes to World only.
 
 The leader metric is match points percentage. Tie-breaks: fewer average penalized human guesses, then more matches. Equal substantive metrics share a `DENSE_RANK`; account ID supplies stable display order without breaking that shared rank. Fewer than 10 ranked matches is provisional and receives no established rank. Queries return the top 50.
 

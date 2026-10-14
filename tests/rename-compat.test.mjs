@@ -43,11 +43,14 @@ test('match creation accepts typecrack and the legacy mastermind alias only',asy
     assert.equal((await h.request('/api/health')).data.game,'typecrack');
   }finally{h.close();}
 });
-test('/play/mastermind launch links redirect to /play/typecrack with the query intact',async()=>{
+test('/play/mastermind GET/HEAD launch links redirect to /play/typecrack with the query intact; other methods are not redirected',async()=>{
   const h=await harness();try{
     const r=await h.request('/play/mastermind?launch=abc123',{raw:true});
     assert.equal(r.status,301);assert.equal(r.response.headers.get('location'),'/play/typecrack?launch=abc123');
     assert.equal(r.response.headers.get('x-content-type-options'),'nosniff');
+    const head=await h.request('/play/mastermind?launch=abc123',{method:'HEAD',raw:true});
+    assert.equal(head.status,301);assert.equal(head.response.headers.get('location'),'/play/typecrack?launch=abc123');
+    for(const method of ['POST','PUT','DELETE'])assert.notEqual((await h.request('/play/mastermind',{method,raw:true})).status,301,method);
     assert.equal((await h.request('/play/typecrack?launch=abc123',{raw:true})).status,200);
   }finally{h.close();}
 });
@@ -58,7 +61,17 @@ test('the pre-rename hostname keeps being served on its own origin until cutover
   assert.equal(config(env,'https://evil.example').origin,'https://typecrack.jevplay.games');
   for(const host of ['typecrack','mastermind'])assert.equal((await handle(new Request(`https://${host}.jevplay.games/`),env)).status,200,host);
   assert.equal((await handle(new Request('https://evil.example/'),env)).status,421);
-  assert.throws(()=>config({...env,LEGACY_ORIGINS:'http://mastermind.jevplay.games'}),/HTTPS/);
+  // A malformed or non-HTTPS legacy entry is skipped (and logged); it must never take the canonical host down.
+  const warn=console.warn,warnings=[];console.warn=m=>warnings.push(JSON.parse(m));
+  try{
+    for(const LEGACY_ORIGINS of ['mastermind.jevplay.games','https://mastermind.jevplay.games, not a url','http://mastermind.jevplay.games','::junk::']){
+      const bad={...env,LEGACY_ORIGINS};
+      assert.deepEqual(config(bad).legacyOrigins,LEGACY_ORIGINS.includes(', not a url')?['https://mastermind.jevplay.games']:[],LEGACY_ORIGINS);
+      assert.equal((await handle(new Request('https://typecrack.jevplay.games/'),bad)).status,200,LEGACY_ORIGINS);
+      assert.equal((await handle(new Request('https://typecrack.jevplay.games/api/health'),bad)).status,200,LEGACY_ORIGINS);
+    }
+    assert.deepEqual(warnings.map(w=>w.reason),['unparseable','unparseable','not_https','unparseable']);
+  }finally{console.warn=warn;}
 });
 test('Discord /play accepts the new typecrack choice and the pre-rename mastermind choice, and links to /play/typecrack',async()=>{
   const h=await harness({production:true});try{const keys=await crypto.subtle.generateKey('Ed25519',true,['sign','verify']);const hex=bytes=>Buffer.from(bytes).toString('hex');h.env.DISCORD_PUBLIC_KEY=hex(await crypto.subtle.exportKey('raw',keys.publicKey));

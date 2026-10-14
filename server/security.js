@@ -2,14 +2,29 @@ import { sha256,randomToken } from '../public/typecrack/verify.js';
 export { sha256, randomToken };
 export class HttpError extends Error { constructor(status,message,code='request_error') {super(message);this.status=status;this.code=code;} }
 export const check=(condition,status,message,code)=>{if(!condition)throw new HttpError(status,message,code);};
+// LEGACY_ORIGINS is an optional transitional allowlist, so a typo in it must never take the canonical host down:
+// unparseable and non-HTTPS entries (plain HTTP is allowed only for loopback under LOCAL_DEV) are skipped, and each
+// distinct bad entry is logged once per isolate outside local development.
+const warnedLegacyOrigins=new Set();
+const LOOPBACK=['127.0.0.1','localhost','[::1]'];
+function parseLegacyOrigins(env) {
+  const origins=[];
+  for(const entry of String(env.LEGACY_ORIGINS||'').split(',').map(s=>s.trim()).filter(Boolean)) {
+    let url=null;try{url=new URL(entry);}catch{}
+    const ok=url&&(url.protocol==='https:'||(env.LOCAL_DEV==='true'&&url.protocol==='http:'&&LOOPBACK.includes(url.hostname)));
+    if(ok){origins.push(url.origin);continue;}
+    if(env.LOCAL_DEV!=='true'&&!warnedLegacyOrigins.has(entry)){warnedLegacyOrigins.add(entry);console.warn(JSON.stringify({event:'legacy_origin_skipped',reason:url?'not_https':'unparseable'}));}
+  }
+  return origins;
+}
 export function config(env,requestOrigin=null) {
   const canonicalOrigin=new URL(env.APP_ORIGIN||'http://127.0.0.1:8787').origin;
   // Pre-rename hostnames keep working until cutover. A request on one of them is answered on that origin
   // (OAuth callback, launch links, Origin checks), so its sessions and Discord settings stay consistent.
-  const legacyOrigins=String(env.LEGACY_ORIGINS||'').split(',').map(s=>s.trim()).filter(Boolean).map(s=>new URL(s).origin);
+  const legacyOrigins=parseLegacyOrigins(env);
   const origin=requestOrigin&&legacyOrigins.includes(requestOrigin)?requestOrigin:canonicalOrigin;
-  const local=env.LOCAL_DEV==='true' && ['127.0.0.1','localhost','[::1]'].includes(new URL(origin).hostname);
-  if(!local && [canonicalOrigin,...legacyOrigins].some(o=>new URL(o).protocol!=='https:')) throw new Error('Production APP_ORIGIN must use HTTPS.');
+  const local=env.LOCAL_DEV==='true' && LOOPBACK.includes(new URL(origin).hostname);
+  if(!local && new URL(canonicalOrigin).protocol!=='https:') throw new Error('Production APP_ORIGIN must use HTTPS.');
   if(!local && !env.QUOTA_SALT) throw new Error('Production requires QUOTA_SALT.');
   const model=env.JEV_MODEL||'jev-1.13.0';
   if(!/^jev-\d+\.\d+\.\d+$/.test(model)) throw new Error('Pin an exact Jev model version.');

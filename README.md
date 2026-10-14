@@ -76,7 +76,7 @@ This is exhaustive over the implemented finite configuration, not a claim that e
 | Operations | Redacted events, bounded durable quotas, leased AI calls, retry/fallback auditing, recovery/retention task |
 | Evidence | Tests, exhaustive feedback verification, actual finite-space baseline results, raw data, screenshots, example exports |
 
-Replays and commitments created before the Typecrack rename (legacy game id and commitment label) still verify; `tests/rename-compat.test.mjs` proves it against a real pre-rename replay.
+Replays and commitments created before the Typecrack rename (legacy game id and commitment label) still verify; `tests/rename-compat.test.mjs` proves it against a real pre-rename replay. The rename also bumped the prompt version to `mm-prompt-v2`, which starts a new configuration cohort: pre-rename matches drop out of the default leaderboard and community views but stay reachable with `?configId=` (see [docs/ANALYTICS.md](docs/ANALYTICS.md#9-community-and-leaderboard-analytics)).
 
 ### Verification commands
 
