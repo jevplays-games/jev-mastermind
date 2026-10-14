@@ -71,6 +71,27 @@ test('the pre-rename hostname keeps being served on its own origin until cutover
       assert.equal((await handle(new Request('https://typecrack.jevplay.games/api/health'),bad)).status,200,LEGACY_ORIGINS);
     }
     assert.deepEqual(warnings.map(w=>w.reason),['unparseable','unparseable','not_https','unparseable']);
+    // D9: nothing but a bare origin may widen the allowlist. The five required strings plus extra malformed shapes are
+    // skipped and logged, and never admit the host they smuggle in; the canonical and real legacy hosts stay served.
+    warnings.length=0;
+    const smuggled=[['https://user:pw@evil.example','forbidden_character'],['https://evil.example#@mastermind.jevplay.games','forbidden_character'],
+      ['https://evil.example/path','not_bare_origin'],['https://evil.example?q=1','forbidden_character'],['https://*.jevplay.games','forbidden_character'],
+      ['https://a.jevplay.games;https://b.example','not_bare_origin'],['https://a.jevplay.games;evil','invalid_host'],
+      ['https://evil.example:443','not_bare_origin'],['https://Evil.example','not_bare_origin']];
+    for(const [LEGACY_ORIGINS] of smuggled){
+      const bad={...env,LEGACY_ORIGINS:'https://mastermind.jevplay.games, '+LEGACY_ORIGINS};
+      assert.deepEqual(config(bad).legacyOrigins,['https://mastermind.jevplay.games'],LEGACY_ORIGINS);
+      assert.equal(config(bad,'https://evil.example').origin,'https://typecrack.jevplay.games',LEGACY_ORIGINS);
+      assert.equal((await handle(new Request('https://evil.example/'),bad)).status,421,LEGACY_ORIGINS);
+      for(const host of ['typecrack','mastermind']){
+        assert.equal((await handle(new Request(`https://${host}.jevplay.games/`),bad)).status,200,host+' '+LEGACY_ORIGINS);
+        assert.equal((await handle(new Request(`https://${host}.jevplay.games/api/health`),bad)).status,200,host+' '+LEGACY_ORIGINS);
+      }
+    }
+    assert.deepEqual(warnings.map(w=>w.reason),smuggled.map(([,reason])=>reason));
+    assert.ok(warnings.every(w=>!JSON.stringify(w).includes('evil')),'the skipped entry itself is never logged');
+    // A single trailing slash is still the same bare origin.
+    assert.deepEqual(config({...env,LEGACY_ORIGINS:'https://mastermind.jevplay.games/'}).legacyOrigins,['https://mastermind.jevplay.games']);
   }finally{console.warn=warn;}
 });
 test('Discord /play accepts the new typecrack choice and the pre-rename mastermind choice, and links to /play/typecrack',async()=>{

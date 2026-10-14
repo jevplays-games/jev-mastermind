@@ -2,18 +2,30 @@ import { sha256,randomToken } from '../public/typecrack/verify.js';
 export { sha256, randomToken };
 export class HttpError extends Error { constructor(status,message,code='request_error') {super(message);this.status=status;this.code=code;} }
 export const check=(condition,status,message,code)=>{if(!condition)throw new HttpError(status,message,code);};
-// LEGACY_ORIGINS is an optional transitional allowlist, so a typo in it must never take the canonical host down:
-// unparseable and non-HTTPS entries (plain HTTP is allowed only for loopback under LOCAL_DEV) are skipped, and each
-// distinct bad entry is logged once per isolate outside local development.
+// LEGACY_ORIGINS is an optional transitional allowlist, so a typo in it must never take the canonical host down, and
+// nothing but a bare origin may widen it (orchestrator rule D9). An entry is accepted only if it parses, is HTTPS (plain
+// HTTP only for loopback under LOCAL_DEV), contains no '@', '?', '#' or '*', and equals its own url.origin once a single
+// trailing '/' is removed (so no userinfo, path, query or fragment). Hostnames must also be plain DNS labels or an IPv6
+// literal. Anything else is skipped, never thrown, and each distinct bad entry is logged once per isolate outside local
+// development (the reason only, never the entry).
 const warnedLegacyOrigins=new Set();
 const LOOPBACK=['127.0.0.1','localhost','[::1]'];
+const HOSTNAME=/^(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)(?:\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)*$|^\[[0-9a-f:.]+\]$/;
+function legacyOriginProblem(entry,url,env) {
+  if(!url)return 'unparseable';
+  if(!(url.protocol==='https:'||(env.LOCAL_DEV==='true'&&url.protocol==='http:'&&LOOPBACK.includes(url.hostname))))return 'not_https';
+  if(/[@?#*]/.test(entry))return 'forbidden_character';
+  if(entry.replace(/\/$/,'')!==url.origin)return 'not_bare_origin';
+  if(!HOSTNAME.test(url.hostname))return 'invalid_host';
+  return null;
+}
 function parseLegacyOrigins(env) {
   const origins=[];
   for(const entry of String(env.LEGACY_ORIGINS||'').split(',').map(s=>s.trim()).filter(Boolean)) {
     let url=null;try{url=new URL(entry);}catch{}
-    const ok=url&&(url.protocol==='https:'||(env.LOCAL_DEV==='true'&&url.protocol==='http:'&&LOOPBACK.includes(url.hostname)));
-    if(ok){origins.push(url.origin);continue;}
-    if(env.LOCAL_DEV!=='true'&&!warnedLegacyOrigins.has(entry)){warnedLegacyOrigins.add(entry);console.warn(JSON.stringify({event:'legacy_origin_skipped',reason:url?'not_https':'unparseable'}));}
+    const reason=legacyOriginProblem(entry,url,env);
+    if(!reason){origins.push(url.origin);continue;}
+    if(env.LOCAL_DEV!=='true'&&!warnedLegacyOrigins.has(entry)){warnedLegacyOrigins.add(entry);console.warn(JSON.stringify({event:'legacy_origin_skipped',reason}));}
   }
   return origins;
 }
