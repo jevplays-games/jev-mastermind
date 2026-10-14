@@ -1,8 +1,8 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {buildCandidates,consistentSecrets,partitionMetrics,selectDeterministic,fallbackGuess,ALL_IDS,referenceChoice} from '../public/mastermind/strategy.js';
-import {scoreGuess,decodeGuess} from '../public/mastermind/rules.js';
+import {buildCandidates,consistentSecrets,partitionMetrics,selectDeterministic,fallbackGuess,ALL_IDS,referenceChoice} from '../public/typecrack/strategy.js';
+import {scoreGuess,decodeGuess} from '../public/typecrack/rules.js';
 import {buildRequest,validateChoice,chooseJevAction} from '../server/jev.js';
-import {createInitialState} from '../public/mastermind/rules.js';
+import {createInitialState} from '../public/typecrack/rules.js';
 import {fakeJev} from './helpers.mjs';
 const cfg={model:'jev-1.13.0',promptVersion:'mm-prompt-v1',timeoutMs:4500};
 const view={difficulty:'normal',attemptNumber:1,attemptsRemaining:10,history:[]};

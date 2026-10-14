@@ -3,7 +3,7 @@
 | Requirement | Implementation / evidence |
 |---|---|
 | Single page, minimal dependencies | `public/index.html`, `game.css`, `game.js`; native ES modules |
-| Pure reusable game engine | `public/mastermind/rules.js`; unit and independent exhaustive tests |
+| Pure reusable game engine | `public/typecrack/rules.js`; unit and independent exhaustive tests |
 | Explicit finite JEV surface | `strategy.js`, `server/jev.js`; strict choice tests |
 | Four difficulty levels | Eight-/32-/64-/128-choice policies and benchmarks |
 | Hidden information unavailable to JEV | `getJevView` + request re-projection; leakage tests |

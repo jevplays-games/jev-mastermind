@@ -1,6 +1,6 @@
 # Exhaustive analytics specification
 
-Version: `mm-analytics-v1`. Implementation: `public/mastermind/analytics.js`; browser calculation in `analytics-worker.js`; authoritative summaries in `server/matches.js`; retained aggregate queries in `server/analytics.js`.
+Version: `mm-analytics-v1`. Implementation: `public/typecrack/analytics.js`; browser calculation in `analytics-worker.js`; authoritative summaries in `server/matches.js`; retained aggregate queries in `server/analytics.js`.
 
 ## 1. Collection boundaries
 

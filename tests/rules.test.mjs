@@ -1,6 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {assertCode,encodeGuess,decodeGuess,scoreGuess,createInitialState,applyAction,getJevView,getPublicView,isTerminal,makeReplay,reconstructReplay,parseActionId,actionId} from '../public/mastermind/rules.js';
-import {randomToken,createCommitments,verifyReplay} from '../public/mastermind/verify.js';
+import {assertCode,encodeGuess,decodeGuess,scoreGuess,createInitialState,applyAction,getJevView,getPublicView,isTerminal,makeReplay,reconstructReplay,parseActionId,actionId} from '../public/typecrack/rules.js';
+import {randomToken,createCommitments,verifyReplay} from '../public/typecrack/verify.js';
 const secrets={targetForHuman:[0,0,1,1],targetForJev:[0,1,2,3],humanTargetSalt:randomToken(),jevTargetSalt:randomToken()};
 function initial(){return createInitialState({matchId:'test',difficulty:'normal'});}
 test('all 1,296 code and action-ID round trips',()=>{for(let i=0;i<1296;i++){assert.equal(encodeGuess(decodeGuess(i)),i);assert.equal(parseActionId(actionId(i)),i);}});

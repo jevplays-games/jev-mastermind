@@ -1,6 +1,6 @@
-import { getJevView, parseActionId } from '../public/mastermind/rules.js';
-import { buildCandidates, selectDeterministic, fallbackGuess, CODES, partitionMetrics, consistentSecrets } from '../public/mastermind/strategy.js';
-import { sha256 } from '../public/mastermind/verify.js';
+import { getJevView, parseActionId } from '../public/typecrack/rules.js';
+import { buildCandidates, selectDeterministic, fallbackGuess, CODES, partitionMetrics, consistentSecrets } from '../public/typecrack/strategy.js';
+import { sha256 } from '../public/typecrack/verify.js';
 export const PROVIDER_URL='https://api.typesafe.ai/v1/systemone';
 // Smallest increment the provider reports probabilities on.
 export const PROBABILITY_GRAIN=0.01;

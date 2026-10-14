@@ -5,8 +5,8 @@ import {activityConfig,createActivitySession} from './activity.js';
 import {createMatch,performAction,publicMatch,assertOwner,expireMatch,maintenance} from './matches.js';
 import {getMatch,run,quota,event} from './db.js';
 import {leaderboard,profileAnalytics,communityAnalytics,operationalAnalytics} from './analytics.js';
-import {makeReplay,isTerminal} from '../public/mastermind/rules.js';
-import {analyzeMatch,csvText} from '../public/mastermind/analytics.js';
+import {makeReplay,isTerminal} from '../public/typecrack/rules.js';
+import {analyzeMatch,csvText} from '../public/typecrack/analytics.js';
 export async function handle(request,env,ctx={},fetchImpl=fetch) {
   let cfg;
   try {

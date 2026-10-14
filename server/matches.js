@@ -1,6 +1,6 @@
-import { createInitialState,applyAction,getPublicView,isTerminal,makeReplay,assertCode,DIFFICULTIES,RULES_VERSION,decodeGuess } from '../public/mastermind/rules.js';
-import { createCommitments,randomCode,randomToken,sha256,verifyReplay,canonical } from '../public/mastermind/verify.js';
-import { analyzeMatch } from '../public/mastermind/analytics.js';
+import { createInitialState,applyAction,getPublicView,isTerminal,makeReplay,assertCode,DIFFICULTIES,RULES_VERSION,decodeGuess } from '../public/typecrack/rules.js';
+import { createCommitments,randomCode,randomToken,sha256,verifyReplay,canonical } from '../public/typecrack/verify.js';
+import { analyzeMatch } from '../public/typecrack/analytics.js';
 import { check,HttpError,validRequestId,onlyKeys } from './security.js';
 import { one,all,run,changed,getMatch,quota,event } from './db.js';
 import { chooseJevAction } from './jev.js';

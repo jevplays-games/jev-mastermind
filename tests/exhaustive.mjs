@@ -1,7 +1,7 @@
 import { writeFile,mkdir } from 'node:fs/promises';
 import assert from 'node:assert/strict';
-import { scoreGuess,decodeGuess,encodeGuess } from '../public/mastermind/rules.js';
-import { feedbackTable } from '../public/mastermind/strategy.js';
+import { scoreGuess,decodeGuess,encodeGuess } from '../public/typecrack/rules.js';
+import { feedbackTable } from '../public/typecrack/strategy.js';
 function independent(secret,guess){
   const remaining=[];let exact=0,near=0;
   for(let i=0;i<4;i++)if(secret[i]===guess[i])exact++;else remaining.push(secret[i]);

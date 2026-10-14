@@ -1,4 +1,4 @@
-import { sha256,randomToken } from '../public/mastermind/verify.js';
+import { sha256,randomToken } from '../public/typecrack/verify.js';
 export { sha256, randomToken };
 export class HttpError extends Error { constructor(status,message,code='request_error') {super(message);this.status=status;this.code=code;} }
 export const check=(condition,status,message,code)=>{if(!condition)throw new HttpError(status,message,code);};

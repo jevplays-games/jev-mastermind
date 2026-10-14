@@ -2,11 +2,11 @@
 import { mkdir,writeFile,appendFile,readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { createInitialState,applyAction,decodeGuess,codeLabel } from '../public/mastermind/rules.js';
-import { ALL_IDS,buildCandidates,selectDeterministic,consistentSecrets,partitionMetrics,referenceChoice } from '../public/mastermind/strategy.js';
-import { describe,mean,codePattern,csvText } from '../public/mastermind/analytics.js';
+import { createInitialState,applyAction,decodeGuess,codeLabel } from '../public/typecrack/rules.js';
+import { ALL_IDS,buildCandidates,selectDeterministic,consistentSecrets,partitionMetrics,referenceChoice } from '../public/typecrack/strategy.js';
+import { describe,mean,codePattern,csvText } from '../public/typecrack/analytics.js';
 import { chooseJevAction } from '../server/jev.js';
-import { sha256 } from '../public/mastermind/verify.js';
+import { sha256 } from '../public/typecrack/verify.js';
 const root=fileURLToPath(new URL('../',import.meta.url));
 try{process.loadEnvFile(resolve(root,'.env'));}catch(e){if(e.code!=='ENOENT')throw e;}
 const args=process.argv.slice(2),flag=name=>args.includes('--'+name),value=(name,fallback)=>args.find(a=>a.startsWith('--'+name+'='))?.split('=').slice(1).join('=')??fallback;
@@ -95,7 +95,7 @@ const pairs=[];for(let a=0;a<policies.length;a++)for(let b=a+1;b<policies.length
     ties:comparisons.filter(x=>x.a.cost===x.b.cost).length,bFewerGuesses:comparisons.filter(x=>x.a.cost>x.b.cost).length,
     meanCostDifferenceAminusB:mean(comparisons.map(x=>x.a.cost-x.b.cost))});
 }
-const sourceHashes={};for(const path of ['public/mastermind/rules.js','public/mastermind/strategy.js','public/mastermind/analytics.js','server/jev.js','bench/run.mjs'])sourceHashes[path]=await sha256(await readFile(resolve(root,path),'utf8'));
+const sourceHashes={};for(const path of ['public/typecrack/rules.js','public/typecrack/strategy.js','public/typecrack/analytics.js','server/jev.js','bench/run.mjs'])sourceHashes[path]=await sha256(await readFile(resolve(root,path),'utf8'));
 const report={generatedAt:new Date().toISOString(),node:process.version,seed,live,requestedSecrets:count,completedGames:games.length,providerCalls,budgetStopped,
   coverage:count===1296&&!budgetStopped?'Every one of the 1,296 possible codes for every selected policy.':'Deterministically spaced secret subset; see per-policy completed coverage.',
   comparisonCoverage:'Counterfactual one-step move metrics compare all 1,296 legal guesses at each recorded state.',

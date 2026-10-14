@@ -1,6 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {analyzeLeg,analyzeMatch,alternativeRows,csvText,describe,wilson,codePattern} from '../public/mastermind/analytics.js';
-import {createInitialState,applyAction,scoreGuess,encodeGuess} from '../public/mastermind/rules.js';
+import {analyzeLeg,analyzeMatch,alternativeRows,csvText,describe,wilson,codePattern} from '../public/typecrack/analytics.js';
+import {createInitialState,applyAction,scoreGuess,encodeGuess} from '../public/typecrack/rules.js';
 const row=(secret,guess)=>({guessId:encodeGuess(guess),guess,...scoreGuess(secret,guess)});
 test('analysis checks all 1,296 alternatives and nonnegative regrets',()=>{const a=analyzeLeg([row([1,1,2,2],[0,0,1,1])]);assert.equal(a.rows[0].candidatesBefore,1296);assert.ok(a.rows[0].informationRegretBits>=0);assert.ok(a.rows[0].expectedRegret>=0);assert.ok(a.rows[0].worstCaseRegret>=0);assert.equal(a.rows[0].feedbackBuckets.reduce((s,b)=>s+b.count,0),1296);});
 test('realized information telescopes to total uncertainty reduction',()=>{const secret=[1,1,2,2],a=analyzeLeg([row(secret,[0,0,1,1]),row(secret,[1,1,2,2])]);assert.ok(Math.abs(a.rows.reduce((s,r)=>s+r.realizedInformationBits,0)-Math.log2(1296))<1e-10);assert.equal(a.summary.finalCandidates,1);});

@@ -34,7 +34,7 @@ with sync_playwright() as p:
     for turn in range(10):
         current=state()
         if current['phase']!='human_break':break
-        code=page.evaluate("async(history)=>{const {referenceChoice}=await import('/mastermind/strategy.js');const {decodeGuess,codeLabel}=await import('/mastermind/rules.js');return codeLabel(decodeGuess(referenceChoice(history,'minimax')))}",current['legs']['human']['history'])
+        code=page.evaluate("async(history)=>{const {referenceChoice}=await import('/typecrack/strategy.js');const {decodeGuess,codeLabel}=await import('/typecrack/rules.js');return codeLabel(decodeGuess(referenceChoice(history,'minimax')))}",current['legs']['human']['history'])
         page.locator('#guessSlots button').first.click()
         page.keyboard.type(code)
         with page.expect_response(lambda r:'/actions' in r.url and r.request.method=='POST') as response:

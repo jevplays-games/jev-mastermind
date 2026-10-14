@@ -1,6 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';
 import {harness} from './helpers.mjs';import {run,one} from '../server/db.js';
-import {randomToken,sha256} from '../public/mastermind/verify.js';
+import {randomToken,sha256} from '../public/typecrack/verify.js';
 import {redeemContext,verifyInteraction} from '../server/discord.js';
 import {quota,event} from '../server/db.js';
 import {openDatabase} from '../server/node-db.mjs';

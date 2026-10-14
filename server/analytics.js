@@ -2,8 +2,8 @@ import { all,one } from './db.js';
 import { check } from './security.js';
 import { sessionContext } from './auth.js';
 import { opponentConfig } from './matches.js';
-import { DIFFICULTIES } from '../public/mastermind/rules.js';
-import { describe,wilson } from '../public/mastermind/analytics.js';
+import { DIFFICULTIES } from '../public/typecrack/rules.js';
+import { describe,wilson } from '../public/typecrack/analytics.js';
 export async function analyticsFilter(url,session,cfg) {
   const scope=url.searchParams.get('scope')||'world',difficulty=url.searchParams.get('difficulty')||'normal';
   check(['world','server','channel'].includes(scope)&&DIFFICULTIES.includes(difficulty),422,'Invalid scope or difficulty.');

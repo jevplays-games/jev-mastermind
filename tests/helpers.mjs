@@ -1,6 +1,6 @@
 import { openDatabase } from '../server/node-db.mjs';
 import { handle } from '../server/worker.js';
-import { randomToken,sha256 } from '../public/mastermind/verify.js';
+import { randomToken,sha256 } from '../public/typecrack/verify.js';
 import { run } from '../server/db.js';
 export function fakeJev({failure=null,select=null}={}) {
   return async(_url,options)=>{

@@ -1,7 +1,7 @@
-import { SYMBOLS,createInitialState,applyAction,isTerminal,makeReplay,decodeGuess,codeLabel,encodeGuess } from './mastermind/rules.js';
-import { randomCode,randomToken,createCommitments,verifyReplay } from './mastermind/verify.js';
-import { buildCandidates,selectDeterministic } from './mastermind/strategy.js';
-import { csvText } from './mastermind/analytics.js';
+import { SYMBOLS,createInitialState,applyAction,isTerminal,makeReplay,decodeGuess,codeLabel,encodeGuess } from './typecrack/rules.js';
+import { randomCode,randomToken,createCommitments,verifyReplay } from './typecrack/verify.js';
+import { buildCandidates,selectDeterministic } from './typecrack/strategy.js';
+import { csvText } from './typecrack/analytics.js';
 const $=id=>document.getElementById(id);
 const storage={get(key,fallback=null){try{return JSON.parse(localStorage.getItem('mm:'+key))??fallback;}catch{return fallback;}},set(key,value){try{localStorage.setItem('mm:'+key,JSON.stringify(value));}catch{}}};
 const view={session:null,match:null,practice:null,secret:storage.get('secret',[0,0,2,5]),guess:[null,null,null,null],selected:{secret:0,guess:0},editor:'secret',busy:false,driving:false,
@@ -216,7 +216,7 @@ async function loadMatch(id){
 let analyzer;
 function analyzeReplay(replay,decisions=[],timings=[]){
   return new Promise((resolve,reject)=>{
-    if(!analyzer)analyzer=new Worker('/mastermind/analytics-worker.js',{type:'module'});
+    if(!analyzer)analyzer=new Worker('/typecrack/analytics-worker.js',{type:'module'});
     const id=crypto.randomUUID();
     const listener=event=>{if(event.data.id!==id)return;analyzer.removeEventListener('message',listener);event.data.error?reject(new Error(event.data.error)):resolve(event.data.report);};
     analyzer.addEventListener('message',listener);analyzer.postMessage({id,replay,decisions,timings});

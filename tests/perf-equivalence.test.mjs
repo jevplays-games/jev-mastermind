@@ -1,8 +1,8 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {feedbackTable,feedbackTableReference,consistentSecrets,consistentSecretsReference,buildCandidates,buildCandidatesReference,selectDeterministic} from '../public/mastermind/strategy.js';
-import {scoreGuess,decodeGuess} from '../public/mastermind/rules.js';
+import {feedbackTable,feedbackTableReference,consistentSecrets,consistentSecretsReference,buildCandidates,buildCandidatesReference,selectDeterministic} from '../public/typecrack/strategy.js';
+import {scoreGuess,decodeGuess} from '../public/typecrack/rules.js';
 import {buildRequest} from '../server/jev.js';
-import {sha256} from '../public/mastermind/verify.js';
+import {sha256} from '../public/typecrack/verify.js';
 const lcg=seed=>()=>(seed=(Math.imul(seed,1664525)+1013904223)>>>0)/4294967296;
 test('optimized feedback table is byte-identical to the reference table',()=>{
   assert.equal(Buffer.compare(feedbackTable(),feedbackTableReference()),0);
