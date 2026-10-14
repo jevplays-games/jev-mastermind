@@ -1,17 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <title>Draw</title>
-  <defs>
-    <linearGradient id="coin" x1="0.15" y1="0.1" x2="0.85" y2="0.95">
-      <stop offset="0" stop-color="#eef0f7"/>
-      <stop offset="0.45" stop-color="#a3aabd"/>
-      <stop offset="1" stop-color="#5a6178"/>
-    </linearGradient>
-  </defs>
-  <circle cx="33.5" cy="35" r="26" fill="#05060c" fill-opacity="0.4"/>
-  <circle cx="32" cy="33.5" r="26" fill="#3d4358"/>
-  <circle cx="32" cy="31" r="26" fill="url(#coin)"/>
-  <circle cx="32" cy="31" r="20.5" fill="none" stroke="#ffffff" stroke-opacity="0.5" stroke-width="1.6"/>
-  <path d="M21 26.5h22M21 37.5h22" fill="none" stroke="#3d4358" stroke-width="5.6" stroke-linecap="round" transform="translate(0.8 1.6)"/>
-  <path d="M21 26.5h22M21 37.5h22" fill="none" stroke="#ffffff" stroke-width="5.6" stroke-linecap="round"/>
-  <path d="M13 22A21 21 0 0 1 30 8.6" fill="none" stroke="#ffffff" stroke-opacity="0.75" stroke-width="2.4" stroke-linecap="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" shape-rendering="crispEdges">
+<title>Draw</title>
+<path fill="#1E1E1E" d="M8 8h51v51H8zM5 5h51v51H5z"/>
+<path fill="#DEDEDE" d="M6 17h49v38H6z"/>
+<path fill="#FEFEFE" d="M6 17h49v2H8v36H6z"/>
+<path fill="#DEDEDE" d="M8 19h47v36H8z"/>
+<path fill="#FEFEFE" d="M10 10h12v2H10zM40 13h4v1h-4zM47 9h2v2h-2zM51 9h2v2h-2zM49 11h2v2h-2zM47 13h2v2h-2zM51 13h2v2h-2z"/>
+<path fill="#1E1E1E" d="M19 29h24v6H19zM19 41h24v6H19z"/>
 </svg>

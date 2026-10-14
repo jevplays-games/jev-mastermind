@@ -1,4 +1,4 @@
-<p align="center"><img src="assets/banner.jpg" alt="Pixel-art robot Jev studying a code-breaker board of colored code pegs and black and white key pegs" width="100%"></p>
+<p align="center"><img src="assets/banner.png" alt="Pink pixel-art banner for Typecrack: the Jev robot types on a pixel keyboard beneath a window of keycap guesses marked with filled and hollow feedback squares" width="100%"></p>
 
 <div align="center">
 
@@ -105,6 +105,7 @@ npm run test:browser
 | Path | Contents |
 |---|---|
 | `public/` | Static UI (`index.html`, `game.js`, `game.css`), shared brand files, art |
+| `assets/` | README banner, GitHub social preview, and their HTML sources plus the offline renderer (`node assets/src/render.mjs`, which also writes `public/brand/og.png`) |
 | `public/typecrack/` | Pure rules, strategy, analytics and replay verification shared by browser, server and benchmark |
 | `server/` | Worker entry, API, Jev adapter, Discord and auth integrations, Node development server |
 | `schema/` | D1 migration |
