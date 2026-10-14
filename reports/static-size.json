@@ -35,10 +35,10 @@
   "css": [
     {
       "path": "public/game.css",
-      "bytes": 28717,
-      "gzipBytes": 6364
+      "bytes": 29173,
+      "gzipBytes": 6558
     }
   ],
   "javascriptGzipTotal": 23119,
-  "cssGzipTotal": 6364
+  "cssGzipTotal": 6558
 }
