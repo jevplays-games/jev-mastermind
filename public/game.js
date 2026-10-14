@@ -1,4 +1,4 @@
-import { SYMBOLS,createInitialState,applyAction,isTerminal,makeReplay,decodeGuess,codeLabel,encodeGuess } from './typecrack/rules.js';
+import { SYMBOLS,createInitialState,applyAction,isTerminal,makeReplay,decodeGuess,codeLabel,encodeGuess,GAME_ID } from './typecrack/rules.js';
 import { randomCode,randomToken,createCommitments,verifyReplay } from './typecrack/verify.js';
 import { buildCandidates,selectDeterministic } from './typecrack/strategy.js';
 import { csvText } from './typecrack/analytics.js';
@@ -87,7 +87,7 @@ function renderEvidence(){
   for(const [label,value]of [['Possible secrets',fmt(d.remainingCount,0)],['Choices offered',fmt(d.candidateCount,0)],['Selected code',codeLabel(decodeGuess(d.guessId))],['Decision time',fmt(d.latencyMs,0)+' ms']]){
     const n=node('div',{class:'evidence-stat'});n.append(node('span',{},label),node('strong',{},value));grid.append(n);
   }
-  body.append(grid,node('p',{class:'evidence-note'},`Source: ${d.source}. ${d.source==='jev'?`Choice confidence ${pct(d.confidence)}; not a win probability.`:d.reason||'Deterministic local selector; not JEV.'} Evaluated guesses: ${fmt(d.evaluatedCount,0)}.`));
+  body.append(grid,node('p',{class:'evidence-note'},`Source: ${d.source}. ${d.source==='jev'?`Choice confidence ${pct(d.confidence)}; not a win probability.`:d.reason||'Deterministic local selector; not Jev.'} Evaluated guesses: ${fmt(d.evaluatedCount,0)}.`));
   if(d.source==='fallback')body.append(node('p',{class:'warning tiny'},'A fallback was used. This match is not eligible for official standings.'));
 }
 function render(){
@@ -97,9 +97,9 @@ function render(){
   $('resign').classList.toggle('hidden',!m||terminal);$('nextMatch').classList.toggle('hidden',!terminal);$('reviewMatch').classList.toggle('hidden',!terminal);
   $('resign').disabled=view.busy;$('stepJev').disabled=view.busy||view.driving;$('start').disabled=!view.session||view.busy||view.secret.some(n=>n==null);$('localStart').disabled=view.busy||view.secret.some(n=>n==null);
   const local=view.practice||m?.opponent?.startsWith('Local')||!view.session?.capabilities.jev;
-  $('jev-title').textContent=local?'Local solver':'JEV';
+  $('jev-title').textContent=local?'Local solver':'Jev';
   $('modeBadge').textContent=view.practice?'BROWSER PRACTICE / NOT JEV':local?'LOCAL OPPONENT / NOT JEV':m?.eligible?'RANKED / JEV':'JEV / PRACTICE';
-  $('start').textContent=view.session?.capabilities.jev?'Start JEV match →':'Start local-server match →';
+  $('start').textContent=view.session?.capabilities.jev?'Start Jev match →':'Start local-server match →';
   $('matchStatus').className='match-status'+(m?'':' hidden')+(terminal?` jv-plaque is-${m.outcome==='win'?'win':m.outcome==='draw'?'draw':'loss'}`:'');
   if(m){
     $('phaseLabel').textContent=terminal?'MATCH COMPLETE':m.phase==='human_break'?'LEG 1 / BREAK THE CODE':'LEG 2 / DEFEND YOUR CODE';
@@ -140,7 +140,7 @@ async function bootstrap(){
    code (stored, or the [0,0,2,5] default), and the player can still change it
    and start again. Ranked follows the checkbox's own gate (signed in AND ranked
    capability). With no session at all this starts browser practice, which
-   labels its opponent "not JEV". */
+   labels its opponent "not Jev". */
 async function autoStart(){
   if(view.busy||view.match)return;
   if(!$('ranked').disabled)$('ranked').checked=true;
@@ -155,16 +155,16 @@ async function startMatch(browserOnly=false){
       const id=crypto.randomUUID(),secrets={targetForHuman:randomCode(),targetForJev:[...view.secret],humanTargetSalt:randomToken(),jevTargetSalt:randomToken()};
       const state=createInitialState({matchId:id,difficulty,configId:'browser-practice-v1',commitments:await createCommitments(id,secrets)});
       view.practice={state,secrets,audit:[],timings:[],lastActionAt:Date.now()};setPracticeView();
-      notice('Browser practice: local deterministic opponent, not JEV. The browser holds both codes; no result is ranked.');
+      notice('Browser practice: local deterministic opponent, not Jev. The browser holds both codes; no result is ranked.');
     }else{
-      view.practice=null;view.match=await api('/matches',{method:'POST',body:{game:'mastermind',difficulty,humanCode:[...view.secret],ranked:$('ranked').checked,requestId:crypto.randomUUID()}});
+      view.practice=null;view.match=await api('/matches',{method:'POST',body:{game:GAME_ID,difficulty,humanCode:[...view.secret],ranked:$('ranked').checked,requestId:crypto.randomUUID()}});
       storage.set('currentMatchId',view.match.matchId);notice(view.match.opponent+'. Codes are locked.');
     }
     view.editor='guess';
   }catch(error){errorNotice(error);}finally{view.busy=false;render();}
 }
 function setPracticeView(){
-  const p=view.practice;view.match={...structuredClone(p.state),yourCode:[...p.secrets.targetForJev],opponent:'Local deterministic opponent — not JEV',ranked:false,eligible:false,verified:false,evidence:p.audit.at(-1),decisions:p.audit,timings:p.timings,
+  const p=view.practice;view.match={...structuredClone(p.state),yourCode:[...p.secrets.targetForJev],opponent:'Local deterministic opponent — not Jev',ranked:false,eligible:false,verified:false,evidence:p.audit.at(-1),decisions:p.audit,timings:p.timings,
     ...(isTerminal(p.state)?{reveal:structuredClone(p.secrets)}:{})};
 }
 async function localAction(action){
@@ -321,7 +321,7 @@ async function loadLeaders(){
 }
 async function loadBenchmarks(){
   try{const response=await fetch('/benchmark-summary.json',{cache:'no-store'});if(!response.ok)throw new Error('No packaged benchmark summary is available. Run npm run bench:exhaustive.');const data=await response.json();
-    $('benchmarkCoverage').textContent=`Measured ${data.generatedAt}. ${data.coverage}. ${data.live?'Includes live provider calls.':'No live JEV calls were made. These are deterministic baselines and selector ablations.'}`;
+    $('benchmarkCoverage').textContent=`Measured ${data.generatedAt}. ${data.coverage}. ${data.live?'Includes live provider calls.':'No live Jev calls were made. These are deterministic baselines and selector ablations.'}`;
     table('benchmarkTable',[{label:'Policy',key:'policy'},{label:'Secrets',key:'secrets'},{label:'Solved',render:r=>pct(r.solveRate)},{label:'Mean guesses',render:r=>fmt(r.meanCost,3)},
       {label:'Maximum cost',key:'maxCost'},{label:'p95 cost',render:r=>fmt(r.p95Cost,1)},{label:'Provider calls',key:'providerCalls'}],data.policies);
   }catch(e){$('benchmarkCoverage').textContent=e.message;}
@@ -342,13 +342,13 @@ $('login').addEventListener('click',()=>{location.href='/api/auth/discord';});$(
 $('analysisActor').addEventListener('change',renderMoves);$('moveDetail').addEventListener('change',renderMoveDetail);
 $('exportAlternatives').addEventListener('click',async()=>{
   if(!view.analysisReplay||!analyzer)return;const button=$('exportAlternatives');button.disabled=true;
-  try{const id=crypto.randomUUID();const csv=await new Promise((resolve,reject)=>{const listener=e=>{if(e.data.id!==id)return;analyzer.removeEventListener('message',listener);e.data.error?reject(new Error(e.data.error)):resolve(e.data.csv);};analyzer.addEventListener('message',listener);analyzer.postMessage({id,operation:'alternatives',replay:view.analysisReplay});});download('mastermind-all-alternatives.csv',csv,'text/csv;charset=utf-8');}
+  try{const id=crypto.randomUUID();const csv=await new Promise((resolve,reject)=>{const listener=e=>{if(e.data.id!==id)return;analyzer.removeEventListener('message',listener);e.data.error?reject(new Error(e.data.error)):resolve(e.data.csv);};analyzer.addEventListener('message',listener);analyzer.postMessage({id,operation:'alternatives',replay:view.analysisReplay});});download('typecrack-all-alternatives.csv',csv,'text/csv;charset=utf-8');}
   catch(error){errorNotice(error);}finally{button.disabled=false;}
 });
-$('exportJson').addEventListener('click',()=>{if(view.report)download('mastermind-'+view.report.matchId+'-analytics.json',JSON.stringify(view.report,null,2));});
-$('exportCsv').addEventListener('click',()=>{if(view.report)download('mastermind-'+view.report.matchId+'-moves.csv',csvText(['human','jev'].flatMap(actor=>view.report[actor].rows.map(r=>({actor,...r})))),'text/csv;charset=utf-8');});
-$('exportDecisions').addEventListener('click',()=>{if(view.report)download('mastermind-'+view.report.matchId+'-decisions.csv',csvText(view.report.decisions),'text/csv;charset=utf-8');});
-$('exportReplay').addEventListener('click',()=>{if(view.analysisReplay)download('mastermind-'+view.analysisReplay.matchId+'-replay.json',JSON.stringify(view.analysisReplay,null,2));});
+$('exportJson').addEventListener('click',()=>{if(view.report)download('typecrack-'+view.report.matchId+'-analytics.json',JSON.stringify(view.report,null,2));});
+$('exportCsv').addEventListener('click',()=>{if(view.report)download('typecrack-'+view.report.matchId+'-moves.csv',csvText(['human','jev'].flatMap(actor=>view.report[actor].rows.map(r=>({actor,...r})))),'text/csv;charset=utf-8');});
+$('exportDecisions').addEventListener('click',()=>{if(view.report)download('typecrack-'+view.report.matchId+'-decisions.csv',csvText(view.report.decisions),'text/csv;charset=utf-8');});
+$('exportReplay').addEventListener('click',()=>{if(view.analysisReplay)download('typecrack-'+view.analysisReplay.matchId+'-replay.json',JSON.stringify(view.analysisReplay,null,2));});
 $('importReplay').addEventListener('change',async event=>{
   const file=event.target.files[0];if(!file)return;
   try{if(file.size>262144)throw new Error('Replay exceeds the 256 KiB import limit.');const replay=JSON.parse(await file.text());await verifyReplay(replay);
@@ -359,7 +359,7 @@ $('refreshRecord').addEventListener('click',()=>loadRecord().catch(errorNotice))
 $('refreshLeaders').addEventListener('click',()=>loadLeaders().catch(errorNotice));
 $('exportRecord').addEventListener('click',async()=>{
   try{let data=await api('/analytics/me'),rows=[...data.recent],cursor=data.nextCursor;while(cursor){const page=await api('/analytics/me?before='+encodeURIComponent(cursor));rows.push(...page.recent);cursor=page.nextCursor;}
-    download('mastermind-retained-record.json',JSON.stringify({...data,recent:rows,nextCursor:null,exportedAt:new Date().toISOString()},null,2));
+    download('typecrack-retained-record.json',JSON.stringify({...data,recent:rows,nextCursor:null,exportedAt:new Date().toISOString()},null,2));
   }catch(e){errorNotice(e);}
 });
 document.addEventListener('keydown',event=>{

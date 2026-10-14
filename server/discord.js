@@ -1,5 +1,6 @@
 import { check,boundedText,randomToken,sha256,validSnowflake,json } from './security.js';
 import { one,run,event } from './db.js';
+import { isGameId } from '../public/typecrack/rules.js';
 function hexBytes(text){return new Uint8Array(text.match(/.{2}/g).map(x=>parseInt(x,16)));}
 export async function verifyInteraction(request,publicKey,now=Date.now()) {
   const signature=request.headers.get('X-Signature-Ed25519'),timestamp=request.headers.get('X-Signature-Timestamp');
@@ -19,14 +20,15 @@ export async function handleInteraction(request,db,cfg,env) {
   check(payload.context===0&&validSnowflake(payload.guild_id)&&validSnowflake(payload.channel_id)&&validSnowflake(payload.member?.user?.id)&&validSnowflake(payload.id),400,'Launch must originate in a guild channel.');
   check(payload.authorizing_integration_owners?.['0']===payload.guild_id,403,'Guild installation could not be verified.');
   const option=payload.data.options?.find(x=>x.name==='game');
-  check(!option||option.value==='mastermind',400,'Unsupported game.');
+  // 'mastermind' is the pre-rename choice value; commands registered before the rename still send it.
+  check(!option||isGameId(option.value),400,'Unsupported game.');
   const raw=randomToken(),hash=await sha256(raw),now=Date.now();
   const created=await one(db,`INSERT INTO launch_tickets(token_hash,interaction_id,expected_user_id,guild_id,channel_id,created_at,expires_at)
     VALUES(?,?,?,?,?,?,?) ON CONFLICT(interaction_id) DO NOTHING RETURNING token_hash`,hash,payload.id,payload.member.user.id,payload.guild_id,payload.channel_id,now,now+300000);
   if(!created)return json({type:4,data:{content:'This launch was already handled. Run /play again for a fresh link.',flags:64}});
   await event(db,'launch_created');
-  return json({type:4,data:{content:'Open your personal Mastermind match. Sign in with the same Discord account. This link expires in five minutes.',flags:64,
-    components:[{type:1,components:[{type:2,style:5,label:'Play Mastermind vs JEV',url:cfg.origin+'/play/mastermind?launch='+raw}]}]}});
+  return json({type:4,data:{content:'Open your personal Typecrack match. Sign in with the same Discord account. This link expires in five minutes.',flags:64,
+    components:[{type:1,components:[{type:2,style:5,label:'Play Typecrack vs Jev',url:cfg.origin+'/play/typecrack?launch='+raw}]}]}});
 }
 export async function redeemContext(ticket,session,db) {
   check(session.discord_user_id,401,'Sign in with Discord before redeeming this launch.');

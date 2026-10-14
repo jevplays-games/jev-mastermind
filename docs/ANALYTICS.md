@@ -7,7 +7,7 @@ Version: `mm-analytics-v1`. Implementation: `public/typecrack/analytics.js`; bro
 | Layer | Source of truth | Availability |
 |---|---|---|
 | Feedback and accepted actions | Authoritative rules reducer | As the game progresses |
-| JEV evidence | Accepted server decision audit, allowlisted JEV history | During the opponent's leg; full audit after completion |
+| Jev evidence | Accepted server decision audit, allowlisted Jev history | During the opponent's leg; full audit after completion |
 | Human deduction/counterfactual metrics | Reconstructed completed transcript | After termination only |
 | Ranked eligibility/outcome | Server verification, not browser analytics | On finalization |
 | Browser-practice analysis | Explicitly untrusted local state | Never contributes official scores |
@@ -15,7 +15,7 @@ Version: `mm-analytics-v1`. Implementation: `public/typecrack/analytics.js`; bro
 | Community metrics | Verified ranked records in requested cohort | World public; verified fresh context for Server/Channel |
 | Operational metrics | Redacted event records and bounded audit sample | Operator bearer token only |
 
-The human's target code and salts are withheld until the match terminates. The human's chosen code is visible to its owner but **never** to JEV. No JEV request includes the human's guesses or the human's score. Candidate calculations depend only on the codebreaker's own previous feedback.
+The human's target code and salts are withheld until the match terminates. The human's chosen code is visible to its owner but **never** to Jev. No Jev request includes the human's guesses or the human's score. Candidate calculations depend only on the codebreaker's own previous feedback.
 
 The API's match-analytics endpoint intentionally calculates selected-guess metrics only and returns `comparison: selected_guess_only`. All-alternative comparisons happen in the browser Web Worker, or in the offline benchmark, so a large browser report does not consume trusted edge CPU or influence ranking. That report returns `comparison: all_1296_legal_guesses_per_turn`. Missing counterfactual fields in the cheaper API report are `null`, not zero.
 
@@ -34,7 +34,7 @@ feedbackProbability = |S_after| / |S_before|
 referenceSolveProb  = 1 / |S_before| if g is in S, otherwise 0
 ```
 
-These probabilities assume a **uniform reference distribution over consistent codes**. They are not JEV's subjective probabilities, an estimate of human code selection, or empirical human success rates. Identical feedback history yields identical calculated metrics, independent of the actual unrevealed code.
+These probabilities assume a **uniform reference distribution over consistent codes**. They are not Jev's subjective probabilities, an estimate of human code selection, or empirical human success rates. Identical feedback history yields identical calculated metrics, independent of the actual unrevealed code.
 
 Entropy is uncertainty about the secret. A final forced guess can gain zero new bits while still being necessary to win. Similarly, worst-case, expected-remaining, and maximum-information objectives can favor different guesses. None is automatically a proof of minimum total guesses over the entire future decision tree.
 
@@ -88,13 +88,13 @@ The usual played-move CSV is smaller and contains one row per actual guess. Nest
 
 Leg summaries include guesses, solved status, final candidates and entropy, total information, repeats, probes, moves eliminating zero candidates, average expected bits, average information and expected-remaining regret, counts of minimax/expected-optimal guesses, and cumulative symbol coverage.
 
-A no-elimination guess excludes an exact winning guess: claiming the known solution is not labeled an information-gathering mistake. Unplayed legs have zero guesses, full initial uncertainty, and null means. No fake JEV result is created on forfeit.
+A no-elimination guess excludes an exact winning guess: claiming the known solution is not labeled an information-gathering mistake. Unplayed legs have zero guesses, full initial uncertainty, and null means. No fake Jev result is created on forfeit.
 
 Code-pattern labels classify multiplicities: `4`, `3+1`, `2+2`, `2+1+1`, `1+1+1+1`. Pattern breakdowns in the benchmark distinguish repeated-color structure from ordinary color identity.
 
 The match envelope records analytics/rules/config versions, difficulty, phase, result, finish reason, match ID, reference-distribution description, code patterns, score costs, decision audits, timing distributions, and provider totals. Replay files reveal salts and secrets only after termination.
 
-## 6. JEV audit and reliability
+## 6. Jev audit and reliability
 
 Each decision audit records the selected ID, source, reason when applicable, candidate IDs, offered count, evaluated count, consistent-secret count, selected features, request byte length, request hash, exact model/prompt/policy versions, local decision reference, decision wall time, actual observed HTTP attempts, invalid-response count, error reason codes, confidence, selected probability, probability map, and observed token usage.
 
@@ -135,7 +135,7 @@ World, Server, and Channel each use one immutable opponent configuration and dif
 
 The leader metric is match points percentage. Tie-breaks: fewer average penalized human guesses, then more matches. Equal substantive metrics share a `DENSE_RANK`; account ID supplies stable display order without breaking that shared rank. Fewer than 10 ranked matches is provisional and receives no established rank. Queries return the top 50.
 
-Community totals count all retained eligible records in the cohort. Detailed distributions use at most the latest 5,000 and explicitly return coverage and a partial flag. Cost 11 is failure/forfeit; absent JEV cost on forfeit is excluded from that distribution, not fabricated as 11.
+Community totals count all retained eligible records in the cohort. Detailed distributions use at most the latest 5,000 and explicitly return coverage and a partial flag. Cost 11 is failure/forfeit; absent Jev cost on forfeit is excluded from that distribution, not fabricated as 11.
 
 ## 10. Operations, privacy, and retention
 

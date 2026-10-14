@@ -7,7 +7,7 @@ try {
   const id=process.env.DISCORD_CLIENT_ID,secret=process.env.DISCORD_CLIENT_SECRET,guild=process.env.DISCORD_TEST_GUILD_ID;
   if(!/^\d{17,20}$/.test(id??'')||!secret)throw new Error('Set DISCORD_CLIENT_ID and DISCORD_CLIENT_SECRET in your private environment.');
   if(guild&&!/^\d{17,20}$/.test(guild))throw new Error('Invalid DISCORD_TEST_GUILD_ID.');
-  const command={name:'play',type:1,description:'Play Mastermind against JEV',options:[{name:'game',description:'Choose a game',type:3,required:true,choices:[{name:'Mastermind',value:'mastermind'}]}],...(guild?{}:{integration_types:[0],contexts:[0]})};
+  const command={name:'play',type:1,description:'Play Typecrack against Jev',options:[{name:'game',description:'Choose a game',type:3,required:true,choices:[{name:'Typecrack',value:'typecrack'}]}],...(guild?{}:{integration_types:[0],contexts:[0]})};
   if(process.argv.includes('--dry-run')){console.log(JSON.stringify({target:guild?'test-guild':'global',command},null,2));process.exit(0);}
   const tokenResponse=await fetch('https://discord.com/api/v10/oauth2/token',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({client_id:id,client_secret:secret,grant_type:'client_credentials',scope:'applications.commands.update'}),signal:AbortSignal.timeout(15000)});
   if(!tokenResponse.ok)throw new Error(`Discord token request failed (${tokenResponse.status}).`);

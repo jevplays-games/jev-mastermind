@@ -43,9 +43,9 @@ reference-minimax, reference-expected,
 random-consistent, random-legal
 ```
 
-Local policies are deterministic substitutes for the model-selection stage with the same candidate policies. They are ablations, **not** live JEV. Random baselines are seeded by configured seed and secret ID. Even random-legal avoids repeating already attempted codes and restricts its final attempt to possible secrets; it is the documented harness baseline, not unrestricted IID color guessing.
+Local policies are deterministic substitutes for the model-selection stage with the same candidate policies. They are ablations, **not** live Jev. Random baselines are seeded by configured seed and secret ID. Even random-legal avoids repeating already attempted codes and restricts its final attempt to possible secrets; it is the documented harness baseline, not unrestricted IID color guessing.
 
-The `reference-minimax` implementation uses a fixed AABB opening and a documented tie hierarchy. The included all-secret result is a measurement of this implementation; no unrelated published guarantee is silently transferred to arbitrary JEV outputs.
+The `reference-minimax` implementation uses a fixed AABB opening and a documented tie hierarchy. The included all-secret result is a measurement of this implementation; no unrelated published guarantee is silently transferred to arbitrary Jev outputs.
 
 Outputs: summary JSON, per-game CSV and NDJSON, per-move CSV, secret-pattern CSV, paired same-secret cost comparisons, checkpoint and a human-readable results table. Every recorded state is compared with all legal alternative guesses for one-step regret. Source hashes, seed, Node version, duration, coverage, fallbacks and actual provider calls are recorded.
 
@@ -59,10 +59,10 @@ node bench/run.mjs --live --confirm-spend --secrets=16 --policies=jev-normal --m
 
 The spend acknowledgement and bounded call count are required. Increasing `--max-calls` permits additional billable requests; it is not a currency budget. Provider retry attempts count toward the bound. A budget-exhausted partial game is saved separately, not counted as completed. Audit decisions are flushed to NDJSON as they happen.
 
-Use new output folders for separate experiments. Live provider calls were not performed for this package. Evaluate identical secret sets/configurations against the deterministic selector ablations before assigning improvements to JEV. Preserve fallback labels: a mixed run does not establish pure model strength. Repeat live configurations to measure variability; a recorded-action replay guarantees rules determinism but fresh inference may differ.
+Use new output folders for separate experiments. Live provider calls were not performed for this package. Evaluate identical secret sets/configurations against the deterministic selector ablations before assigning improvements to Jev. Preserve fallback labels: a mixed run does not establish pure model strength. Repeat live configurations to measure variability; a recorded-action replay guarantees rules determinism but fresh inference may differ.
 
 ## Interpretation
 
-The full enumeration gives exact finite-configuration performance for the measured local policies. It is not a sample of human players, an estimate of the human-secret distribution, or a win-rate study of all future deployments. Cached local selector timing is marked; it is not JEV latency. Pattern and paired tables support diagnosis without turning descriptive baselines into untested product claims.
+The full enumeration gives exact finite-configuration performance for the measured local policies. It is not a sample of human players, an estimate of the human-secret distribution, or a win-rate study of all future deployments. Cached local selector timing is marked; it is not Jev latency. Pattern and paired tables support diagnosis without turning descriptive baselines into untested product claims.
 
 See `reports/VALIDATION.md` for actual completed execution, limitations and counts. Re-run all checks after code changes; the benchmark source hashes make stale results detectable.

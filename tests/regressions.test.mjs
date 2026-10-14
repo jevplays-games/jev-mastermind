@@ -17,7 +17,7 @@ test('unobserved reserved inference attempts keep usage incomplete',()=>{
   assert.equal(report.provider.usageIncomplete,true);assert.equal(report.provider.jevCalls,0);
 });
 test('a quota reservation cannot exceed the limit on its first insertion',async()=>{const h=await harness();try{await assert.rejects(quota(h.db,'too-large',1,60000,Date.now(),2));}finally{h.close();}});
-test('late JEV response cannot change a resigned match',async()=>{
+test('late Jev response cannot change a resigned match',async()=>{
   let release,entered;const gate=new Promise(r=>release=r),started=new Promise(r=>entered=r);
   const h=await harness({production:true,provider:async(...args)=>{entered();await gate;return fakeJev()(...args);}});
   try{await h.signIn();let m=(await h.request('/api/matches',{method:'POST',body:createBody({ranked:true})})).data;

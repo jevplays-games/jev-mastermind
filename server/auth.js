@@ -70,5 +70,5 @@ export async function me(session,db,cfg) {
     WHERE (owner_key=? OR discord_user_id=?) AND phase IN ('human_break','jev_break') ORDER BY created_at DESC LIMIT 5`,session.owner_key,session.discord_user_id);
   return {user,csrf:session.csrf,context:sessionContext(session),activeMatches:active,
     capabilities:{jev:cfg.jevReady,discord:cfg.discordReady,ranked:cfg.rankedEnabled&&cfg.jevReady&&cfg.discordReady,model:cfg.model},
-    mode:cfg.jevReady?'JEV + deterministic analysis':'Local deterministic opponent — not JEV'};
+    mode:cfg.jevReady?'Jev + deterministic analysis':'Local deterministic opponent — not Jev'};
 }

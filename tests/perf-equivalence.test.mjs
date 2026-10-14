@@ -37,7 +37,7 @@ test('last-attempt candidates and request hashes are identical',async()=>{
     for(const difficulty of ['easy','normal','hard','jev']){
       const fast=buildCandidates(history,difficulty),ref=buildCandidatesReference(history,difficulty);
       assert.deepEqual(fast,ref);
-      const view={game:'mastermind',difficulty,attemptNumber:10,attemptsRemaining:1,history:history.map(({guessId,guess,exact,misplaced})=>({guessId,guess,exact,misplaced}))};
+      const view={game:'typecrack',difficulty,attemptNumber:10,attemptsRemaining:1,history:history.map(({guessId,guess,exact,misplaced})=>({guessId,guess,exact,misplaced}))};
       assert.equal(await sha256(buildRequest(view,fast)),await sha256(buildRequest(view,ref)));
       assert.equal(JSON.stringify(buildRequest(view,fast)),JSON.stringify(buildRequest(view,ref)));
     }

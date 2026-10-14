@@ -2,16 +2,20 @@ import { sha256,randomToken } from '../public/typecrack/verify.js';
 export { sha256, randomToken };
 export class HttpError extends Error { constructor(status,message,code='request_error') {super(message);this.status=status;this.code=code;} }
 export const check=(condition,status,message,code)=>{if(!condition)throw new HttpError(status,message,code);};
-export function config(env) {
-  const origin=new URL(env.APP_ORIGIN||'http://127.0.0.1:8787').origin;
+export function config(env,requestOrigin=null) {
+  const canonicalOrigin=new URL(env.APP_ORIGIN||'http://127.0.0.1:8787').origin;
+  // Pre-rename hostnames keep working until cutover. A request on one of them is answered on that origin
+  // (OAuth callback, launch links, Origin checks), so its sessions and Discord settings stay consistent.
+  const legacyOrigins=String(env.LEGACY_ORIGINS||'').split(',').map(s=>s.trim()).filter(Boolean).map(s=>new URL(s).origin);
+  const origin=requestOrigin&&legacyOrigins.includes(requestOrigin)?requestOrigin:canonicalOrigin;
   const local=env.LOCAL_DEV==='true' && ['127.0.0.1','localhost','[::1]'].includes(new URL(origin).hostname);
-  if(!local && new URL(origin).protocol!=='https:') throw new Error('Production APP_ORIGIN must use HTTPS.');
+  if(!local && [canonicalOrigin,...legacyOrigins].some(o=>new URL(o).protocol!=='https:')) throw new Error('Production APP_ORIGIN must use HTTPS.');
   if(!local && !env.QUOTA_SALT) throw new Error('Production requires QUOTA_SALT.');
   const model=env.JEV_MODEL||'jev-1.13.0';
-  if(!/^jev-\d+\.\d+\.\d+$/.test(model)) throw new Error('Pin an exact JEV model version.');
+  if(!/^jev-\d+\.\d+\.\d+$/.test(model)) throw new Error('Pin an exact Jev model version.');
   const activityOrigin=/^\d{17,20}$/.test(env.DISCORD_CLIENT_ID??'')?`https://${env.DISCORD_CLIENT_ID}.discordsays.com`:null;
-  return {origin,local,model,activityOrigin,cookieName:local?'jev_local':'__Host-jev',jevReady:Boolean(env.TYPESAFE_API_KEY),
-    discordReady:Boolean(env.DISCORD_CLIENT_ID&&env.DISCORD_CLIENT_SECRET),timeoutMs:4500,policyVersion:'mm-policy-v1',promptVersion:'mm-prompt-v1',
+  return {origin,canonicalOrigin,legacyOrigins,local,model,activityOrigin,cookieName:local?'jev_local':'__Host-jev',jevReady:Boolean(env.TYPESAFE_API_KEY),
+    discordReady:Boolean(env.DISCORD_CLIENT_ID&&env.DISCORD_CLIENT_SECRET),timeoutMs:4500,policyVersion:'mm-policy-v1',promptVersion:'mm-prompt-v2',
     rankedEnabled:env.RANKED_ENABLED==='true'&&!local};
 }
 export const json=(data,status=200,headers={})=>new Response(JSON.stringify(data),{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store',...headers}});

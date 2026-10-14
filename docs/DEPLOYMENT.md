@@ -13,10 +13,12 @@ Install the optional development tools in a network-enabled environment and revi
 ```sh
 npm install
 npx wrangler login
-npx wrangler d1 create mastermind
+npx wrangler d1 create mastermind   # existing database name, kept after the Typecrack rename
 ```
 
 Put the returned D1 database ID into `wrangler.toml` in place of `REPLACE_WITH_YOUR_D1_DATABASE_ID`. Set `APP_ORIGIN` to the **exact HTTPS origin** that will serve both assets and API, whether a configured custom domain or the actual Worker address. Do not keep the example hostname. Configure the corresponding Worker custom domain in your account when using one.
+
+`LEGACY_ORIGINS` (comma-separated HTTPS origins) lists hostnames that keep being served alongside `APP_ORIGIN`. A request on one of them is answered on its own origin: OAuth callback, Discord launch links and `Origin` checks all use that host, so a Discord application still configured for it keeps working. The shipped config serves `typecrack.jevplay.games` and keeps the pre-rename `mastermind.jevplay.games` until the cutover redirect replaces it; any other host gets 421. `/play/mastermind` answers 301 to `/play/typecrack` with the query intact.
 
 ```sh
 npm run db:remote
@@ -75,13 +77,13 @@ npm run discord:register
 
 For development, `DISCORD_TEST_GUILD_ID` registers the command to one test guild. Omit it for the global command constrained to guild installation and guild interaction contexts. The script POST-upserts `/play`; it does **not** bulk-overwrite unrelated commands. Registering a command is an explicit write to the application and is never done merely by starting the game.
 
-Install the application into a test server with `applications.commands`. Run `/play game:Mastermind` from the participating channel. The resulting personal ephemeral launch link expires in five minutes, must be redeemed once, and must match the OAuth user. Redeemed context lasts fifteen minutes for starting games/viewing contextual boards; started matches retain their snapshot. Immediate revocation after leaving a guild/channel is not implemented.
+Install the application into a test server with `applications.commands`. Run `/play game:Typecrack` from the participating channel. The resulting personal ephemeral launch link expires in five minutes, must be redeemed once, and must match the OAuth user. Redeemed context lasts fifteen minutes for starting games/viewing contextual boards; started matches retain their snapshot. Immediate revocation after leaving a guild/channel is not implemented.
 
 No gateway process, privileged bot token, email scope, or member-list scope is required by this design.
 
 ## 4. Enable ranked play only after staging checks
 
-Keep `RANKED_ENABLED = "false"` initially. Confirm genuine JEV responses using the pinned model, OAuth session rotation, signed launch redemption, same-origin cookies, CSP, mobile browser behavior, one complete replay-verified result, a provider-failure exclusion, and all three scoped leaderboard queries in staging.
+Keep `RANKED_ENABLED = "false"` initially. Confirm genuine Jev responses using the pinned model, OAuth session rotation, signed launch redemption, same-origin cookies, CSP, mobile browser behavior, one complete replay-verified result, a provider-failure exclusion, and all three scoped leaderboard queries in staging.
 
 Then set `RANKED_ENABLED = "true"` and redeploy. Ranked eligibility requires real provider configuration; removing credentials during a match causes a labeled fallback and exclusion, not silent local substitution. Exact model, prompt, policy, and selector configuration is hashed into the cohort ID.
 
@@ -93,7 +95,7 @@ Default application limits include 300 API requests/minute per salted client buc
 
 Actual known provider attempts and reserved attempts differ: up to two attempts are reserved before a decision to bound worst-case spending. Do not treat unused reservations as provider usage. Expired leases avoid blindly retrying calls that may already have reached the provider.
 
-The five-minute scheduled Worker invocation expires at most 50 abandoned human legs per sweep, advances at most one JEV action for each of ten stale opponent legs, and removes expired retention records. Browser advancement is immediate; the cron is recovery rather than the normal animation loop. Human legs expire after 24 hours. Waiting on the opponent never causes a human abandonment penalty.
+The five-minute scheduled Worker invocation expires at most 50 abandoned human legs per sweep, advances at most one Jev action for each of ten stale opponent legs, and removes expired retention records. Browser advancement is immediate; the cron is recovery rather than the normal animation loop. Human legs expire after 24 hours. Waiting on the opponent never causes a human abandonment penalty.
 
 ## 6. Operations and retention
 
@@ -105,7 +107,7 @@ Back up D1 using provider-supported facilities and test a restore. Backups conta
 
 ## 7. Explicitly unperformed here
 
-No real account was created, no command was registered to your Discord application, no remote D1 database was created, no Worker was deployed, and no paid JEV calls were made. The npm registry was unavailable in the creation environment, so Wrangler deployment and its dependency graph were not executed. The repository includes executable integration code and runbooks, not credentials or a claim of live production certification.
+No real account was created, no command was registered to your Discord application, no remote D1 database was created, no Worker was deployed, and no paid Jev calls were made. The npm registry was unavailable in the creation environment, so Wrangler deployment and its dependency graph were not executed. The repository includes executable integration code and runbooks, not credentials or a claim of live production certification.
 
 ## 8. GoDaddy Node.js hosting
 
@@ -116,5 +118,5 @@ The same `server/dev.mjs` runs as a plain Node app in production mode. Productio
 - The server binds the platform's `HOST` and `PORT` as given (process env wins over `.env`); nothing is forced. Production mode with `HOST=127.0.0.1` binds loopback only. TLS terminates at the proxy.
 - The Worker's per-client buckets use `CF-Connecting-IP`. The Node server ignores any client-supplied value and sets it from the socket address, or from the last `X-Forwarded-For` entry when `TRUST_PROXY=1`. Set `TRUST_PROXY=1` only behind a proxy that appends the real client address; with `0` all clients behind the proxy share one bucket.
 - Env keys: `NODE_ENV`, `APP_ORIGIN`, `QUOTA_SALT`, `ANALYTICS_ADMIN_TOKEN`, `TYPESAFE_API_KEY`, `JEV_MODEL`, `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET`, `DISCORD_PUBLIC_KEY`, `MAX_STARTS_PER_HOUR`, `MAX_PROVIDER_ATTEMPTS_PER_DAY`, optional `HOST`, `TRUST_PROXY`, `RANKED_ENABLED`, `DB_PATH`.
-- SQLite lives at `data/mastermind.sqlite` (private; only `public/` is served). The filesystem is ephemeral: a redeploy loses all matches and accounts. Accepted for this deployment.
+- SQLite lives at `data/typecrack.sqlite` (or `data/mastermind.sqlite` when one exists from before the rename) (private; only `public/` is served). The filesystem is ephemeral: a redeploy loses all matches and accounts. Accepted for this deployment.
 - The Worker cron (`scheduled`) is replaced by the in-process `maintenance` timer (every 60 s, unref'd), which recovers stalled steps and sweeps expired rows.

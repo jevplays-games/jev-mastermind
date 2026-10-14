@@ -2,7 +2,7 @@
 
 Read README, docs/ANALYTICS.md, docs/SECURITY.md and reports/VALIDATION.md before changing behavior.
 
-Never send either secret, the human's guess history or the human's result to JEV. Keep numeric feedback/candidate calculations in pure code. A provider response is only a proposed member of a supplied finite candidate set.
+Never send either secret, the human's guess history or the human's result to Jev. Keep numeric feedback/candidate calculations in pure code. A provider response is only a proposed member of a supplied finite candidate set.
 
 Never silently turn `local`, `forced` or `fallback` into `jev`. Only verified eligible server records rank. Never add a score-write endpoint or allow imported replay data to finalize official results.
 

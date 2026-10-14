@@ -176,7 +176,7 @@ export function buildCandidates(history, difficulty = 'normal') {
   }
   return { remainingCount: remaining.length, evaluatedCount, candidates, policyVersion: POLICY_VERSION };
 }
-/** Clearly labeled baseline/ablation. This selector is not JEV. */
+/** Clearly labeled baseline/ablation. This selector is not Jev. */
 export function selectDeterministic(built, difficulty) {
   const choices = [...built.candidates];
   if (difficulty==='easy') choices.sort((a,b)=>b.unusedSymbolCount-a.unusedSymbolCount || b.distinctSymbols-a.distinctSymbols || a.guessId-b.guessId);

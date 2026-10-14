@@ -1,6 +1,6 @@
 # Discord Activity mode
 
-Mastermind can run as a Discord Activity. Discord loads the game in an iframe on `https://<DISCORD_CLIENT_ID>.discordsays.com`, which proxies to `https://mastermind.jevplay.games`. Nothing changes for the normal browser flow.
+Typecrack can run as a Discord Activity. Discord loads the game in an iframe on `https://<DISCORD_CLIENT_ID>.discordsays.com`, which proxies to `https://typecrack.jevplay.games` (the pre-rename `mastermind.jevplay.games` mapping keeps working until cutover). Nothing changes for the normal browser flow.
 
 ## What is different inside an Activity
 
@@ -10,12 +10,12 @@ Mastermind can run as a Discord Activity. Discord loads the game in an iframe on
 - **Framing.** Only non-API documents loaded with `frame_id` are sent with `frame-ancestors https://discord.com https://ptb.discord.com https://canary.discord.com` (and without `X-Frame-Options`). Everything else, including every API response, keeps `DENY` / `frame-ancestors 'none'`. The rest of the CSP is unchanged; scripts stay same-origin, which is why the SDK is vendored.
 - Session creation has its own quota (`activity-session`, 60 per hour per client bucket). Discord's proxy may present a shared client address, so raise it if legitimate players are throttled.
 
-Ranked eligibility, match ownership (`owner_key` / `discord_user_id`), JEV provenance and every game rule are untouched.
+Ranked eligibility, match ownership (`owner_key` / `discord_user_id`), Jev provenance and every game rule are untouched.
 
 ## Developer Portal settings
 
 1. Enable **Activities** for the application.
-2. Under Activities > URL Mappings, map prefix `/` to `mastermind.jevplay.games`.
+2. Under Activities > URL Mappings, map prefix `/` to `typecrack.jevplay.games`.
 3. Enable the Activity in a test guild and launch it from the App Launcher.
 
 ## Command registration

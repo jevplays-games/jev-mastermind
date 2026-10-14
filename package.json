@@ -1,9 +1,10 @@
 {
-  "name": "jev-mastermind",
+  "name": "jev-typecrack",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Vanilla Mastermind duel, server authority, Discord context, structured JEV decisions and exhaustive deduction analytics.",
+  "description": "Typecrack, a vanilla two-leg code-breaking duel against Jev with server authority, Discord context, structured decisions and exhaustive deduction analytics.",
+  "license": "MIT",
   "engines": { "node": ">=22.16.0" },
   "scripts": {
     "build": "node -e \"process.exit(0)\"",

@@ -1,4 +1,4 @@
-/* JEV Arcade shared brand system. Loaded before game.css in every arcade repo.
+/* Jev Arcade shared brand system. Loaded before game.css in every arcade repo.
    Owns: font, color tokens, type scale, spacing, the .jv-* app shell and header,
    and the art layer (lighting, lacquer surfaces, motion) every game draws with.
    Games own their board and set the accent trio; they must not redefine the tokens above it.
@@ -123,7 +123,7 @@ p{margin:0}
   min-height:100vh;min-height:100dvh;
   padding-left:var(--sa-l);padding-right:var(--sa-r);
   /* The ground every game stands on: the key light in the game's accent from
-     the top-left, JEV's teal answering from the bottom-right. Gradients only,
+     the top-left, Jev's teal answering from the bottom-right. Gradients only,
      so there is nothing to load and nothing to shift. */
   background:
     radial-gradient(110% 70% at 8% -8%,var(--accent-soft),transparent 62%),
@@ -344,13 +344,13 @@ p{margin:0}
   .jv-status{max-width:none}
 }
 /* 900-1099 is the tight zone: the controls have just moved into the header but
-   the viewport is still narrow. The "JEV ARCADE" wordmark is redundant there --
+   the viewport is still narrow. The "Jev ARCADE" wordmark is redundant there --
    the mark already carries the brand -- and dropping it frees ~90px, which is
    what keeps BOTH the game title and the status chip whole.
    Measured need at 900 (mastermind, the worst case): controls 450 (capped) +
    status 219 + brand-without-wordmark 127 + gaps 24 + padding 32 = 852 of 900.
    The alternative -- capping the status chip -- was rejected: it would ellipsise
-   "LOCAL OPPONENT / NOT JEV" to "LOCAL OPPONENT /...", hiding the disclaimer.
+   "LOCAL OPPONENT / NOT Jev" to "LOCAL OPPONENT /...", hiding the disclaimer.
    Provenance labelling must never be truncated into something misleading. */
 @media(min-width:900px) and (max-width:1099px){
   .jv-wordmark,.jv-sep{display:none}

@@ -1,5 +1,9 @@
-/** Pure, shared Mastermind rules. Never infer game state from DOM or accept client feedback. */
+/** Pure, shared Typecrack rules. Never infer game state from DOM or accept client feedback. */
 export const RULES_VERSION = 'mm-4x6-10-v1';
+/** New state and replays carry GAME_ID. Stored matches and exported replays from before the rename carry the legacy id, so reads accept both. */
+export const GAME_ID = 'typecrack';
+export const LEGACY_GAME_IDS = Object.freeze(['mastermind']);
+export const isGameId = game => game === GAME_ID || LEGACY_GAME_IDS.includes(game);
 export const DIFFICULTIES = Object.freeze(['easy', 'normal', 'hard', 'jev']);
 export const SYMBOLS = Object.freeze(['A', 'B', 'C', 'D', 'E', 'F']);
 export const CODE_COUNT = 1296;
@@ -33,7 +37,7 @@ export function createInitialState({ matchId, difficulty = 'normal', configId = 
   if (typeof matchId !== 'string' || !matchId) throw new Error('A match ID is required.');
   if (!DIFFICULTIES.includes(difficulty)) throw new Error('Invalid difficulty.');
   return {
-    game: 'mastermind', rulesVersion: RULES_VERSION, matchId, difficulty, configId,
+    game: GAME_ID, rulesVersion: RULES_VERSION, matchId, difficulty, configId,
     revision: 0, phase: 'human_break', commitments: structuredClone(commitments),
     legs: { human: { history: [], status: 'active', solvedAt: null }, jev: { history: [], status: 'waiting', solvedAt: null } },
     actions: [], outcome: null, finishReason: null
@@ -69,7 +73,7 @@ export function applyAction(state, action, secrets) {
   leg.history.push({ guessId, guess: [...action.guess], ...feedback });
   const savedAction = { type: 'GUESS', actor: action.actor, guessId };
   if (action.actor === 'jev') {
-    if (!['jev', 'forced', 'fallback', 'local'].includes(action.source)) throw new Error('JEV decision source is required.');
+    if (!['jev', 'forced', 'fallback', 'local'].includes(action.source)) throw new Error('Jev decision source is required.');
     savedAction.source = action.source;
     if (action.decisionRef) savedAction.decisionRef = String(action.decisionRef);
   }
@@ -86,9 +90,9 @@ export function applyAction(state, action, secrets) {
   }
   return next;
 }
-/** Explicit allowlist: neither the human's leg, secret, result nor identity reaches JEV. */
+/** Explicit allowlist: neither the human's leg, secret, result nor identity reaches Jev. */
 export function getJevView(state) {
-  return { game: 'mastermind', difficulty: state.difficulty, attemptNumber: state.legs.jev.history.length + 1,
+  return { game: GAME_ID, difficulty: state.difficulty, attemptNumber: state.legs.jev.history.length + 1,
     attemptsRemaining: MAX_GUESSES - state.legs.jev.history.length,
     history: state.legs.jev.history.map(({ guessId, guess, exact, misplaced }) => ({ guessId, guess: [...guess], exact, misplaced })) };
 }
@@ -101,19 +105,19 @@ export function getPublicView(state, secrets) {
 export function serialize(state) { return JSON.stringify(state); }
 export function deserialize(text) {
   const state = JSON.parse(text);
-  if (state?.game !== 'mastermind' || state.rulesVersion !== RULES_VERSION || !Array.isArray(state.actions)) throw new Error('Invalid state.');
+  if (!isGameId(state?.game) || state.rulesVersion !== RULES_VERSION || !Array.isArray(state.actions)) throw new Error('Invalid state.');
   return state;
 }
 export function makeReplay(state, secrets) {
   if (!isTerminal(state)) throw new Error('Replays are revealed only after the match ends.');
-  return { format: 'jev-replay-v1', game: 'mastermind', rulesVersion: RULES_VERSION,
+  return { format: 'jev-replay-v1', game: GAME_ID, rulesVersion: RULES_VERSION,
     matchId: state.matchId, difficulty: state.difficulty, configId: state.configId,
     commitments: structuredClone(state.commitments), reveal: structuredClone(secrets),
     actions: structuredClone(state.actions), expectedOutcome: state.outcome, finishReason: state.finishReason };
 }
 /** Reconstructs only. A standalone replay is never proof of a ranked server result. */
 export function reconstructReplay(replay) {
-  if (replay?.format !== 'jev-replay-v1' || replay.game !== 'mastermind' || replay.rulesVersion !== RULES_VERSION ||
+  if (replay?.format !== 'jev-replay-v1' || !isGameId(replay.game) || replay.rulesVersion !== RULES_VERSION ||
       !Array.isArray(replay.actions) || replay.actions.length > 21) throw new Error('Invalid replay format.');
   assertCode(replay.reveal?.targetForHuman); assertCode(replay.reveal?.targetForJev);
   let state = createInitialState(replay);

@@ -13,7 +13,7 @@ All endpoints are same-origin. Browser writes require `Content-Type: application
 | POST `/api/context/redeem` | `{ticket}` | Matching-user single-use context redemption |
 | POST `/api/matches` | Creation object below | 201 authoritative public state; same request ID is idempotent |
 | GET `/api/matches/:id` | Match owner | Public projection; terminal reveal; may expire stale human leg |
-| POST `/api/matches/:id/actions` | Action object below | 200 applied/duplicate snapshot; 202 active JEV lease |
+| POST `/api/matches/:id/actions` | Action object below | 200 applied/duplicate snapshot; 202 active Jev lease |
 | GET `/api/matches/:id/replay` | Owner; terminal match | Compact replay including reveals, never official import |
 | GET `/api/matches/:id/analytics` | Owner; terminal match | Selected-guess-only report; `?format=csv` for played-move CSV |
 | GET `/api/analytics/me` | Session | Own retained totals/groups/streaks/90-day series/history |
@@ -25,7 +25,7 @@ All endpoints are same-origin. Browser writes require `Content-Type: application
 
 ```json
 {
-  "game":"mastermind",
+  "game":"typecrack",
   "difficulty":"normal",
   "humanCode":[0,0,2,5],
   "ranked":false,
@@ -45,7 +45,7 @@ Symbols are integers 0–5 and the code contains exactly four. Valid difficulty 
 }
 ```
 
-Other browser action objects are exactly `{"type":"STEP_JEV"}` and `{"type":"RESIGN"}`. Browser-supplied `actor`, JEV code, guild ID, channel ID, feedback, model version, score, and result are rejected. Only the server applies a JEV guess.
+Other browser action objects are exactly `{"type":"STEP_JEV"}` and `{"type":"RESIGN"}`. Browser-supplied `actor`, Jev code, guild ID, channel ID, feedback, model version, score, and result are rejected. Only the server applies a Jev guess.
 
 Request IDs are bounded strings matching the implementation's validator; the UI generates UUIDs. Same ID + identical body never creates a second move. Same ID + different content gives 409. Receipts retain the accepted action/revision hash; a duplicate returns the **latest authoritative snapshot**, not an obsolete cached board. The response marks `duplicate: true`. This deliberately simplifies recovery from delayed retries.
 

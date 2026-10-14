@@ -1,4 +1,4 @@
-import { createInitialState,applyAction,getPublicView,isTerminal,makeReplay,assertCode,DIFFICULTIES,RULES_VERSION,decodeGuess } from '../public/typecrack/rules.js';
+import { createInitialState,applyAction,getPublicView,isTerminal,makeReplay,assertCode,isGameId,DIFFICULTIES,RULES_VERSION,decodeGuess } from '../public/typecrack/rules.js';
 import { createCommitments,randomCode,randomToken,sha256,verifyReplay,canonical } from '../public/typecrack/verify.js';
 import { analyzeMatch } from '../public/typecrack/analytics.js';
 import { check,HttpError,validRequestId,onlyKeys } from './security.js';
@@ -17,7 +17,7 @@ export function assertOwner(match,session) {
 export function publicMatch(match) {
   const view=getPublicView(match.state,match.secrets);
   return { ...view,ranked:Boolean(match.started_ranked),eligible:Boolean(match.eligible),verified:Boolean(match.verified_at),
-    opponent:match.config.selector==='local-selector-v1'?'Local deterministic opponent — not JEV':match.fallback_count?'JEV with fallback — unranked':'JEV + deterministic analysis',
+    opponent:match.config.selector==='local-selector-v1'?'Local deterministic opponent — not Jev':match.fallback_count?'Jev with fallback — unranked':'Jev + deterministic analysis',
     pending:Boolean(match.pending),createdAt:match.created_at,expiresAt:match.expires_at,finishedAt:match.finished_at,
     context:match.guild_id?{guildId:match.guild_id,channelId:match.channel_id}:null,
     evidence:match.audit.at(-1)??null,
@@ -26,12 +26,12 @@ export function publicMatch(match) {
 function safeEvent(db,...args) {return event(db,...args).catch(()=>{});}
 export async function createMatch(body,session,db,cfg,env) {
   onlyKeys(body,['game','difficulty','humanCode','ranked','requestId']);
-  check(body.game==='mastermind'&&DIFFICULTIES.includes(body.difficulty),422,'Invalid game or difficulty.');
+  check(isGameId(body.game)&&DIFFICULTIES.includes(body.difficulty),422,'Invalid game or difficulty.');
   try{assertCode(body.humanCode);}catch(e){throw new HttpError(422,e.message);}
   check(typeof body.ranked==='boolean'&&validRequestId(body.requestId),422,'A ranked flag and request ID are required.');
   const hash=await sha256(body),existing=await one(db,'SELECT id,create_request_hash FROM matches WHERE owner_key=? AND create_request_id=?',session.owner_key,body.requestId);
   if(existing){check(existing.create_request_hash===hash,409,'This request ID was already used for different content.');return getMatch(db,existing.id);}
-  if(body.ranked)check(session.discord_user_id&&cfg.rankedEnabled&&cfg.jevReady&&cfg.discordReady,403,'Ranked play requires configured JEV, Discord sign-in, and production ranking enabled.');
+  if(body.ranked)check(session.discord_user_id&&cfg.rankedEnabled&&cfg.jevReady&&cfg.discordReady,403,'Ranked play requires configured Jev, Discord sign-in, and production ranking enabled.');
   await quota(db,`start:${session.discord_user_id||session.owner_key}`,session.discord_user_id?20:10,3600000);
   await quota(db,'start:global',Number(env.MAX_STARTS_PER_HOUR)||2000,3600000);
   const active=await one(db,`SELECT count(*) AS n FROM matches WHERE (owner_key=? OR discord_user_id=?) AND phase IN ('human_break','jev_break')`,session.owner_key,session.discord_user_id);
@@ -107,7 +107,7 @@ export async function performAction(id,body,session,db,cfg,env,{fetchImpl=fetch,
     const updated=await persist(db,match,state,{receipt,timings});
     await safeEvent(db,'human_action',id,{turn:state.legs.human.history.length});return {match:updated};
   }
-  check(match.phase==='jev_break',422,'It is not JEV’s turn.');
+  check(match.phase==='jev_break',422,'It is not Jev’s turn.');
   if(match.pending&&match.pending.expiresAt>Date.now()) {
     check(match.pending.requestId!==body.requestId||match.pending.requestHash===hash,409,'Request ID reused with different content.');
     return {match,pending:true};

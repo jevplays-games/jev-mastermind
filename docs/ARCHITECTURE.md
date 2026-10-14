@@ -4,21 +4,21 @@ This document summarizes the implemented design. The original planning brief is 
 
 ## A. Game Interpretation
 
-Two legs, human breaks first and JEV second. Four positions, six symbols A–F, repeats allowed, ten guesses, no timer-based score. Human code choice is part of codemaker skill; the two legs are not a same-secret speed race.
+Two legs, human breaks first and Jev second. Four positions, six symbols A–F, repeats allowed, ten guesses, no timer-based score. Human code choice is part of codemaker skill; the two legs are not a same-secret speed race.
 
 ## B. Player Experience
 
-Choose a code and difficulty, play locally or through a configured JEV server, finish both legs, inspect exact post-match analysis, export data/replay, view retained records and permitted leaderboards. Discord login enables identity, not automatic ranked conversion of earlier guest games.
+Choose a code and difficulty, play locally or through a configured Jev server, finish both legs, inspect exact post-match analysis, export data/replay, view retained records and permitted leaderboards. Discord login enables identity, not automatic ranked conversion of earlier guest games.
 
 ## C. Game Rules Engine
 
 `rules.js` is pure and DOM/network independent. It defines validation, action encoding, duplicate-safe feedback, immutable transitions, terminal outcomes, views, serialization and replay reconstruction. Secrets are a separate argument to authoritative transitions, not fields in the public game state. One shared engine serves UI practice, server, verifier and benchmark.
 
-## D. JEV Decision Model
+## D. Jev Decision Model
 
-The engine filters possible secrets and calculates numeric partitions; JEV chooses from supplied candidates. Easy samples up to eight consistent guesses. Normal samples up to 32 with exact features. Hard evaluates all untried codes and supplies up to 64 expected-remaining candidates. JEV level minimax-filters and caps at 128. Final attempts restrict choices to consistent possible secrets. One possible action is forced. Bounded failures use the lowest untried consistent code and remove ranked eligibility.
+The engine filters possible secrets and calculates numeric partitions; Jev chooses from supplied candidates. Easy samples up to eight consistent guesses. Normal samples up to 32 with exact features. Hard evaluates all untried codes and supplies up to 64 expected-remaining candidates. Jev level minimax-filters and caps at 128. Final attempts restrict choices to consistent possible secrets. One possible action is forced. Bounded failures use the lowest untried consistent code and remove ranked eligibility.
 
-## E. JEV State Encoding
+## E. Jev State Encoding
 
 One structured TypeSafe Choice question maps action IDs to candidate features. The state includes only the opponent's feedback history and attempt metadata. Strict response validation checks model, choice membership, maximum probability, complete probability map and confidence. The provider reports probabilities on a 0.01 grain (`PROBABILITY_GRAIN`), so the probability map must sum to 1 within `candidateCount × grain/2` — the worst-case accumulation of that rounding, not arbitrary slack. Deterministic tie handling uses numeric ID. The accepted action and request hash are recorded; a replay never asks the provider to choose again.
 
@@ -31,7 +31,7 @@ flowchart TB
   UI --> Local[Shared engine: unranked practice]
   UI --> AW[Post-match analytics Web Worker]
   API --> Engine[Shared authoritative rules]
-  Engine --> Adapter[Candidate features / JEV adapter]
+  Engine --> Adapter[Candidate features / Jev adapter]
   Adapter --> TS[TypeSafe HTTP]
   API --> Auth[Discord identity and launch]
   Auth --> Discord[Discord HTTP]
@@ -73,7 +73,7 @@ A signed guild `/play` interaction mints a five-minute personal launch ticket. R
 
 ## J. Scoring
 
-Solved leg cost is its guesses; failed leg costs 11. Lower codebreaking cost wins. Equal costs draw, including two failed legs. Forfeit is a separate loss with human penalized cost 11 and no fabricated JEV result.
+Solved leg cost is its guesses; failed leg costs 11. Lower codebreaking cost wins. Equal costs draw, including two failed legs. Forfeit is a separate loss with human penalized cost 11 and no fabricated Jev result.
 
 ## K. Leaderboards
 
@@ -103,7 +103,7 @@ flowchart TD
 
 ## O. Replay Format
 
-`jev-replay-v1` records game/rules/config/difficulty, match ID, commitments, revealed codes/salts, ordered compact guess IDs and sources, finish reason and expected outcome. The browser/CLI verifier proves internal consistency only. JEV requests need not be rerun, and imported files can never create official results.
+`jev-replay-v1` records game/rules/config/difficulty, match ID, commitments, revealed codes/salts, ordered compact guess IDs and sources, finish reason and expected outcome. The browser/CLI verifier proves internal consistency only. Jev requests need not be rerun, and imported files can never create official results.
 
 ## P. UI Layout
 
@@ -111,7 +111,7 @@ Desktop uses two boards, a setup/guess composer, compact structured evidence, an
 
 ## Q. File Structure
 
-`public/` is the static UI and shared engine/analytics modules. `server/` contains the small API and platform integrations. `schema/` owns D1 migration; `tests/` owns independent verification; `bench/` owns simulations; `scripts/` owns explicit operational commands; `docs/` and `reports/` hold specifications/evidence. Additional games can reuse platform boundaries without importing Mastermind state logic.
+`public/` is the static UI and shared engine/analytics modules. `server/` contains the small API and platform integrations. `schema/` owns D1 migration; `tests/` owns independent verification; `bench/` owns simulations; `scripts/` owns explicit operational commands; `docs/` and `reports/` hold specifications/evidence. Additional games can reuse platform boundaries without importing Typecrack state logic.
 
 ## R. Dependencies
 
@@ -121,16 +121,16 @@ No browser or Node local-runtime packages. Wrangler is optional development/depl
 
 Native tests cover rules, features, analytics, complete server matches, leakage, malformed/provider failure responses, OAuth state, signatures, context, idempotency, concurrent/stale calls, source eligibility, shared rankings, cohort isolation and quotas. Independent finite enumeration checks every feedback pair. A conventional HTTP Playwright suite is supplied, with its unperformed status distinguished from executed offline-DOM checks.
 
-## T. JEV Benchmark Plan
+## T. Jev Benchmark Plan
 
 ```mermaid
 flowchart TD
-  History[JEV-only feedback] --> Candidate[Generate and bound legal choices]
+  History[Jev-only feedback] --> Candidate[Generate and bound legal choices]
   Candidate --> Feature[Exact partition features]
   Feature --> Choice{Single forced choice?}
   Choice -->|Yes| Forced[Forced action]
-  Choice -->|No| JEV[Actual TypeSafe Choice request]
-  JEV --> Valid[Validate output and context]
+  Choice -->|No| Jev[Actual TypeSafe Choice request]
+  Jev --> Valid[Validate output and context]
   Valid -->|Success| Action[Legal selected guess]
   Valid -->|Bounded failure| Fallback[Labeled fallback / unranked]
   Forced --> Apply[Rules engine applies guess]
@@ -139,7 +139,7 @@ flowchart TD
   Apply --> History
 ```
 
-The executable harness covers deterministic selector ablations, scripted minimax/expected baselines, seeded random baselines, and opt-in real JEV. Paired comparisons use matched secrets. Included live-provider count is zero; local results do not measure the model's contribution. A live run and corresponding deterministic ablation are required for that claim.
+The executable harness covers deterministic selector ablations, scripted minimax/expected baselines, seeded random baselines, and opt-in real Jev. Paired comparisons use matched secrets. Included live-provider count is zero; local results do not measure the model's contribution. A live run and corresponding deterministic ablation are required for that claim.
 
 ## U. Deployment
 
@@ -147,11 +147,11 @@ One Worker, static assets, D1, Discord application and optional live TypeSafe ke
 
 ## V. Implementation Phases
 
-Pure rules → local interface → authoritative storage → candidate/JEV adapter → recovery/replay → Discord OAuth → signed context → ranked analytics → interface/accessibility → benchmarks → staging. These source layers are implemented; external staging validation is a release gate rather than a claimed completed deployment phase.
+Pure rules → local interface → authoritative storage → candidate/Jev adapter → recovery/replay → Discord OAuth → signed context → ranked analytics → interface/accessibility → benchmarks → staging. These source layers are implemented; external staging validation is a release gate rather than a claimed completed deployment phase.
 
 ## W. Risks and Open Questions
 
-Measured difficulty ordering can depend on whether mean or worst-case guesses are valued. Local Hard has a better measured mean than local JEV, while local JEV has a better measured worst case. Human-selected codes need not follow the uniform benchmark. Real model reliability and platform limits remain unmeasured here. External assistance and membership revocation limitations remain explicit.
+Measured difficulty ordering can depend on whether mean or worst-case guesses are valued. Local Hard has a better measured mean than local Jev, while local Jev has a better measured worst case. Human-selected codes need not follow the uniform benchmark. Real model reliability and platform limits remain unmeasured here. External assistance and membership revocation limitations remain explicit.
 
 ## X. Simplification Pass
 
@@ -159,7 +159,7 @@ No frontend framework, SDK, ORM, Redis, WebSocket, persistent bot, custom launch
 
 ## Y. MVP Definition
 
-The runnable local game, actual live-JEV boundary, four policies, complete post-match analytic exports, server-held codes, verifiable replay, Discord identity/context, three scoped standings, history, recovery and tests are implemented. Public availability additionally requires credentials, deployment, production browser checks and the operator's privacy/retention policy.
+The runnable local game, actual live-Jev boundary, four policies, complete post-match analytic exports, server-held codes, verifiable replay, Discord identity/context, three scoped standings, history, recovery and tests are implemented. Public availability additionally requires credentials, deployment, production browser checks and the operator's privacy/retention policy.
 
 ## Z. Next Implementation Step
 

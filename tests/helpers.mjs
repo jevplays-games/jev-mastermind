@@ -46,5 +46,5 @@ export async function harness({production=false,provider=null}={}) {
       return {hash,id};
     }};
 }
-export const createBody=(overrides={})=>({game:'mastermind',difficulty:'normal',humanCode:[0,0,2,5],ranked:false,requestId:crypto.randomUUID(),...overrides});
+export const createBody=(overrides={})=>({game:'typecrack',difficulty:'normal',humanCode:[0,0,2,5],ranked:false,requestId:crypto.randomUUID(),...overrides});
 export const actionBody=(revision,action)=>({requestId:crypto.randomUUID(),expectedRevision:revision,action});

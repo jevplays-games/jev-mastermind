@@ -1,18 +1,18 @@
-import { getJevView, parseActionId } from '../public/typecrack/rules.js';
+import { getJevView, parseActionId, GAME_ID } from '../public/typecrack/rules.js';
 import { buildCandidates, selectDeterministic, fallbackGuess, CODES, partitionMetrics, consistentSecrets } from '../public/typecrack/strategy.js';
 import { sha256 } from '../public/typecrack/verify.js';
 export const PROVIDER_URL='https://api.typesafe.ai/v1/systemone';
 // Smallest increment the provider reports probabilities on.
 export const PROBABILITY_GRAIN=0.01;
 const instructions={
-  easy:'Choose one consistent Mastermind code. Prefer covering unused symbols, then useful symbol variety. Codes use four positions, six symbols, and repeats. Use only the supplied observations and choices.',
-  normal:'Choose a Mastermind guess using the exact supplied metrics. Prefer low expectedRemaining and worstBucket, then a possible secret. These are uniform-reference metrics, not a model of the human. Never infer a hidden code from outside the history.',
-  hard:'Select the best supplied Mastermind probe or possible solution. Favor minimum expectedRemaining, then a small worstBucket, and the ability to solve now when information quality is comparable. On the last guess, all choices are possible secrets.',
-  jev:'Select the strongest supplied Mastermind guess. Choices have been minimax-filtered (except the final attempt, which only allows possible secrets). Favor lowest expectedRemaining, possible-secret status, then low action ID for otherwise identical choices.'
+  easy:'Choose one consistent Typecrack code. Prefer covering unused symbols, then useful symbol variety. Codes use four positions, six symbols, and repeats. Use only the supplied observations and choices.',
+  normal:'Choose a Typecrack guess using the exact supplied metrics. Prefer low expectedRemaining and worstBucket, then a possible secret. These are uniform-reference metrics, not a model of the human. Never infer a hidden code from outside the history.',
+  hard:'Select the best supplied Typecrack probe or possible solution. Favor minimum expectedRemaining, then a small worstBucket, and the ability to solve now when information quality is comparable. On the last guess, all choices are possible secrets.',
+  jev:'Select the strongest supplied Typecrack guess. Choices have been minimax-filtered (except the final attempt, which only allows possible secrets). Favor lowest expectedRemaining, possible-secret status, then low action ID for otherwise identical choices.'
 };
 export function buildRequest(view,built,model='jev-1.13.0') {
   // Re-project even when called outside the match engine: discard arbitrary extra view keys.
-  const clean={game:'mastermind',difficulty:view.difficulty,attemptNumber:view.attemptNumber,attemptsRemaining:view.attemptsRemaining,
+  const clean={game:GAME_ID,difficulty:view.difficulty,attemptNumber:view.attemptNumber,attemptsRemaining:view.attemptsRemaining,
     consistentSecretCount:built.remainingCount,history:view.history.map(h=>({guessId:h.guessId,guess:[...h.guess],exact:h.exact,misplaced:h.misplaced}))};
   return {model,state:clean,questions:{choose_guess:{type:'choice',instructions:instructions[view.difficulty],criteria:Object.fromEntries(built.candidates.map(c=>{
     const {actionId,guessId,...features}=c;return [actionId,features];

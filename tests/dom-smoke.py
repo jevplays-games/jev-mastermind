@@ -121,5 +121,5 @@ result={'generatedAt':datetime.now(timezone.utc).isoformat(),'harness':'Python P
  'limitations':['Native Chromium HTTP navigation was blocked by administrator URL policy; the policy was not changed.',
  'The DOM harness loads unchanged module logic through data URLs; API transport, storage, downloads, and Web Crypto digest are test bridges.',
  'Cookie, CSRF, origin, and CSP header behavior is covered by separate native integration tests, not this offline DOM test.',
- 'The sample match uses a scripted reference solver; this is not human-subject data or live JEV.']}
+ 'The sample match uses a scripted reference solver; this is not human-subject data or live Jev.']}
 (OUT/'dom-smoke.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps({'passed':len(checks),'failed':0,'runtimeErrors':errors}))
