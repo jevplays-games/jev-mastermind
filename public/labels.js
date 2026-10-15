@@ -1,8 +1,9 @@
 /** Display labels for match analytics and the record page. Pure (no DOM) so the tests import it directly.
- * Local practice is never presented as Jev: the stored difficulty key `jev` is a cohort label for the hardest tier,
- * not a statement about who played, so it is shown by its policy, and the opponent is read from the moves themselves
- * (AGENTS.md: never silently turn local, forced or fallback into jev). Stored keys and exports are unchanged. */
-export const DIFFICULTY_LABELS=Object.freeze({easy:'Easy',normal:'Normal',hard:'Hard',jev:'Minimax-filtered'});
+ * Local practice is never presented as Jev: the opponent is read from the moves themselves (AGENTS.md: never silently
+ * turn local, forced or fallback into jev). Difficulty tiers keep the names of the difficulty menus; the hardest tier is
+ * called Jev there (stored key `jev`), and renaming it is an open product decision, so it is shown as a difficulty
+ * ("Jev difficulty"), never as the opponent. Stored keys and exports are unchanged. */
+export const DIFFICULTY_LABELS=Object.freeze({easy:'Easy',normal:'Normal',hard:'Hard',jev:'Jev'});
 export const FINISH_LABELS=Object.freeze({normal:'Completed',resign:'Resigned',expire:'Expired'});
 export const RESULT_LABELS=Object.freeze({win:'Win',loss:'Loss',draw:'Draw',human_break:'In progress, your leg',jev_break:'In progress, opponent leg',complete:'Complete',forfeit:'Forfeit',void:'Void'});
 export const OPPONENT_LABELS=Object.freeze({local:'Local solver, not Jev',jev:'Jev',jevFallback:'Jev with fallback',fallback:'Fallback selector, not Jev'});
@@ -23,7 +24,7 @@ export function opponentKind(replay,hint=null){
   return null;
 }
 export function opponentLabel(replay,hint=null){const kind=opponentKind(replay,hint);return kind?OPPONENT_LABELS[kind]:null;}
-/** The analytics outcome card's note, for example "Local solver, not Jev · Minimax-filtered · Completed". */
+/** The analytics outcome card's note, for example "Local solver, not Jev · Jev difficulty · Completed". */
 export function outcomeNote(replay,hint=null){
-  return [opponentLabel(replay,hint),difficultyLabel(replay?.difficulty),finishLabel(replay?.finishReason)].filter(Boolean).join(' · ');
+  return [opponentLabel(replay,hint),difficultyLabel(replay?.difficulty)+' difficulty',finishLabel(replay?.finishReason)].filter(Boolean).join(' · ');
 }
