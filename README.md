@@ -1,4 +1,4 @@
-<p align="center"><img src="assets/banner.jpg" alt="Pixel-art robot Jev studying a code-breaker board of colored code pegs and black and white key pegs" width="100%"></p>
+<p align="center"><img src="assets/banner.png" alt="Pink pixel-art banner for Typecrack: the Jev robot sits above a pixel keyboard, below a window of keycap guesses marked with filled and hollow feedback squares" width="100%"></p>
 
 <div align="center">
 
@@ -33,7 +33,7 @@ npm start
 
 Open **http://127.0.0.1:8787**. Use this exact address, not `localhost`: the development server validates the Host header. Stop with Ctrl+C. Its SQLite database is created automatically at `.data/typecrack.sqlite`; a database created there before the rename keeps being used. Node may display an experimental SQLite warning.
 
-The default opponent is prominently labeled **Local solver — not Jev**. Local matches never enter official rankings. To call real Jev, copy `.env.example` to `.env`, provide `TYPESAFE_API_KEY`, and restart. This enables real provider calls but **does not enable ranked play on the loopback development server**. See [deployment](docs/DEPLOYMENT.md) for trusted public deployment and Discord setup.
+The default opponent is a local solver and is never presented as Jev: its board is titled **Local solver**, the header reads **LOCAL OPPONENT / NOT JEV**, and match analytics name it **Local solver, not Jev**. Local matches never enter official rankings. To call real Jev, copy `.env.example` to `.env`, provide `TYPESAFE_API_KEY`, and restart. This enables real provider calls but **does not enable ranked play on the loopback development server**. See [deployment](docs/DEPLOYMENT.md) for trusted public deployment and Discord setup.
 
 Choose a four-symbol code, then break the server's independently generated code. Jev subsequently breaks yours. Feedback is **exact / near**: a correct symbol in its correct position versus a correct symbol in a different position, without double-counting repeats. Lower codebreaking cost wins; an unsolved leg costs 11. Equal costs draw. No time bonuses or arbitrary points.
 
@@ -104,7 +104,8 @@ npm run test:browser
 
 | Path | Contents |
 |---|---|
-| `public/` | Static UI (`index.html`, `game.js`, `game.css`), shared brand files, art |
+| `public/` | Static UI (`index.html`, `game.js`, `labels.js`, `game.css`), shared brand files, art |
+| `assets/` | README banner, GitHub social preview, and their HTML sources plus the offline renderer (`node assets/src/render.mjs`, which also writes `public/brand/og.png`) |
 | `public/typecrack/` | Pure rules, strategy, analytics and replay verification shared by browser, server and benchmark |
 | `server/` | Worker entry, API, Jev adapter, Discord and auth integrations, Node development server |
 | `schema/` | D1 migration |

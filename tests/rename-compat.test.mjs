@@ -4,6 +4,8 @@ import {readFileSync} from 'node:fs';
 import {createInitialState,applyAction,makeReplay,reconstructReplay,serialize,deserialize,GAME_ID} from '../public/typecrack/rules.js';
 import {randomToken,createCommitments,verifyReplay,COMMIT_LABEL,LEGACY_COMMIT_LABELS} from '../public/typecrack/verify.js';
 import {handle} from '../server/worker.js';
+import {maintenance} from '../server/matches.js';
+import {one,run} from '../server/db.js';
 import {config} from '../server/security.js';
 import {harness,createBody} from './helpers.mjs';
 const legacyReplay=JSON.parse(readFileSync(new URL('./fixtures/legacy-mastermind-replay.json',import.meta.url),'utf8'));
@@ -77,7 +79,8 @@ test('the pre-rename hostname keeps being served on its own origin until cutover
     const smuggled=[['https://user:pw@evil.example','forbidden_character'],['https://evil.example#@mastermind.jevplay.games','forbidden_character'],
       ['https://evil.example/path','not_bare_origin'],['https://evil.example?q=1','forbidden_character'],['https://*.jevplay.games','forbidden_character'],
       ['https://a.jevplay.games;https://b.example','not_bare_origin'],['https://a.jevplay.games;evil','invalid_host'],
-      ['https://evil.example:443','not_bare_origin'],['https://Evil.example','not_bare_origin']];
+      ['https://evil.example:443','not_bare_origin'],['https://Evil.example','not_bare_origin'],
+      ['https://:pw@evil.example','forbidden_character'],['https://user@evil.example','forbidden_character'],['https://evil.example?','forbidden_character'],['https://evil.example#','forbidden_character']];
     for(const [LEGACY_ORIGINS] of smuggled){
       const bad={...env,LEGACY_ORIGINS:'https://mastermind.jevplay.games, '+LEGACY_ORIGINS};
       assert.deepEqual(config(bad).legacyOrigins,['https://mastermind.jevplay.games'],LEGACY_ORIGINS);
@@ -103,4 +106,43 @@ test('Discord /play accepts the new typecrack choice and the pre-rename mastermi
       const button=(await r.json()).data.components[0].components[0];assert.equal(new URL(button.url).pathname,'/play/typecrack');assert.equal(button.label,'Play Typecrack vs Jev');}
     assert.equal((await launch('checkers','999999999999999993')).status,400);
   }finally{h.close();}
+});
+
+// Matches in progress at deploy time were stored by the pre-rename server with game:"mastermind". These rows are real:
+// tests/fixtures/legacy-mastermind-matches.json was produced by tests/fixtures/make-legacy-matches.mjs running the
+// pre-rename code (git archive 931c7f6). Every terminal transition re-verifies the match from its replay, which is
+// rebuilt as "typecrack"; the stored legacy id must not make that check fail (HTTP 500, match stuck as active).
+const legacyMatches=JSON.parse(readFileSync(new URL('./fixtures/legacy-mastermind-matches.json',import.meta.url),'utf8')).rows;
+async function withLegacyMatch(phase,patch={}){
+  const h=await harness(),{owner_key}=await one(h.db,'SELECT owner_key FROM web_sessions');
+  const row={...legacyMatches.find(r=>r.phase===phase),owner_key,...patch},cols=Object.keys(row);
+  assert.equal(JSON.parse(row.state_json).game,'mastermind');
+  await run(h.db,`INSERT INTO matches(${cols.join(',')}) VALUES(${cols.map(()=>'?').join(',')})`,...cols.map(c=>row[c]));
+  return {h,id:row.id};
+}
+const act=async(h,m,action)=>{const r=await h.request('/api/matches/'+m.matchId+'/actions',{method:'POST',body:{requestId:crypto.randomUUID(),expectedRevision:m.revision,action}});assert.equal(r.status,200,JSON.stringify(r.data));return r.data;};
+async function assertFinishedAndVerified(h,m){
+  assert.ok(['complete','forfeit'].includes(m.phase),m.phase);assert.equal(m.verified,true);
+  const replay=(await h.request('/api/matches/'+m.matchId+'/replay')).data;
+  assert.equal((await verifyReplay(replay)).valid,true);
+  assert.equal((await one(h.db,"SELECT COUNT(*) AS n FROM matches WHERE phase IN ('human_break','jev_break')")).n,0,'no match left active');
+}
+test('a match stored before the rename in the opponent leg finishes by play',async()=>{
+  const {h,id}=await withLegacyMatch('jev_break');try{
+    let m=(await h.request('/api/matches/'+id)).data;assert.equal(m.phase,'jev_break');
+    for(let i=0;i<12&&m.phase==='jev_break';i++)m=await act(h,m,{type:'STEP_JEV'});
+    assert.equal(m.phase,'complete');await assertFinishedAndVerified(h,m);
+  }finally{h.close();}
+});
+test('a match stored before the rename can be resigned in either leg',async()=>{
+  for(const phase of ['human_break','jev_break']){const {h,id}=await withLegacyMatch(phase);try{
+    const m=await act(h,(await h.request('/api/matches/'+id)).data,{type:'RESIGN'});
+    assert.equal(m.phase,'forfeit',phase);await assertFinishedAndVerified(h,m);
+  }finally{h.close();}}
+});
+test('a match stored before the rename expires cleanly when read and in maintenance',async()=>{
+  for(const via of ['read','maintenance']){const {h,id}=await withLegacyMatch('human_break',{expires_at:Date.now()-1000});try{
+    if(via==='read'){const r=await h.request('/api/matches/'+id);assert.equal(r.status,200,JSON.stringify(r.data));await assertFinishedAndVerified(h,r.data);}
+    else{await maintenance(h.db,config(h.env),h.env);const row=await one(h.db,'SELECT phase,verified_at FROM matches WHERE id=?',id);assert.equal(row.phase,'forfeit');assert.ok(row.verified_at);}
+  }finally{h.close();}}
 });

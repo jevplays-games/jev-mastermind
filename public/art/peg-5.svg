@@ -1,13 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
-<defs>
-<linearGradient id="e" x1="0.2" y1="0.05" x2="0.8" y2="1"><stop offset="0" stop-color="#fdd8be"/><stop offset="0.4" stop-color="#f97316"/><stop offset="1" stop-color="#893f0c"/></linearGradient>
-<radialGradient id="f" cx="0.36" cy="0.3" r="0.85"><stop offset="0" stop-color="#fa9249"/><stop offset="0.5" stop-color="#f97316"/><stop offset="1" stop-color="#ae510f"/></radialGradient>
-<linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity="0.6"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient>
-</defs>
-<circle cx="33.5" cy="35" r="28" fill="#04050a" fill-opacity="0.45"/>
-<circle cx="32.8" cy="33.6" r="28.5" fill="#502507"/>
-<circle cx="32" cy="32" r="28.5" fill="url(#e)"/>
-<circle cx="32" cy="32" r="23" fill="url(#f)"/>
-<ellipse cx="29" cy="20" rx="15" ry="9" fill="url(#g)"/>
-<path d="M17 28A16 16 0 0 1 28 16" fill="none" stroke="#fff" stroke-opacity="0.85" stroke-width="3" stroke-linecap="round"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" shape-rendering="crispEdges"><title>Symbol F</title><path fill="#DEDEDE" fill-rule="evenodd" d="M7 5H54V8H56V54H54V56H8V54H5V8H7Z"/><path fill="#1E1E1E" fill-rule="evenodd" d="M7 4H54V7H57V10H60V57H57V60H10V57H7V54H4V7H7Z M7 5H54V8H56V54H54V56H8V54H5V8H7Z M20 17H40V21H24V29H36V33H24V45H20Z M9 17l6 -6v3l-6 6ZM46 17l6 -6v3l-6 6ZM9 29l6 -6v3l-6 6ZM46 29l6 -6v3l-6 6ZM9 41l6 -6v3l-6 6ZM46 41l6 -6v3l-6 6ZM9 53l6 -6v3l-6 6ZM46 53l6 -6v3l-6 6Z"/><path fill="#FEFEFE" fill-rule="evenodd" d="M7 5H54V7H9V9H7V54H5V8H7Z"/></svg>

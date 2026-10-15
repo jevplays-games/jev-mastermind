@@ -5,7 +5,7 @@ import { resolve,extname,sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { openDatabase } from './node-db.mjs';
 import { handle } from './worker.js';
-import { config } from './security.js';
+import { config,parseLegacyOrigins } from './security.js';
 import { maintenance } from './matches.js';
 const root=fileURLToPath(new URL('../',import.meta.url));
 try{process.loadEnvFile(resolve(root,'.env'));}catch(error){if(error.code!=='ENOENT')throw error;}
@@ -29,17 +29,19 @@ const assets={async fetch(request){
   catch{return new Response('Not found',{status:404});}
 }};
 const env=prod?{...process.env,APP_ORIGIN:origin,LOCAL_DEV:'false',DB:db,ASSETS:assets}:{...process.env,APP_ORIGIN:origin,LOCAL_DEV:'true',DB:db,ASSETS:assets,RANKED_ENABLED:'false'};
+// Like the Worker, answer each LEGACY_ORIGINS host (same D9 parsing: bad entries are skipped and logged) on its own origin.
+const servedOrigins=new Map([[new URL(origin).host,origin],...parseLegacyOrigins(env).map(o=>[new URL(o).host,o])]);
 const server=createServer(async(req,res)=>{
   try{
     const first=v=>String(v||'').split(',').pop().trim();
     const host=prod&&trustProxy&&req.headers['x-forwarded-host']?first(req.headers['x-forwarded-host']):req.headers.host;
     const health=req.method==='GET'&&['/api/health','/','/index.html'].includes(req.url.split('?')[0]);// platform probes arrive with a preview Host; these serve only static, non-sensitive content
-    if(host!==new URL(origin).host&&!health){res.writeHead(421);res.end('Use '+origin);return;}
+    if(!servedOrigins.has(host)&&!health){res.writeHead(421);res.end('Use '+origin);return;}
     const parts=[];let total=0;for await(const chunk of req){total+=chunk.length;if(total>65536){res.writeHead(413);res.end();return;}parts.push(chunk);}
     const headers={...req.headers};delete headers['cf-connecting-ip'];
     // The Worker buckets clients by CF-Connecting-IP. Derive it here from the socket, or from the nearest proxy hop when TRUST_PROXY=1.
     const ip=(trustProxy&&first(req.headers['x-forwarded-for']))||req.socket.remoteAddress;if(ip)headers['cf-connecting-ip']=ip;
-    const request=new Request(origin+req.url,{method:req.method,headers,...(!['GET','HEAD'].includes(req.method)?{body:Buffer.concat(parts)}:{})});
+    const request=new Request((servedOrigins.get(host)??origin)+req.url,{method:req.method,headers,...(!['GET','HEAD'].includes(req.method)?{body:Buffer.concat(parts)}:{})});
     const response=await handle(request,env);res.writeHead(response.status,Object.fromEntries(response.headers));res.end(Buffer.from(await response.arrayBuffer()));
   }catch{res.writeHead(500);res.end('Local server error');}
 });

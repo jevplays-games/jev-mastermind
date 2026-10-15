@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Typecrack social preview</title>
+<style>
+@font-face{font-family:Inter;src:url('../../public/brand/inter-var.woff2') format('woff2');font-weight:100 900;font-display:block}
+@font-face{font-family:VT323;src:url('../../public/brand/vt323.woff2') format('woff2');font-display:block}
+:root{--pink:#F386A1;--ink:#1E1E1E;--paper:#FEFEFE;--grey:#DEDEDE}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden}body{background:var(--pink);color:var(--ink);font-family:VT323,'JetBrains Mono',Consolas,monospace}.background{position:absolute;inset:0;width:100%;height:100%}.frame{position:absolute;inset:18px;border:1px solid var(--ink)}.crop{position:absolute;width:25px;height:25px;border:solid var(--ink);border-width:1px 0 0 1px;left:5px;top:5px}.tr{left:auto;right:5px;transform:rotate(90deg)}.bl{top:auto;bottom:5px;transform:rotate(-90deg)}.br{left:auto;right:5px;top:auto;bottom:5px;transform:rotate(180deg)}.tag{position:absolute;left:48px;top:48px;background:var(--ink);color:var(--pink);border:1px dotted var(--pink);outline:1px solid var(--ink);padding:5px 11px;font-size:24px;letter-spacing:1px}h1{position:absolute;left:42px;top:170px;margin:0;font:700 120px/1.1 Inter,sans-serif;letter-spacing:-.05em}.subtitle{position:absolute;left:48px;top:322px;margin:0;padding:7px 12px;background:var(--ink);color:var(--paper);font-size:32px;line-height:1;white-space:nowrap}.chips{position:absolute;left:48px;top:389px;display:flex;gap:12px}.chips span{background:var(--grey);border:1px solid var(--ink);box-shadow:inset 0 0 0 2px var(--paper);padding:6px 12px;font-size:28px}.url{position:absolute;bottom:49px;left:48px;font-size:30px;background:var(--pink);padding:0 4px}.footer{position:absolute;right:48px;bottom:49px;font-size:25px;background:var(--pink);padding:0 4px}.window{position:absolute;right:49px;top:181px;width:425px;background:var(--grey);border:1px solid var(--ink);box-shadow:inset 0 0 0 2px var(--paper),3px 3px 0 var(--ink)}.title{height:37px;background:var(--ink);color:var(--paper);display:flex;justify-content:space-between;align-items:center;padding:0 12px;font-size:27px}.rows{padding:19px 13px 22px}.row{display:flex;align-items:center;gap:3px;height:86px}.key,.hidden{width:68px;height:68px}.hidden{position:relative;display:block;flex-shrink:0}.hidden img{width:100%;height:100%}.crack{position:absolute;inset:0;width:100%;height:100%}.feedback{display:flex;margin-left:10px;gap:1px}.feedback img{width:36px;height:36px}
+</style>
+<script>
+const params=new URLSearchParams(location.search);
+for(const [key,fallback] of [['w',1200],['h',630]]){const value=Number(params.get(key)??fallback);if(!Number.isInteger(value)||value<600||value>4000)throw new Error('Invalid image dimension: '+key);document.documentElement.style[key==='w'?'width':'height']=value+'px';}
+</script>
+</head>
+<body>
+<svg class="background" aria-hidden="true"><defs><pattern id="dots" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".6" fill="#1E1E1E"/></pattern><pattern id="dense" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1.2" fill="#1E1E1E"/></pattern><pattern id="core" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1.8" fill="#1E1E1E"/></pattern></defs><rect width="100%" height="100%" fill="url(#dots)" opacity=".4"/><g opacity=".4"><circle cx="94%" cy="26%" r="205" fill="url(#dense)"/><circle cx="94%" cy="26%" r="132" fill="url(#core)"/><circle cx="55%" cy="94%" r="140" fill="url(#dense)"/><circle cx="55%" cy="94%" r="82" fill="url(#core)"/></g></svg>
+<div class="frame"></div><div class="crop"></div><div class="crop tr"></div><div class="crop bl"></div><div class="crop br"></div>
+<div class="tag">JEVPLAY.GAMES/TYPECRACK</div>
+<h1>Typecrack</h1>
+<p class="subtitle">Break the code. Then defend yours.</p>
+<div class="chips"><span>+deduction</span><span>+analytics</span></div>
+<section class="window"><div class="title"><span>GUESS</span><span>_ x</span></div><div class="rows">
+<div class="row"><img class="key" src="../../public/art/peg-0.svg" alt="A"><img class="key" src="../../public/art/peg-1.svg" alt="B"><img class="key" src="../../public/art/peg-2.svg" alt="C"><img class="key" src="../../public/art/peg-1.svg" alt="B"><div class="feedback"><img src="../../public/art/pin-exact.svg" alt="exact"><img src="../../public/art/pin-near.svg" alt="near"></div></div>
+<div class="row"><img class="key" src="../../public/art/peg-4.svg" alt="E"><img class="key" src="../../public/art/peg-5.svg" alt="F"><img class="key" src="../../public/art/peg-0.svg" alt="A"><span class="hidden"><img src="../../public/art/peg-hidden.svg" alt="Hidden keycap with a magenta crack"><svg class="crack" viewBox="0 0 64 64" aria-hidden="true"><path d="M43 6L36 15L43 22L35 31L41 39L34 49L38 55" fill="none" stroke="#E551BA" stroke-width="4"/></svg></span><div class="feedback"><img src="../../public/art/pin-exact.svg" alt="exact"><img src="../../public/art/pin-exact.svg" alt="exact"></div></div>
+</div></section>
+<div class="url">typecrack.jevplay.games</div><div class="footer">jevplay.games</div>
+</body>
+</html>

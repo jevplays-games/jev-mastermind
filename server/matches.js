@@ -54,7 +54,10 @@ export async function createMatch(body,session,db,cfg,env) {
 async function terminalFields(state,match,audit,timings) {
   if(!isTerminal(state))return {outcome:null,finishReason:null,humanCost:null,jevCost:null,summary:null,verifiedAt:null,finishedAt:null};
   const replay=makeReplay(state,match.secrets),verified=await verifyReplay(replay);
-  check(canonical(verified.state)===canonical(state),500,'Authoritative replay verification failed.');
+  // Rows stored before the rename carry the legacy game id; the replay is always rebuilt as the current id, so compare
+  // with the stored id (any accepted id) and every other field exactly.
+  const rebuilt=isGameId(state.game)?{...verified.state,game:state.game}:verified.state;
+  check(canonical(rebuilt)===canonical(state),500,'Authoritative replay verification failed.');
   check(state.configId===match.config.configId&&state.difficulty===match.difficulty,500,'Configuration verification failed.');
   const aiActions=state.actions.filter(a=>a.actor==='jev');
   check(aiActions.length===audit.length,500,'Decision audit is incomplete.');
