@@ -82,7 +82,10 @@ footer{display:flex;justify-content:space-between;gap:var(--s4);flex-wrap:wrap;w
 /* 900-939px: the setup panel's three columns leave the secret palette a few pixels short of six keys at the normal gap. */
 @media(min-width:900px) and (max-width:939px){#page-play>#setup .palette{gap:var(--s1)}}
 @media(max-width:939px) and (max-height:640px){.board-heading{display:none}.board-panel{--fit-reserve:12.5rem;padding:var(--s1) var(--s2)}}
-@media(min-width:860px) and (max-width:1499px){.jv-header .jv-wordmark,.jv-header .jv-sep,#jv-controls #identity{display:none!important}}
+/* The jevplay.games wordmark needs about 140px beside the five tabs and sign-in: hidden only where the header is too
+   narrow for it (from 1400px the title and the longest provenance badge stay whole on one line beside it). */
+@media(min-width:860px) and (max-width:1399px){.jv-header .jv-wordmark,.jv-header .jv-sep{display:none!important}}
+@media(min-width:860px) and (max-width:1499px){#jv-controls #identity{display:none!important}}
 @media(min-width:860px) and (max-width:1279px){#jv-controls{flex:0 0 auto;overflow:visible;max-width:none}.jv-brand{flex:0 1 auto;min-width:0}.jv-status{max-width:11rem;padding:var(--s1) var(--s2);line-height:1.15;font-size:var(--fs-2xs);letter-spacing:0}#jv-controls .jv-nav .tab,#jv-controls #login{padding-inline:var(--s2);font-size:var(--fs-2xs)}.jv-header{gap:var(--s2)}}
 @media(min-width:860px) and (max-width:999px){.jv-status{max-width:8.5rem}.jv-brand{gap:var(--s2)}.jv-title{font-size:var(--fs-sm)}}
 /* Wide and not tall: human board, opponent board and the controls side by side (from 940px, where they fit). */
