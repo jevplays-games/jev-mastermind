@@ -2,6 +2,7 @@ import { SYMBOLS,createInitialState,applyAction,isTerminal,makeReplay,decodeGues
 import { randomCode,randomToken,createCommitments,verifyReplay } from './typecrack/verify.js';
 import { buildCandidates,selectDeterministic } from './typecrack/strategy.js';
 import { csvText } from './typecrack/analytics.js';
+import { outcomeNote,difficultyLabel,resultLabel } from './labels.js';
 const $=id=>document.getElementById(id);
 const storage={get(key,fallback=null){try{return JSON.parse(localStorage.getItem('mm:'+key))??fallback;}catch{return fallback;}},set(key,value){try{localStorage.setItem('mm:'+key,JSON.stringify(value));}catch{}}};
 const view={session:null,match:null,practice:null,secret:storage.get('secret',[0,0,2,5]),guess:[null,null,null,null],selected:{secret:0,guess:0},editor:'secret',busy:false,driving:false,
@@ -97,7 +98,8 @@ function render(){
   $('resign').classList.toggle('hidden',!m||terminal);$('nextMatch').classList.toggle('hidden',!terminal);$('reviewMatch').classList.toggle('hidden',!terminal);
   $('resign').disabled=view.busy;$('stepJev').disabled=view.busy||view.driving;$('start').disabled=!view.session||view.busy||view.secret.some(n=>n==null);$('localStart').disabled=view.busy||view.secret.some(n=>n==null);
   const local=view.practice||m?.opponent?.startsWith('Local')||!view.session?.capabilities.jev;
-  $('jev-title').textContent=local?'Local solver':'Jev';
+  $('jev-title').textContent=local?'Local solver':'Jev';document.querySelector('.jev-avatar').textContent=local?'L':'J';
+  $('setup-title').textContent=view.session?.capabilities.jev?'Choose the code Jev will break':'Choose the code the local solver will break';
   $('modeBadge').textContent=view.practice?'BROWSER PRACTICE / NOT JEV':local?'LOCAL OPPONENT / NOT JEV':m?.eligible?'RANKED / JEV':'JEV / PRACTICE';
   $('start').textContent=view.session?.capabilities.jev?'Start Jev match →':'Start local-server match →';
   $('matchStatus').className='match-status'+(m?'':' hidden')+(terminal?` jv-plaque is-${m.outcome==='win'?'win':m.outcome==='draw'?'draw':'loss'}`:'');
@@ -252,7 +254,7 @@ function renderAnalysis(){
   $('analysisStats').replaceChildren(stat('Your guesses',r.score.humanCost===11?'Unsolved / 11':fmt(r.score.humanCost,0),r.finishReason==='normal'?'Failure has cost 11':'Forfeit cost'),
     stat('Opponent guesses',r.score.jevCost===11?'Unsolved / 11':fmt(r.score.jevCost,0),'No invented opponent score for forfeits'),
     stat('Your information gained',fmt(r.human.summary.totalInformationBits)+' bits','Uniform-reference uncertainty reduction'),
-    stat('Outcome',r.outcome[0].toUpperCase()+r.outcome.slice(1),r.difficulty+' · '+r.finishReason));
+    stat('Outcome',resultLabel(r.outcome),outcomeNote(view.analysisReplay??r,view.imported?null:view.match?.opponent)));
   entropyChart(r);
   $('qualitySummary').replaceChildren();for(const [label,h,j]of [
     ['Minimax-optimal moves',r.human.summary.minimaxOptimalMoves,r.jev.summary.minimaxOptimalMoves],
@@ -301,11 +303,11 @@ async function loadRecord(append=false){
   const data=await api('/analytics/me'+(append&&view.recordCursor?'?before='+encodeURIComponent(view.recordCursor):''));
   view.record=data;view.recordRows=append?[...view.recordRows,...data.recent]:data.recent;view.recordCursor=data.nextCursor;
   $('recordCoverage').textContent=data.coverage;$('recordStats').replaceChildren(...[['Started',data.totals.started],['Completed',data.totals.completed],['Forfeits',data.totals.forfeits],['Ranked results',data.totals.ranked_results]].map(([k,v])=>stat(k,fmt(v,0))));
-  table('recordGroups',[{label:'Config',render:r=>r.config_id},{label:'Difficulty',key:'difficulty'},{label:'Games',key:'games'},{label:'W / L / D',render:r=>`${r.wins} / ${r.losses} / ${r.draws}`},
+  table('recordGroups',[{label:'Config',render:r=>r.config_id},{label:'Difficulty',render:r=>difficultyLabel(r.difficulty)},{label:'Games',key:'games'},{label:'W / L / D',render:r=>`${r.wins} / ${r.losses} / ${r.draws}`},
     {label:'Match points',render:r=>pct(r.matchPointsPercentage)},{label:'Human solve rate',render:r=>pct(r.humanSolveRate)},{label:'Avg cost',render:r=>fmt(r.average_penalized_guesses)},
     {label:'Fallback moves',key:'fallback_moves'},{label:'Repeated guesses',key:'repeated_guesses'}],data.groups);
-  table('recordStreaks',[{label:'Configuration',key:'configId'},{label:'Difficulty',key:'difficulty'},{label:'Current win streak',key:'currentWinStreak'},{label:'Best win streak',key:'bestWinStreak'}],data.streaks);
-  table('recordHistory',[{label:'Created',render:r=>new Date(r.created_at).toLocaleString()},{label:'Difficulty',key:'difficulty'},{label:'Outcome',render:r=>r.outcome||r.phase},{label:'You / opponent',render:r=>`${r.human_cost??'—'} / ${r.jev_cost??'—'}`},
+  table('recordStreaks',[{label:'Configuration',key:'configId'},{label:'Difficulty',render:r=>difficultyLabel(r.difficulty)},{label:'Current win streak',key:'currentWinStreak'},{label:'Best win streak',key:'bestWinStreak'}],data.streaks);
+  table('recordHistory',[{label:'Created',render:r=>new Date(r.created_at).toLocaleString()},{label:'Difficulty',render:r=>difficultyLabel(r.difficulty)},{label:'Outcome',render:r=>resultLabel(r.outcome||r.phase)},{label:'You / opponent',render:r=>`${r.human_cost??'—'} / ${r.jev_cost??'—'}`},
     {label:'Ranked',render:r=>r.eligible&&r.verified_at?'Yes':'No'},{label:'Open',render:r=>{const b=node('button',{},'Review');b.addEventListener('click',async()=>{try{await loadMatch(r.id);showPage(isTerminal(view.match)?'analysis':'play');}catch(e){errorNotice(e);}});return b;}}],view.recordRows);
   $('moreHistory').classList.toggle('hidden',!data.nextCursor);
 }
