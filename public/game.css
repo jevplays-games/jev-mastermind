@@ -36,6 +36,9 @@ footer{display:flex;justify-content:space-between;gap:var(--s4);flex-wrap:wrap;w
 .match-status.jv-plaque{justify-content:space-between;border-radius:var(--radius-lg,18px);padding:var(--s3) var(--s4);text-align:left;margin-bottom:var(--s4)}.match-status.jv-plaque::before{width:44px;height:44px}.match-status.is-win{--plaque-art:url(/brand/result-win.svg)}.match-status.is-draw{--plaque-art:url(/brand/result-draw.svg)}.match-status.is-loss{--plaque-art:url(/brand/result-loss.svg)}.match-status.jv-plaque>div:first-of-type{flex:1 1 16rem;min-width:0}.match-status.jv-plaque .muted,.match-status.jv-plaque .eyebrow{color:var(--ink)}
 .jv-panel.empty{--empty-art:url(/art/peg-hidden.svg)}#evidenceBody>.muted:only-child{display:flex;flex-direction:column;align-items:center;text-align:center;gap:var(--s3);padding:var(--s4)}#evidenceBody>.muted:only-child::before{content:"";width:56px;height:56px;background:var(--empty-art) center/contain no-repeat}
 /* ---------- Layout: the board and the move composer share one screen ---------- */
+/* The header is sticky, so anything scrolled into view (keyboard focus, the skip link's and "How to play" targets)
+   stops below it instead of underneath: tabbing backwards used to leave the palette keys hidden under the header. */
+html{scroll-padding-top:calc(var(--header-h) + var(--sa-t) + var(--s2))}
 .board-panel .peg{--peg:inherit}
 .guess-row{min-height:calc(var(--peg) + .6rem);padding:3px var(--row-pad)}
 .jv-status{overflow:visible;white-space:normal;max-width:none;flex:0 1 auto}
