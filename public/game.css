@@ -129,7 +129,7 @@ footer{display:flex;justify-content:space-between;gap:var(--s4);flex-wrap:wrap;w
   .jv-main{padding:var(--s1) var(--s2)}
   .board-panel:not(.opponent-panel){--fit-reserve:1.75rem;--peg:.8rem;--peg:clamp(.55rem,calc((100vh - var(--header-h) - var(--fit-reserve)) / 10 - .3rem),2rem);--peg:clamp(.55rem,calc((100dvh - var(--header-h) - var(--fit-reserve)) / 10 - .3rem),2rem);padding:2px}
   .opponent-panel,.counter,.match-status .eyebrow,#reviewMatch,#resign,#guessComposer p{display:none!important}
-  .guess-row{--row-pad:2px;grid-template-columns:1rem max-content 2.2rem;min-height:calc(var(--peg) + .3rem);padding:0 var(--row-pad)}.guess-pegs{gap:2px}.guess-number{font-size:.5rem}.feedback{font-size:.55rem}.feedback.has-score .exact::before,.feedback.has-score .near::before{width:.6rem;height:.6rem}
+  .guess-row{--row-pad:2px;grid-template-columns:1rem max-content 2.8rem;min-height:calc(var(--peg) + .3rem);padding:0 var(--row-pad)}.feedback .exact,.feedback .near{min-width:0}.guess-pegs{gap:2px}.guess-number{font-size:.5rem}.feedback{font-size:.55rem}.feedback.has-score .exact::before,.feedback.has-score .near::before{width:.6rem;height:.6rem}
   .board.jv-tray{padding:2px var(--s1)}
   #page-play>#matchStatus,#page-play>#matchStatus.jv-plaque{padding:0;gap:var(--s1);background:none;border:0;box-shadow:none;min-height:0;margin:0 0 var(--s1)}
   .match-status h2,.match-status.jv-plaque h2{font-size:var(--fs-xs)}.match-status.jv-plaque::before{width:18px;height:18px}.match-status.jv-plaque p{display:none}
