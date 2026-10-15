@@ -33,7 +33,7 @@ footer{display:flex;justify-content:space-between;gap:var(--s4);flex-wrap:wrap;w
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
 /* Result plaque: the match-status block becomes the plaque in place, medal on the left. */
-.match-status.jv-plaque{justify-content:space-between;border-radius:var(--radius-lg,18px);padding:var(--s3) var(--s4);text-align:left;margin-bottom:var(--s4)}.match-status.jv-plaque::before{width:44px;height:44px}.match-status.is-win{--plaque-art:url(/brand/result-win.svg)}.match-status.is-draw{--plaque-art:url(/brand/result-draw.svg)}.match-status.is-loss{--plaque-art:url(/brand/result-loss.svg)}.match-status.jv-plaque>div:first-of-type{flex:1;min-width:0}
+.match-status.jv-plaque{justify-content:space-between;border-radius:var(--radius-lg,18px);padding:var(--s3) var(--s4);text-align:left;margin-bottom:var(--s4)}.match-status.jv-plaque::before{width:44px;height:44px}.match-status.is-win{--plaque-art:url(/brand/result-win.svg)}.match-status.is-draw{--plaque-art:url(/brand/result-draw.svg)}.match-status.is-loss{--plaque-art:url(/brand/result-loss.svg)}.match-status.jv-plaque>div:first-of-type{flex:1 1 16rem;min-width:0}.match-status.jv-plaque .muted,.match-status.jv-plaque .eyebrow{color:var(--ink)}
 .jv-panel.empty{--empty-art:url(/art/peg-hidden.svg)}#evidenceBody>.muted:only-child{display:flex;flex-direction:column;align-items:center;text-align:center;gap:var(--s3);padding:var(--s4)}#evidenceBody>.muted:only-child::before{content:"";width:56px;height:56px;background:var(--empty-art) center/contain no-repeat}
 /* ---------- Layout: the board and the move composer share one screen ---------- */
 .board-panel .peg{--peg:inherit}
@@ -76,7 +76,7 @@ footer{display:flex;justify-content:space-between;gap:var(--s4);flex-wrap:wrap;w
 /* Wide and not tall: human board, opponent board and the controls side by side. */
 @media(min-width:860px) and (max-height:950px){
   .jv-main{padding-block:var(--s3) calc(var(--s3) + var(--sa-b))}
-  #page-play{display:grid;grid-template-columns:auto auto minmax(20rem,1fr);column-gap:var(--s4);align-items:start;align-content:start}
+  #page-play{display:grid;grid-template-columns:auto auto minmax(20rem,1fr);grid-template-rows:auto auto auto auto 1fr;column-gap:var(--s4);align-items:start;align-content:start}
   .boards{display:contents}
   .board-panel{--fit-reserve:8.5rem;--peg:1.8rem;--peg:clamp(1.1rem,min(calc((100vw - 43rem) / 8),calc((100vh - var(--header-h) - var(--fit-reserve)) / 10 - .6rem)),2.6rem);--peg:clamp(1.1rem,min(calc((100vw - 43rem) / 8),calc((100dvh - var(--header-h) - var(--fit-reserve)) / 10 - .6rem)),2.6rem);padding:var(--s3);width:max-content;grid-row:1/span 5;margin:0}
   .board-panel:not(.opponent-panel){grid-column:1}.opponent-panel{grid-column:2}
