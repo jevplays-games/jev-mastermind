@@ -8,8 +8,8 @@
     },
     {
       "path": "public/labels.js",
-      "bytes": 2609,
-      "gzipBytes": 1193
+      "bytes": 2684,
+      "gzipBytes": 1221
     },
     {
       "path": "public/typecrack/rules.js",
@@ -40,10 +40,10 @@
   "css": [
     {
       "path": "public/game.css",
-      "bytes": 31737,
-      "gzipBytes": 7315
+      "bytes": 31941,
+      "gzipBytes": 7364
     }
   ],
-  "javascriptGzipTotal": 24443,
-  "cssGzipTotal": 7315
+  "javascriptGzipTotal": 24471,
+  "cssGzipTotal": 7364
 }

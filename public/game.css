@@ -28,7 +28,7 @@ footer{display:flex;justify-content:space-between;gap:var(--s4);flex-wrap:wrap;w
    .boards is .jv-first but sits inside #page-play, not directly in .jv-main,
    so the shared rule cannot reach it and this mirrors it one level down. */
 @media(max-width:600px),(max-height:950px){#page-play{display:flex;flex-direction:column}#page-play>#matchStatus{order:-4}#page-play>.boards{order:-3}#page-play>#guessComposer{order:-2}#page-play>#jevControls,#page-play>#retryRequest{order:-1}}
-@media(max-width:600px){.analytics-grid{gap:var(--s4);margin-bottom:var(--s4)}.hero{padding:0 0 var(--s2);align-items:flex-start}.hero>div:first-child{min-width:0}.hero-meta{text-align:left;align-items:flex-start;flex-direction:row;flex-wrap:wrap;gap:var(--s4);align-items:center}.intro{font-size:var(--fs-sm)}.jv-panel{margin-bottom:var(--s4)}.setup-grid{grid-template-columns:1fr;gap:var(--s4)}.setup-start{grid-column:auto;flex-wrap:wrap}.setup-start .primary{flex:1}.setup-start p{max-width:none;flex-basis:100%}.setup-panel h2{font-size:var(--fs-md)}.opponent-panel{opacity:.92}.board-panel{--peg:clamp(1.65rem,7.4vw,2.2rem)}.board-columns,.guess-row{grid-template-columns:2rem minmax(0,1fr) 4.25rem}.match-status{align-items:flex-start;flex-direction:column}.composer{display:grid;grid-template-columns:1fr;gap:var(--s4)}.composer>div:last-child .primary{width:100%}.evidence .section-heading{align-items:flex-start}.evidence h2{font-size:var(--fs-md)}.page-heading{padding:0 0 var(--s4)}.filter-bar button{flex-basis:100%}.section-heading select{max-width:148px}.analytics-grid .section-heading{align-items:flex-start;flex-direction:column}.jev-controls .primary{width:100%}.export-row .pill{flex-basis:100%;text-align:center}footer{padding:var(--s5) var(--s3) calc(var(--s5) + var(--sa-b));line-height:1.8}}
+@media(max-width:600px){.analytics-grid{gap:var(--s4);margin-bottom:var(--s4)}.hero{padding:0 0 var(--s2);align-items:flex-start}.hero>div:first-child{min-width:0}.hero-meta{text-align:left;align-items:flex-start;flex-direction:row;flex-wrap:wrap;gap:var(--s4);align-items:center}.intro{font-size:var(--fs-sm)}.jv-panel{margin-bottom:var(--s4)}.setup-grid{grid-template-columns:1fr;gap:var(--s4)}.setup-start{grid-column:auto;flex-wrap:wrap}.setup-start .primary{flex:1}.setup-start p{max-width:none;flex-basis:100%}.setup-panel h2{font-size:var(--fs-md)}.board-panel{--peg:clamp(1.65rem,7.4vw,2.2rem)}.board-columns,.guess-row{grid-template-columns:2rem minmax(0,1fr) 4.25rem}.match-status{align-items:flex-start;flex-direction:column}.composer{display:grid;grid-template-columns:1fr;gap:var(--s4)}.composer>div:last-child .primary{width:100%}.evidence .section-heading{align-items:flex-start}.evidence h2{font-size:var(--fs-md)}.page-heading{padding:0 0 var(--s4)}.filter-bar button{flex-basis:100%}.section-heading select{max-width:148px}.analytics-grid .section-heading{align-items:flex-start;flex-direction:column}.jev-controls .primary{width:100%}.export-row .pill{flex-basis:100%;text-align:center}footer{padding:var(--s5) var(--s3) calc(var(--s5) + var(--sa-b));line-height:1.8}}
 @media(max-height:560px) and (orientation:landscape){.hero{padding:0;gap:var(--s3)}.intro{font-size:var(--fs-xs)}.page-heading{padding:0 0 var(--s3)}.jv-panel{margin-bottom:var(--s3)}.board-panel{--peg:clamp(1.4rem,3.4vw,1.9rem)}.board-heading{margin-bottom:var(--s3)}.meta-numbers strong{font-size:var(--fs-xl)}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
@@ -47,6 +47,8 @@ html{scroll-padding-top:calc(var(--header-h) + var(--sa-t) + var(--s2))}
    badge (never truncated) wraps beside it in a smaller pixel size, "/ NOT JEV" kept on one line by the balanced wrap. */
 @media(max-width:599px){.jv-brand{flex:0 0 auto}.jv-status #modeBadge{font-size:var(--fs-sm)}}
 @media(max-width:374px){.jv-status #modeBadge{font-size:var(--fs-xs)}}
+/* brand.css shows the wordmark from 600px; with the longest badge the title only fits beside it from about 624px. */
+@media(min-width:600px) and (max-width:639px){.jv-header .jv-wordmark,.jv-header .jv-sep{display:none!important}}
 #guessComposer{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"head head" "slots go" "pal pal";align-items:center;gap:var(--s2) var(--s3)}
 #guessComposer>div:first-child{grid-area:head}
 #guessComposer>div:nth-child(2){display:contents}
@@ -62,7 +64,7 @@ html{scroll-padding-top:calc(var(--header-h) + var(--sa-t) + var(--s2))}
   #page-play>#matchStatus,#page-play>#setup{order:-6}.board-panel:not(.opponent-panel){order:-5}#page-play>#matchStatus.jv-plaque{order:-4}#page-play>#guessComposer{order:-4}#page-play>#jevControls,#page-play>#retryRequest{order:-3}.opponent-panel{order:-2}
   .hero,.board-heading .eyebrow,.avatar,.board-columns{display:none}
   .boards{grid-template-columns:1fr;gap:var(--s3);margin-bottom:var(--s3)}
-  .board-panel{--fit-reserve:15rem;--peg:1.6rem;--peg:clamp(1rem,calc((100vh - var(--header-h) - var(--fit-reserve)) / 10 - .6rem),2.2rem);--peg:clamp(1rem,calc((100dvh - var(--header-h) - var(--fit-reserve)) / 10 - .6rem),2.2rem);padding:var(--s2) var(--s3)}
+  .board-panel{--fit-reserve:20rem;--peg:1.6rem;--peg:clamp(1rem,calc((100vh - var(--header-h) - var(--fit-reserve)) / 10 - .6rem),2.2rem);--peg:clamp(1rem,calc((100dvh - var(--header-h) - var(--fit-reserve)) / 10 - .6rem),2.2rem);padding:var(--s2) var(--s3)}
   .board-heading{margin-bottom:var(--s2)}.board-name h2{margin:0}
   .board.jv-tray{padding:var(--s1) var(--s2) var(--s2)}
   .guess-row{min-height:calc(var(--peg) + .5rem);padding:2px var(--row-pad)}
@@ -80,7 +82,7 @@ html{scroll-padding-top:calc(var(--header-h) + var(--sa-t) + var(--s2))}
 @media(min-width:601px) and (max-width:859px),(min-width:601px) and (max-width:939px) and (max-height:950px){.board-panel{margin-bottom:var(--s5)}}
 /* Six secret keys on one row in the three setup columns. */
 @media(min-width:900px) and (max-width:939px){#page-play>#setup .palette{gap:var(--s1)}}
-@media(max-width:939px) and (max-height:640px){.board-heading{display:none}.board-panel{--fit-reserve:12.5rem;padding:var(--s1) var(--s2)}}
+@media(max-width:939px) and (max-height:640px){.board-heading{display:none}.board-panel{--fit-reserve:17.5rem;padding:var(--s1) var(--s2)}}
 /* The wordmark fits beside the tabs from 1400px. */
 @media(min-width:860px) and (max-width:1399px){.jv-header .jv-wordmark,.jv-header .jv-sep{display:none!important}}
 @media(min-width:860px) and (max-width:1499px){#jv-controls #identity{display:none!important}}

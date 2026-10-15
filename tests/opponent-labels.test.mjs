@@ -34,12 +34,15 @@ test('Jev is named only when Jev made a move; forced and fallback moves alone ar
   assert.equal(presentsJev(outcomeNote(replay(moves('fallback','forced')))),false);
   assert.equal(opponentKind(replay(moves('jev','local'))),'local');// any local move: never Jev
 });
-test('with no opponent move the live match label decides; an unidentified opponent is left out',()=>{
+test('with no opponent move the live match label decides; without one the note says no opponent moved, not Jev',()=>{
   const leg1=replay([],{finishReason:'resign',difficulty:'normal'});
   assert.equal(outcomeNote(leg1,'Local deterministic opponent — not Jev'),'Local solver, not Jev · Normal difficulty · Resigned');
   assert.equal(outcomeNote(leg1,'Jev + deterministic analysis'),'Jev · Normal difficulty · Resigned');
-  assert.equal(outcomeNote(leg1),'Normal difficulty · Resigned');
-  assert.equal(opponentLabel(leg1),null);
+  assert.equal(outcomeNote(leg1),'No opponent moves, not Jev · Normal difficulty · Resigned');
+  assert.equal(opponentLabel(leg1),'No opponent moves, not Jev');
+  // An imported local-server replay forfeited in leg one, at the default tier (verifier H1).
+  const imported=outcomeNote(replay([],{finishReason:'resign'}));
+  assert.equal(imported,'No opponent moves, not Jev · Jev difficulty · Resigned');assert.equal(presentsJev(imported),false,imported);
 });
 test('an imported pre-rename replay (local opponent) is labelled from its own moves',()=>{
   const note=outcomeNote(legacyReplay);
