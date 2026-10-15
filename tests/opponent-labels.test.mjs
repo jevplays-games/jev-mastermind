@@ -1,10 +1,11 @@
-/** Local practice is never presented as Jev: the analytics outcome card, the record tables and every label derived from
- * a match name the opponent that actually played, and never print the raw `jev` difficulty or `jev_break` phase key.
- * The hardest difficulty tier is called Jev in the difficulty menus (stored key `jev`); it may appear only as that
- * difficulty ("Jev difficulty"), never as the opponent. */
+/** Local practice is never presented as Jev: the analytics outcome card, the record tables, every label derived from
+ * a match and every export name the opponent that actually played, and never print the raw `jev` difficulty or
+ * `jev_break` phase key. The hardest difficulty tier is called Jev in the difficulty menus (stored key `jev`); it may
+ * appear only as that difficulty ("Jev difficulty"), never as the opponent. */
 import test from 'node:test';import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {DIFFICULTIES} from '../public/typecrack/rules.js';
+import {DIFFICULTIES,reconstructReplay} from '../public/typecrack/rules.js';
+import {analyzeMatch,csvText} from '../public/typecrack/analytics.js';
 import {getMatch} from '../server/db.js';
 import {outcomeNote,opponentKind,opponentLabel,difficultyLabel,finishLabel,resultLabel,OPPONENT_LABELS} from '../public/labels.js';
 import {harness,createBody,actionBody,fakeJev} from './helpers.mjs';
@@ -80,6 +81,36 @@ test('server matches: the local opponent, real Jev and a provider fallback are e
     assert.equal(opponentKind(rp,match.opponent),'fallback');assert.equal(presentsJev(outcomeNote(rp,match.opponent)),false);
   }finally{failing.close();}
 });
+/** Every string value in an export that mentions jev, with its key. Keys are schema names (`jev`, `jevCost`, ...), not labels. */
+function jevValues(value,key='',out=[]){
+  if(typeof value==='string'){if(/jev/i.test(value))out.push(`${key}=${value}`);}
+  else if(Array.isArray(value))value.forEach(v=>jevValues(v,key,out));
+  else if(value&&typeof value==='object')for(const [k,v] of Object.entries(value))jevValues(v,k,out);
+  return out;
+}
+// The only string values allowed to say jev: the stored tier key (difficulty), the opponent-leg data key (actor) and the
+// stored replay format id. None of them is a label.
+const allowedJevValues=new Set(['difficulty=jev','actor=jev','format=jev-replay-v1']);
+const assertNeverJev=(name,data)=>assert.deepEqual(jevValues(data).filter(v=>!allowedJevValues.has(v)),[],name);
+test('every export of a local-opponent match presents the local solver, never Jev',async()=>{
+  const h=await harness();try{
+    const {match,replay:rp}=await finish(h);const id=match.matchId;
+    const full=(await h.request('/api/matches/'+id)).data,serverReport=(await h.request('/api/matches/'+id+'/analytics')).data;
+    const serverCsv=(await h.request('/api/matches/'+id+'/analytics?format=csv',{raw:true})).data,record=(await h.request('/api/analytics/me')).data;
+    // The browser's exports (public/game.js): the full JSON report, the moves and decisions CSVs and the replay.
+    const report=analyzeMatch(reconstructReplay(rp),rp.reveal,{decisions:full.decisions,timings:full.timings,exhaustive:true});
+    const moveRows=['human','jev'].flatMap(actor=>report[actor].rows.map(r=>({actor,...r})));
+    for(const [name,data] of [['replay',rp],['analytics JSON',report],['moves CSV rows',moveRows],['decisions CSV rows',report.decisions],['server analytics',serverReport],['retained record',record]])assertNeverJev(name,data);
+    assert.ok(rp.actions.filter(a=>a.actor==='jev').length>0);assert.ok(rp.actions.filter(a=>a.actor==='jev').every(a=>a.source==='local'));
+    for(const r of [report,serverReport]){
+      assert.ok(r.decisions.length>0);assert.ok(r.decisions.every(d=>d.source==='local'&&d.modelVersion==='local-deterministic-v1'&&d.reason==='provider_not_configured'));
+      assert.equal(r.provider.jevCalls,0);assert.equal(r.provider.localMoves,r.decisions.length);
+    }
+    assert.equal(outcomeNote(rp,match.opponent),'Local solver, not Jev · Jev difficulty · Completed');
+    // CSV text: the opponent leg's actor key is the only jev, in the first column.
+    for(const text of [csvText(moveRows),csvText(report.decisions),serverCsv])assert.equal(/jev/i.test(text.replace(/^"jev",/gm,'')),false,text.slice(0,200));
+  }finally{h.close();}
+});
 test('the interface builds the outcome card and record tables from these labels',()=>{
   const ui=readFileSync(new URL('../public/game.js',import.meta.url),'utf8');
   assert.match(ui,/import \{ outcomeNote,difficultyLabel,resultLabel \} from '\.\/labels\.js';/);
@@ -87,4 +118,7 @@ test('the interface builds the outcome card and record tables from these labels'
   assert.equal(ui.includes("r.difficulty+' · '+r.finishReason"),false);
   assert.equal(ui.includes("key:'difficulty'"),false);
   assert.equal(ui.includes('r.outcome||r.phase},'),false);
+  // The exports in the test above are built exactly as the interface builds them.
+  assert.ok(ui.includes("csvText(['human','jev'].flatMap(actor=>view.report[actor].rows.map(r=>({actor,...r}))))"));
+  assert.ok(ui.includes('csvText(view.report.decisions)'));
 });
