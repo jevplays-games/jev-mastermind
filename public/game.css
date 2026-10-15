@@ -53,7 +53,11 @@ footer{display:flex;justify-content:space-between;gap:var(--s4);flex-wrap:wrap;w
 #guessComposer #submitGuess{width:100%}
 #guessComposer .palette{grid-area:pal;margin:0;gap:var(--s1);justify-content:space-between}
 #guessComposer #repeatWarning{margin:var(--s1) 0 0}
-@media(max-width:859px){
+/* The stacked layout (boards one above the other, composer pinned to the foot) runs up to 859px, and up to 939px where
+   the height would otherwise pick the three columns below: they need 940px (two boards at their smallest keycaps and
+   the 20rem controls with all six keys on one row, plus gaps and gutters). Narrower, they pushed the controls past the
+   right edge or wrapped the last key onto a row of its own. */
+@media(max-width:859px),(max-width:939px) and (max-height:950px){
   #page-play{display:flex;flex-direction:column}
   .boards{display:contents}
   #page-play>#matchStatus,#page-play>#setup{order:-6}.board-panel:not(.opponent-panel){order:-5}#page-play>#matchStatus.jv-plaque{order:-4}#page-play>#guessComposer{order:-4}#page-play>#jevControls,#page-play>#retryRequest{order:-3}.opponent-panel{order:-2}
@@ -73,12 +77,16 @@ footer{display:flex;justify-content:space-between;gap:var(--s4);flex-wrap:wrap;w
   #guessComposer{position:sticky;bottom:0;z-index:6;margin:0 calc(var(--s3) * -1);padding:var(--s2) var(--s3) calc(var(--s2) + var(--sa-b));border-radius:var(--radius) var(--radius) 0 0;border-width:1px 0 0;background:var(--bg);background:var(--surface)}
   #guessComposer>div:first-child{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 }
-@media(max-width:859px) and (max-height:640px){.board-heading{display:none}.board-panel{--fit-reserve:12.5rem;padding:var(--s1) var(--s2)}}
+/* Between stacked panels the boards keep the panel gap; the grid gap that separates them on desktop does not apply. */
+@media(min-width:601px) and (max-width:859px),(min-width:601px) and (max-width:939px) and (max-height:950px){.board-panel{margin-bottom:var(--s5)}}
+/* 900-939px: the setup panel's three columns leave the secret palette a few pixels short of six keys at the normal gap. */
+@media(min-width:900px) and (max-width:939px){#page-play>#setup .palette{gap:var(--s1)}}
+@media(max-width:939px) and (max-height:640px){.board-heading{display:none}.board-panel{--fit-reserve:12.5rem;padding:var(--s1) var(--s2)}}
 @media(min-width:860px) and (max-width:1499px){.jv-header .jv-wordmark,.jv-header .jv-sep,#jv-controls #identity{display:none!important}}
 @media(min-width:860px) and (max-width:1279px){#jv-controls{flex:0 0 auto;overflow:visible;max-width:none}.jv-brand{flex:0 1 auto;min-width:0}.jv-status{max-width:11rem;padding:var(--s1) var(--s2);line-height:1.15;font-size:var(--fs-2xs);letter-spacing:0}#jv-controls .jv-nav .tab,#jv-controls #login{padding-inline:var(--s2);font-size:var(--fs-2xs)}.jv-header{gap:var(--s2)}}
 @media(min-width:860px) and (max-width:999px){.jv-status{max-width:8.5rem}.jv-brand{gap:var(--s2)}.jv-title{font-size:var(--fs-sm)}}
-/* Wide and not tall: human board, opponent board and the controls side by side. */
-@media(min-width:860px) and (max-height:950px){
+/* Wide and not tall: human board, opponent board and the controls side by side (from 940px, where they fit). */
+@media(min-width:940px) and (max-height:950px){
   .jv-main{padding-block:var(--s3) calc(var(--s3) + var(--sa-b))}
   #page-play{display:grid;grid-template-columns:auto auto minmax(20rem,1fr);grid-template-rows:auto auto auto auto 1fr;column-gap:var(--s4);align-items:start;align-content:start}
   .boards{display:contents}
@@ -99,7 +107,7 @@ footer{display:flex;justify-content:space-between;gap:var(--s4);flex-wrap:wrap;w
 }
 /* Three columns with the controls at their 20rem minimum (below ~1240px): the submit button goes under the slots
    instead of wrapping to three lines beside them, and the secret palette keeps its six keys on one row. */
-@media(min-width:860px) and (max-width:1239px) and (min-height:561px) and (max-height:950px){#guessComposer{grid-template-columns:minmax(0,1fr);grid-template-areas:"head" "slots" "go" "pal"}#page-play>#setup .palette{gap:var(--s1)}}
+@media(min-width:940px) and (max-width:1239px) and (min-height:561px) and (max-height:950px){#guessComposer{grid-template-columns:minmax(0,1fr);grid-template-areas:"head" "slots" "go" "pal"}#page-play>#setup .palette{gap:var(--s1)}}
 /* Short AND wide (a landscape phone, a picture-in-picture frame): the human board takes the full
    height on the left; status, composer and the opponent's progress stack in the right column. */
 @media(max-height:560px) and (min-aspect-ratio:13/10){
