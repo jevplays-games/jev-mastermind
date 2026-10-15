@@ -1,8 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" shape-rendering="crispEdges" role="img" aria-label="Typecrack"><title>Typecrack</title><rect x=".5" y=".5" width="63" height="63" rx="10" fill="#F386A1" stroke="#1E1E1E"/>
 <path fill="#1E1E1E" d="M6 10h20v20H6zM28 10h20v20H28zM6 34h20v20H6zM28 34h20v20H28zM52 16h6v6h-6zM52 38h6v6h-6z"/>
 <path fill="#F386A1" d="M8 12h16v16H8zM54 40h2v2h-2z"/>
-<path fill="#1F78A8" d="M30 12h16v16H30z"/>
 <path fill="#DEDEDE" d="M8 36h16v16H8zM30 36h16v16H30z"/>
 <path fill="#1E1E1E" d="M12 26V16h2v-2h4v2h2v10h-2v-4h-4v4zm2-6h4v-4h-4zM12 38h8v6h-2v2h-2v-4h2v-2h-4v2h-2zm4 10h2v2h-2zM34 38h8v6h-2v2h-2v-4h2v-2h-4v2h-2zm4 10h2v2h-2z"/>
-<path fill="#FEFEFE" d="M34 14h6v2h2v8h-2v2h-6zm2 2v8h4v-8z"/>
+<path fill="#FEFEFE" d="M34 14h6v2h2v3h-2v2h2v3h-2v2h-6zm2 2v3h4v-3zm0 5v3h4v-3z"/>
 <path fill="#E551BA" d="M44 34h2v4h-2v4h2v4h-2v-2h-2v-6h2z"/></svg>
