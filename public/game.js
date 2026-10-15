@@ -370,7 +370,7 @@ document.addEventListener('keydown',event=>{
   const symbol=SYMBOLS.indexOf(event.key.toUpperCase());if(symbol>=0){event.preventDefault();fillSymbol(kind,symbol);}
   else if(event.key==='ArrowLeft'||event.key==='ArrowRight'){event.preventDefault();view.selected[kind]=(view.selected[kind]+(event.key==='ArrowRight'?1:3))%4;renderEditor(kind);$(kind+'Slots').children[view.selected[kind]].focus();}
   else if(event.key==='Backspace'){event.preventDefault();const values=kind==='secret'?view.secret:view.guess;values[view.selected[kind]]=null;renderEditor(kind);}
-  else if(event.key==='Enter'&&kind==='guess'&&event.target.tagName!=='BUTTON'){event.preventDefault();submitGuess();}
+  else if(event.key==='Enter'&&kind==='guess'&&event.target.tagName!=='BUTTON'&&!event.target.closest('a,summary')){event.preventDefault();submitGuess();}
   else if(event.key==='Enter'&&kind==='guess'&&event.target.classList.contains('slot')){event.preventDefault();submitGuess();}
 });
 render();bootstrap();

@@ -64,3 +64,11 @@ test('browser practice analytics and exports never present the local solver as J
   expect([...jevValues(replay),...jevValues(report)].filter(v=>!['difficulty=jev','actor=jev','format=jev-replay-v1'].includes(v))).toEqual([]);
   for(const text of [moves,decisions])expect(/jev/i.test(text.replace(/^"jev",/gm,''))).toBe(false);
 });
+test('during a guess Enter still follows links and opens the rules; in a slot it submits',async({page})=>{
+  await page.goto('/');await expect(page.locator('#guessComposer')).toBeVisible();
+  await page.keyboard.press('Tab');await expect(page.locator('.jv-skip')).toBeFocused();
+  await page.keyboard.press('Enter');await expect(page).toHaveURL(/#main$/);
+  await page.locator('#rules summary').focus();await page.keyboard.press('Enter');await expect(page.locator('#rules')).toHaveAttribute('open','');
+  await page.locator('#guessSlots button').first().click();await page.keyboard.type('ABCD');await page.keyboard.press('Enter');
+  await expect(page.locator('#humanScore')).toHaveText('1 / 10');
+});
