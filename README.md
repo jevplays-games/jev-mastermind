@@ -1,4 +1,4 @@
-<p align="center"><img src="assets/banner.png" alt="Pink pixel-art banner for Typecrack: the Jev robot types on a pixel keyboard beneath a window of keycap guesses marked with filled and hollow feedback squares" width="100%"></p>
+<p align="center"><img src="assets/banner.png" alt="Pink pixel-art banner for Typecrack: the Jev robot sits above a pixel keyboard, below a window of keycap guesses marked with filled and hollow feedback squares" width="100%"></p>
 
 <div align="center">
 
