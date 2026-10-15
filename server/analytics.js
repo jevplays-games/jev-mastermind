@@ -2,8 +2,8 @@ import { all,one } from './db.js';
 import { check } from './security.js';
 import { sessionContext } from './auth.js';
 import { opponentConfig } from './matches.js';
-import { DIFFICULTIES } from '../public/mastermind/rules.js';
-import { describe,wilson } from '../public/mastermind/analytics.js';
+import { DIFFICULTIES } from '../public/typecrack/rules.js';
+import { describe,wilson } from '../public/typecrack/analytics.js';
 export async function analyticsFilter(url,session,cfg) {
   const scope=url.searchParams.get('scope')||'world',difficulty=url.searchParams.get('difficulty')||'normal';
   check(['world','server','channel'].includes(scope)&&DIFFICULTIES.includes(difficulty),422,'Invalid scope or difficulty.');
@@ -88,7 +88,7 @@ export async function communityAnalytics(url,session,db,cfg) {
     distributionCoverage:{matches:rows.length,partial,definition:partial?'Most recent 5,000 retained eligible matches':'All retained eligible matches'},
     humanGuesses:describe(rows.map(r=>r.human_cost)),jevGuesses:describe(rows.map(r=>r.jev_cost)),
     histogram:Array.from({length:11},(_,i)=>({guesses:i+1,human:rows.filter(r=>r.human_cost===i+1).length,jev:rows.filter(r=>r.jev_cost===i+1).length})),
-    notes:'Cost 11 means failure or human forfeit. JEV cost is null for forfeits, never fabricated.'};
+    notes:'Cost 11 means failure or human forfeit. Jev cost is null for forfeits, never fabricated.'};
 }
 export async function operationalAnalytics(db,days=7) {
   check(Number.isInteger(days)&&days>=1&&days<=30,422,'Days must be an integer from 1 to 30.');

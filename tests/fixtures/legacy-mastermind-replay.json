@@ -1,0 +1,71 @@
+{
+  "format": "jev-replay-v1",
+  "game": "mastermind",
+  "rulesVersion": "mm-4x6-10-v1",
+  "matchId": "13aee958-2265-4f32-b228-de22cb2faaf1",
+  "difficulty": "normal",
+  "configId": "mm-118f378e1c8d3f67abd3d254",
+  "commitments": {
+    "targetForHuman": "59c2c002b62d4771c1f7143eed09d70bff3b235e3492ecb6bb966c4ef259e58f",
+    "targetForJev": "125141316d167f7560644c8e5c58a144ff8c853823d0795474d9694ef31d0e62"
+  },
+  "reveal": {
+    "targetForHuman": [
+      4,
+      1,
+      5,
+      4
+    ],
+    "targetForJev": [
+      0,
+      0,
+      2,
+      5
+    ],
+    "humanTargetSalt": "7cbc2fa8bd77e697cd1a93fa9bff0f4b5560709ba15ca9c294006d7d81e02b6b",
+    "jevTargetSalt": "9ddddb3951e203e7d17547cb7bea0c4d95eec6cbee0ff1d4bd02e3ecffc60af9"
+  },
+  "actions": [
+    {
+      "type": "GUESS",
+      "actor": "human",
+      "guessId": 7
+    },
+    {
+      "type": "GUESS",
+      "actor": "human",
+      "guessId": 309
+    },
+    {
+      "type": "GUESS",
+      "actor": "human",
+      "guessId": 581
+    },
+    {
+      "type": "GUESS",
+      "actor": "human",
+      "guessId": 1144
+    },
+    {
+      "type": "GUESS",
+      "actor": "human",
+      "guessId": 934
+    },
+    {
+      "type": "GUESS",
+      "actor": "jev",
+      "guessId": 41,
+      "source": "local",
+      "decisionRef": "2c72751df9a7fe719e9f503f"
+    },
+    {
+      "type": "GUESS",
+      "actor": "jev",
+      "guessId": 17,
+      "source": "local",
+      "decisionRef": "fd10db00d5ac2cce8c25d574"
+    }
+  ],
+  "expectedOutcome": "loss",
+  "finishReason": "normal"
+}

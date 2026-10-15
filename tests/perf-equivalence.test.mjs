@@ -1,8 +1,8 @@
 import test from 'node:test';import assert from 'node:assert/strict';
-import {feedbackTable,feedbackTableReference,consistentSecrets,consistentSecretsReference,buildCandidates,buildCandidatesReference,selectDeterministic} from '../public/mastermind/strategy.js';
-import {scoreGuess,decodeGuess} from '../public/mastermind/rules.js';
+import {feedbackTable,feedbackTableReference,consistentSecrets,consistentSecretsReference,buildCandidates,buildCandidatesReference,selectDeterministic} from '../public/typecrack/strategy.js';
+import {scoreGuess,decodeGuess} from '../public/typecrack/rules.js';
 import {buildRequest} from '../server/jev.js';
-import {sha256} from '../public/mastermind/verify.js';
+import {sha256} from '../public/typecrack/verify.js';
 const lcg=seed=>()=>(seed=(Math.imul(seed,1664525)+1013904223)>>>0)/4294967296;
 test('optimized feedback table is byte-identical to the reference table',()=>{
   assert.equal(Buffer.compare(feedbackTable(),feedbackTableReference()),0);
@@ -37,7 +37,7 @@ test('last-attempt candidates and request hashes are identical',async()=>{
     for(const difficulty of ['easy','normal','hard','jev']){
       const fast=buildCandidates(history,difficulty),ref=buildCandidatesReference(history,difficulty);
       assert.deepEqual(fast,ref);
-      const view={game:'mastermind',difficulty,attemptNumber:10,attemptsRemaining:1,history:history.map(({guessId,guess,exact,misplaced})=>({guessId,guess,exact,misplaced}))};
+      const view={game:'typecrack',difficulty,attemptNumber:10,attemptsRemaining:1,history:history.map(({guessId,guess,exact,misplaced})=>({guessId,guess,exact,misplaced}))};
       assert.equal(await sha256(buildRequest(view,fast)),await sha256(buildRequest(view,ref)));
       assert.equal(JSON.stringify(buildRequest(view,fast)),JSON.stringify(buildRequest(view,ref)));
     }

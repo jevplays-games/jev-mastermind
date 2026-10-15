@@ -2,11 +2,11 @@
 import { mkdir,writeFile,appendFile,readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { createInitialState,applyAction,decodeGuess,codeLabel } from '../public/mastermind/rules.js';
-import { ALL_IDS,buildCandidates,selectDeterministic,consistentSecrets,partitionMetrics,referenceChoice } from '../public/mastermind/strategy.js';
-import { describe,mean,codePattern,csvText } from '../public/mastermind/analytics.js';
+import { createInitialState,applyAction,decodeGuess,codeLabel } from '../public/typecrack/rules.js';
+import { ALL_IDS,buildCandidates,selectDeterministic,consistentSecrets,partitionMetrics,referenceChoice } from '../public/typecrack/strategy.js';
+import { describe,mean,codePattern,csvText } from '../public/typecrack/analytics.js';
 import { chooseJevAction } from '../server/jev.js';
-import { sha256 } from '../public/mastermind/verify.js';
+import { sha256 } from '../public/typecrack/verify.js';
 const root=fileURLToPath(new URL('../',import.meta.url));
 try{process.loadEnvFile(resolve(root,'.env'));}catch(e){if(e.code!=='ENOENT')throw e;}
 const args=process.argv.slice(2),flag=name=>args.includes('--'+name),value=(name,fallback)=>args.find(a=>a.startsWith('--'+name+'='))?.split('=').slice(1).join('=')??fallback;
@@ -51,7 +51,7 @@ for(const policy of policies){
       const history=state.legs.jev.history,start=performance.now();let guessId,decision=null,cacheHit=false;
       if(policy.startsWith('jev-')){
         if(providerCalls>=maxCalls){budgetStopped=true;interrupted=true;break;}
-        decision=await chooseJevAction({state,config:{model:process.env.JEV_MODEL||'jev-1.13.0',promptVersion:'mm-prompt-v1',timeoutMs:4500},apiKey:process.env.TYPESAFE_API_KEY,maxAttempts:Math.min(2,maxCalls-providerCalls)});
+        decision=await chooseJevAction({state,config:{model:process.env.JEV_MODEL||'jev-1.13.0',promptVersion:'mm-prompt-v2',timeoutMs:4500},apiKey:process.env.TYPESAFE_API_KEY,maxAttempts:Math.min(2,maxCalls-providerCalls)});
         providerCalls+=decision.attempts;guessId=decision.guessId;gameDecisions.push(decision);
         const audit={policy,secretId,turn:history.length+1,...decision};provider.push(audit);await appendFile(resolve(out,'provider-decisions.ndjson'),JSON.stringify(audit)+'\n');
       }else if(policy.startsWith('random-'))guessId=referenceChoice(history,policy,rng);
@@ -95,18 +95,18 @@ const pairs=[];for(let a=0;a<policies.length;a++)for(let b=a+1;b<policies.length
     ties:comparisons.filter(x=>x.a.cost===x.b.cost).length,bFewerGuesses:comparisons.filter(x=>x.a.cost>x.b.cost).length,
     meanCostDifferenceAminusB:mean(comparisons.map(x=>x.a.cost-x.b.cost))});
 }
-const sourceHashes={};for(const path of ['public/mastermind/rules.js','public/mastermind/strategy.js','public/mastermind/analytics.js','server/jev.js','bench/run.mjs'])sourceHashes[path]=await sha256(await readFile(resolve(root,path),'utf8'));
+const sourceHashes={};for(const path of ['public/typecrack/rules.js','public/typecrack/strategy.js','public/typecrack/analytics.js','server/jev.js','bench/run.mjs'])sourceHashes[path]=await sha256(await readFile(resolve(root,path),'utf8'));
 const report={generatedAt:new Date().toISOString(),node:process.version,seed,live,requestedSecrets:count,completedGames:games.length,providerCalls,budgetStopped,
   coverage:count===1296&&!budgetStopped?'Every one of the 1,296 possible codes for every selected policy.':'Deterministically spaced secret subset; see per-policy completed coverage.',
   comparisonCoverage:'Counterfactual one-step move metrics compare all 1,296 legal guesses at each recorded state.',
   elapsedMs:performance.now()-started,policies:summaryPolicies,patterns,pairs,sourceHashes,
-  limitations:['Local policies are deterministic selector ablations, not live JEV measurements.','Exhaustive enumeration needs no sampling confidence interval for this finite configuration.',
+  limitations:['Local policies are deterministic selector ablations, not live Jev measurements.','Exhaustive enumeration needs no sampling confidence interval for this finite configuration.',
     'Human-selected secret distributions can differ from uniform enumeration.','Cached selector timings are not inference latency; cacheHit is exported per turn.',
     'Fallback-containing live games are identifiable and are not pure model-strength observations.','Pairs compare codebreaking on matched secrets, not human codemaker skill.']};
 await Promise.all([
   writeFile(resolve(out,'summary.json'),JSON.stringify(report,null,2)+'\n'),writeFile(resolve(out,'games.csv'),csvText(games)),writeFile(resolve(out,'moves.csv'),csvText(turns)),
   writeFile(resolve(out,'patterns.csv'),csvText(patterns)),writeFile(resolve(out,'paired-comparisons.csv'),csvText(pairs)),writeFile(resolve(out,'games.ndjson'),games.map(g=>JSON.stringify(g)).join('\n')+'\n'),
-  writeFile(resolve(out,'README.md'),`# Measured Mastermind benchmark\n\nGenerated ${report.generatedAt}.\n\n${report.coverage}\n\n${live?'Live-provider run; inspect fallback flags and call budget.':'No live JEV calls. All opponent policies are local baselines/ablations.'}\n\n## Results\n\n| Policy | Secrets | Solved | Mean cost | Maximum cost |\n|---|---:|---:|---:|---:|\n`+summaryPolicies.map(p=>`| ${p.policy} | ${p.secrets} | ${p.solved} | ${p.meanCost?.toFixed(4)??'n/a'} | ${p.maxCost??'n/a'} |`).join('\n')+'\n\n'+report.limitations.map(x=>'- '+x).join('\n')+'\n')
+  writeFile(resolve(out,'README.md'),`# Measured Typecrack benchmark\n\nGenerated ${report.generatedAt}.\n\n${report.coverage}\n\n${live?'Live-provider run; inspect fallback flags and call budget.':'No live Jev calls. All opponent policies are local baselines/ablations.'}\n\n## Results\n\n| Policy | Secrets | Solved | Mean cost | Maximum cost |\n|---|---:|---:|---:|---:|\n`+summaryPolicies.map(p=>`| ${p.policy} | ${p.secrets} | ${p.solved} | ${p.meanCost?.toFixed(4)??'n/a'} | ${p.maxCost??'n/a'} |`).join('\n')+'\n\n'+report.limitations.map(x=>'- '+x).join('\n')+'\n')
 ]);
 if(exhaustive&&!live&&!budgetStopped)await writeFile(resolve(root,'public/benchmark-summary.json'),JSON.stringify({generatedAt:report.generatedAt,coverage:report.coverage,live:false,policies:summaryPolicies},null,2));
 console.log(JSON.stringify({output:out,completedGames:games.length,providerCalls,budgetStopped,elapsedMs:Math.round(report.elapsedMs),policies:summaryPolicies.map(p=>({policy:p.policy,secrets:p.secrets,solveRate:p.solveRate,meanCost:p.meanCost,maxCost:p.maxCost}))},null,2));

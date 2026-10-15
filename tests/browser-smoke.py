@@ -22,7 +22,7 @@ with sync_playwright() as p:
     page.goto('http://127.0.0.1:8787',wait_until='networkidle')
     page.locator('#start').wait_for(state='visible');page.wait_for_function("!document.querySelector('#start').disabled")
     record('Desktop loads all twenty board rows',page.locator('.guess-row').count()==20)
-    record('Local opponent is not mislabeled JEV','NOT JEV' in page.locator('#modeBadge').inner_text())
+    record('Local opponent is not mislabeled Jev','NOT JEV' in page.locator('#modeBadge').inner_text())
     record('Discord login disabled without credentials',page.locator('#login').is_disabled())
     page.screenshot(path=str(OUT/'screenshots'/'desktop-setup.png'),full_page=True)
     page.evaluate("document.querySelector('#autoJev').checked=false")
@@ -34,7 +34,7 @@ with sync_playwright() as p:
     for turn in range(10):
         current=state()
         if current['phase']!='human_break':break
-        code=page.evaluate("async(history)=>{const {referenceChoice}=await import('/mastermind/strategy.js');const {decodeGuess,codeLabel}=await import('/mastermind/rules.js');return codeLabel(decodeGuess(referenceChoice(history,'minimax')))}",current['legs']['human']['history'])
+        code=page.evaluate("async(history)=>{const {referenceChoice}=await import('/typecrack/strategy.js');const {decodeGuess,codeLabel}=await import('/typecrack/rules.js');return codeLabel(decodeGuess(referenceChoice(history,'minimax')))}",current['legs']['human']['history'])
         page.locator('#guessSlots button').first.click()
         page.keyboard.type(code)
         with page.expect_response(lambda r:'/actions' in r.url and r.request.method=='POST') as response:
@@ -87,7 +87,7 @@ with sync_playwright() as p:
     record('Mobile layout does not overflow viewport',phone.evaluate('document.documentElement.scrollWidth <= innerWidth'))
     record('Reduced-motion preference honored',phone.evaluate("matchMedia('(prefers-reduced-motion: reduce)').matches"))
     phone.screenshot(path=str(OUT/'screenshots'/'mobile-setup.png'),full_page=True)
-    # Browser practice survives an unavailable API without fake JEV attribution.
+    # Browser practice survives an unavailable API without fake Jev attribution.
     offline=browser.new_context(viewport={'width':1280,'height':900})
     practice=offline.new_page();practice.route('**/api/**',lambda route:route.abort())
     practice.goto('http://127.0.0.1:8787',wait_until='networkidle')

@@ -1,17 +1,48 @@
-import { sha256,randomToken } from '../public/mastermind/verify.js';
+import { sha256,randomToken } from '../public/typecrack/verify.js';
 export { sha256, randomToken };
 export class HttpError extends Error { constructor(status,message,code='request_error') {super(message);this.status=status;this.code=code;} }
 export const check=(condition,status,message,code)=>{if(!condition)throw new HttpError(status,message,code);};
-export function config(env) {
-  const origin=new URL(env.APP_ORIGIN||'http://127.0.0.1:8787').origin;
-  const local=env.LOCAL_DEV==='true' && ['127.0.0.1','localhost','[::1]'].includes(new URL(origin).hostname);
-  if(!local && new URL(origin).protocol!=='https:') throw new Error('Production APP_ORIGIN must use HTTPS.');
+// LEGACY_ORIGINS is an optional transitional allowlist, so a typo in it must never take the canonical host down, and
+// nothing but a bare origin may widen it (orchestrator rule D9). An entry is accepted only if it parses, is HTTPS (plain
+// HTTP only for loopback under LOCAL_DEV), contains no '@', '?', '#' or '*', and equals its own url.origin once a single
+// trailing '/' is removed (so no userinfo, path, query or fragment). Hostnames must also be plain DNS labels or an IPv6
+// literal. Anything else is skipped, never thrown, and each distinct bad entry is logged once per isolate outside local
+// development (the reason only, never the entry).
+const warnedLegacyOrigins=new Set();
+const LOOPBACK=['127.0.0.1','localhost','[::1]'];
+const HOSTNAME=/^(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)(?:\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)*$|^\[[0-9a-f:.]+\]$/;
+function legacyOriginProblem(entry,url,env) {
+  if(!url)return 'unparseable';
+  if(!(url.protocol==='https:'||(env.LOCAL_DEV==='true'&&url.protocol==='http:'&&LOOPBACK.includes(url.hostname))))return 'not_https';
+  if(/[@?#*]/.test(entry))return 'forbidden_character';
+  if(entry.replace(/\/$/,'')!==url.origin)return 'not_bare_origin';
+  if(!HOSTNAME.test(url.hostname))return 'invalid_host';
+  return null;
+}
+function parseLegacyOrigins(env) {
+  const origins=[];
+  for(const entry of String(env.LEGACY_ORIGINS||'').split(',').map(s=>s.trim()).filter(Boolean)) {
+    let url=null;try{url=new URL(entry);}catch{}
+    const reason=legacyOriginProblem(entry,url,env);
+    if(!reason){origins.push(url.origin);continue;}
+    if(env.LOCAL_DEV!=='true'&&!warnedLegacyOrigins.has(entry)){warnedLegacyOrigins.add(entry);console.warn(JSON.stringify({event:'legacy_origin_skipped',reason}));}
+  }
+  return origins;
+}
+export function config(env,requestOrigin=null) {
+  const canonicalOrigin=new URL(env.APP_ORIGIN||'http://127.0.0.1:8787').origin;
+  // Pre-rename hostnames keep working until cutover. A request on one of them is answered on that origin
+  // (OAuth callback, launch links, Origin checks), so its sessions and Discord settings stay consistent.
+  const legacyOrigins=parseLegacyOrigins(env);
+  const origin=requestOrigin&&legacyOrigins.includes(requestOrigin)?requestOrigin:canonicalOrigin;
+  const local=env.LOCAL_DEV==='true' && LOOPBACK.includes(new URL(origin).hostname);
+  if(!local && new URL(canonicalOrigin).protocol!=='https:') throw new Error('Production APP_ORIGIN must use HTTPS.');
   if(!local && !env.QUOTA_SALT) throw new Error('Production requires QUOTA_SALT.');
   const model=env.JEV_MODEL||'jev-1.13.0';
-  if(!/^jev-\d+\.\d+\.\d+$/.test(model)) throw new Error('Pin an exact JEV model version.');
+  if(!/^jev-\d+\.\d+\.\d+$/.test(model)) throw new Error('Pin an exact Jev model version.');
   const activityOrigin=/^\d{17,20}$/.test(env.DISCORD_CLIENT_ID??'')?`https://${env.DISCORD_CLIENT_ID}.discordsays.com`:null;
-  return {origin,local,model,activityOrigin,cookieName:local?'jev_local':'__Host-jev',jevReady:Boolean(env.TYPESAFE_API_KEY),
-    discordReady:Boolean(env.DISCORD_CLIENT_ID&&env.DISCORD_CLIENT_SECRET),timeoutMs:4500,policyVersion:'mm-policy-v1',promptVersion:'mm-prompt-v1',
+  return {origin,canonicalOrigin,legacyOrigins,local,model,activityOrigin,cookieName:local?'jev_local':'__Host-jev',jevReady:Boolean(env.TYPESAFE_API_KEY),
+    discordReady:Boolean(env.DISCORD_CLIENT_ID&&env.DISCORD_CLIENT_SECRET),timeoutMs:4500,policyVersion:'mm-policy-v1',promptVersion:'mm-prompt-v2',
     rankedEnabled:env.RANKED_ENABLED==='true'&&!local};
 }
 export const json=(data,status=200,headers={})=>new Response(JSON.stringify(data),{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store',...headers}});

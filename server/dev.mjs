@@ -14,14 +14,16 @@ const port=Number(process.env.PORT||8787);if(!Number.isInteger(port)||port<1||po
 const remoteOrigin=(()=>{try{const u=new URL(process.env.APP_ORIGIN);return u.protocol==='https:'&&!['localhost','127.0.0.1','[::1]'].includes(u.hostname);}catch{return false;}})();
 const prod=process.env.NODE_ENV==='production'||remoteOrigin,trustProxy=process.env.TRUST_PROXY==='1';
 const dataDir=resolve(root,prod?'data':'.data');await mkdir(dataDir,{recursive:true});
-const db=openDatabase(process.env.DB_PATH||resolve(dataDir,'mastermind.sqlite'));
+// Databases created before the rename are named mastermind.sqlite; keep using one if it exists.
+const legacyDb=resolve(dataDir,'mastermind.sqlite'),dbPath=process.env.DB_PATH||(await stat(legacyDb).then(()=>legacyDb,()=>resolve(dataDir,'typecrack.sqlite')));
+const db=openDatabase(dbPath);
 if(prod&&!process.env.APP_ORIGIN)throw new Error('Production requires APP_ORIGIN.');
 const origin=prod?new URL(process.env.APP_ORIGIN).origin:`http://127.0.0.1:${port}`,publicRoot=resolve(root,'public');
 const bindHost=prod?(process.env.HOST||'0.0.0.0'):'127.0.0.1';
 const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.json':'application/json','.svg':'image/svg+xml','.png':'image/png','.woff2':'font/woff2','.txt':'text/plain; charset=utf-8'};
 const assets={async fetch(request){
   const url=new URL(request.url);if(!['GET','HEAD'].includes(request.method))return new Response('Method not allowed',{status:405});
-  const pathname=decodeURIComponent(url.pathname),entry=pathname==='/'||pathname==='/play/mastermind'?'/index.html':pathname;
+  const pathname=decodeURIComponent(url.pathname),entry=pathname==='/'||pathname==='/play/typecrack'?'/index.html':pathname;
   const path=resolve(publicRoot,'.'+entry);if(!path.startsWith(publicRoot+sep))return new Response('Forbidden',{status:403});
   try{if(!(await stat(path)).isFile())return new Response('Not found',{status:404});return new Response(request.method==='HEAD'?null:await readFile(path),{headers:{'Content-Type':types[extname(path)]||'application/octet-stream','Cache-Control':'no-cache'}});}
   catch{return new Response('Not found',{status:404});}
@@ -41,6 +43,6 @@ const server=createServer(async(req,res)=>{
     const response=await handle(request,env);res.writeHead(response.status,Object.fromEntries(response.headers));res.end(Buffer.from(await response.arrayBuffer()));
   }catch{res.writeHead(500);res.end('Local server error');}
 });
-server.listen(port,bindHost,()=>console.log(`Mastermind: ${origin} (${bindHost}:${port})\n${env.TYPESAFE_API_KEY?'JEV configured':'Local deterministic opponent — not JEV'}\n${prod?'Production mode.':'Ranked play disabled on the loopback development server.'}`));
+server.listen(port,bindHost,()=>console.log(`Typecrack: ${origin} (${bindHost}:${port})\n${env.TYPESAFE_API_KEY?'Jev configured':'Local deterministic opponent — not Jev'}\n${prod?'Production mode.':'Ranked play disabled on the loopback development server.'}`));
 const interval=setInterval(()=>maintenance(db,config(env),env).catch(()=>{}),60000);interval.unref();
 for(const signal of ['SIGINT','SIGTERM'])process.on(signal,()=>{clearInterval(interval);server.close(()=>{db.close();process.exit(0);});});

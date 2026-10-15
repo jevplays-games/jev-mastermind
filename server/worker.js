@@ -5,15 +5,17 @@ import {activityConfig,createActivitySession} from './activity.js';
 import {createMatch,performAction,publicMatch,assertOwner,expireMatch,maintenance} from './matches.js';
 import {getMatch,run,quota,event} from './db.js';
 import {leaderboard,profileAnalytics,communityAnalytics,operationalAnalytics} from './analytics.js';
-import {makeReplay,isTerminal} from '../public/mastermind/rules.js';
-import {analyzeMatch,csvText} from '../public/mastermind/analytics.js';
+import {makeReplay,isTerminal,GAME_ID} from '../public/typecrack/rules.js';
+import {analyzeMatch,csvText} from '../public/typecrack/analytics.js';
 export async function handle(request,env,ctx={},fetchImpl=fetch) {
   let cfg;
   try {
-    cfg=config(env);const url=new URL(request.url),path=url.pathname,db=env.DB;
+    const url=new URL(request.url),path=url.pathname,db=env.DB;cfg=config(env,url.origin);
     check(url.origin===cfg.origin,421,'Request origin does not match APP_ORIGIN.');
+    // Launch links and bookmarks from before the rename (GET/HEAD only; other methods fall through as before). The query (launch ticket) is preserved.
+    if(path==='/play/mastermind'&&(request.method==='GET'||request.method==='HEAD'))return secureHeaders(new Response(null,{status:301,headers:{Location:'/play/typecrack'+url.search}}));
     if(!path.startsWith('/api/'))return secureHeaders(await env.ASSETS.fetch(request),{activityFrame:url.searchParams.has('frame_id')});
-    if(path==='/api/health'&&request.method==='GET')return secureHeaders(json({ok:true,game:'mastermind',rulesVersion:'mm-4x6-10-v1'}));
+    if(path==='/api/health'&&request.method==='GET')return secureHeaders(json({ok:true,game:GAME_ID,rulesVersion:'mm-4x6-10-v1'}));
     check(db,503,'Database is not configured.');
     if(path==='/api/discord/interactions'&&request.method==='POST')return secureHeaders(await handleInteraction(request,db,cfg,env));
     if(path==='/api/admin/analytics'&&request.method==='GET') {
@@ -61,7 +63,7 @@ export async function handle(request,env,ctx={},fetchImpl=fetch) {
           await quota(db,`analysis:${session.owner_key}`,30,60000);
           const report=analyzeMatch(match.state,match.secrets,{decisions:match.audit,timings:match.timings,exhaustive:false});
           await event(db,'analytics_exported',id).catch(()=>{});
-          if(url.searchParams.get('format')==='csv')return secureHeaders(new Response(csvText(['human','jev'].flatMap(actor=>report[actor].rows.map(row=>({actor,...row})))),{headers:{'Content-Type':'text/csv; charset=utf-8','Content-Disposition':`attachment; filename="mastermind-${id}-moves.csv"`,'Cache-Control':'no-store'}}));
+          if(url.searchParams.get('format')==='csv')return secureHeaders(new Response(csvText(['human','jev'].flatMap(actor=>report[actor].rows.map(row=>({actor,...row})))),{headers:{'Content-Type':'text/csv; charset=utf-8','Content-Disposition':`attachment; filename="typecrack-${id}-moves.csv"`,'Cache-Control':'no-store'}}));
           return secureHeaders(json(report));
         }
       }

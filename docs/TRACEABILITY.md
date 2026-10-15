@@ -3,10 +3,10 @@
 | Requirement | Implementation / evidence |
 |---|---|
 | Single page, minimal dependencies | `public/index.html`, `game.css`, `game.js`; native ES modules |
-| Pure reusable game engine | `public/mastermind/rules.js`; unit and independent exhaustive tests |
-| Explicit finite JEV surface | `strategy.js`, `server/jev.js`; strict choice tests |
+| Pure reusable game engine | `public/typecrack/rules.js`; unit and independent exhaustive tests |
+| Explicit finite Jev surface | `strategy.js`, `server/jev.js`; strict choice tests |
 | Four difficulty levels | Eight-/32-/64-/128-choice policies and benchmarks |
-| Hidden information unavailable to JEV | `getJevView` + request re-projection; leakage tests |
+| Hidden information unavailable to Jev | `getJevView` + request re-projection; leakage tests |
 | Deterministic replay and commitments | `verify.js`, rules reconstruction, tamper tests |
 | Guest and failure-mode play | Node local mode, browser practice, marked fallback/local sources |
 | Discord identity | `server/auth.js`; identify-only OAuth and session tests |
@@ -33,4 +33,4 @@ One tiny Node development adapter makes the complete local game runnable without
 
 ## Unperformed / outside release scope
 
-Real JEV inference, real Discord authorization/installation, public Cloudflare deployment and conventional HTTP-origin browser E2E remain unverified here. Tournament/Elo/social features, immediate Discord membership revocation, strong external-assistance detection, public replay URLs, account-deletion UI and generalized multi-game framework remain outside this implementation. See release gates instead of assuming these are implemented.
+Real Jev inference, real Discord authorization/installation, public Cloudflare deployment and conventional HTTP-origin browser E2E remain unverified here. Tournament/Elo/social features, immediate Discord membership revocation, strong external-assistance detection, public replay URLs, account-deletion UI and generalized multi-game framework remain outside this implementation. See release gates instead of assuming these are implemented.

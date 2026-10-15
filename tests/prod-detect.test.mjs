@@ -11,7 +11,7 @@ async function boot(env,port){
   const dir=mkdtempSync(join(tmpdir(),'mm-'));
   const child=spawn(process.execPath,['--no-warnings','server/dev.mjs'],{env:{PATH:process.env.PATH,PORT:String(port),DB_PATH:join(dir,'t.sqlite'),QUOTA_SALT:'test-salt',...env},stdio:['ignore','pipe','pipe']});
   let out='';child.stdout.on('data',d=>out+=d);child.stderr.on('data',d=>out+=d);
-  for(let i=0;i<50&&!out.includes('Mastermind:')&&child.exitCode===null;i++)await new Promise(r=>setTimeout(r,100));
+  for(let i=0;i<50&&!out.includes('Typecrack:')&&child.exitCode===null;i++)await new Promise(r=>setTimeout(r,100));
   return {child,dir,out:()=>out};
 }
 test('https non-loopback APP_ORIGIN selects production mode even with NODE_ENV=development',async()=>{

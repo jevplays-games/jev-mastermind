@@ -7,7 +7,7 @@ flowchart LR
   subgraph U[UNTRUSTED]
     B[Browser / storage / URL parameters]
     P[Player input]
-    J[JEV response]
+    J[Jev response]
   end
   subgraph T[TRUSTED APPLICATION AUTHORITY]
     A[Origin / session / CSRF validation]
@@ -25,12 +25,12 @@ flowchart LR
   V --> DB
 ```
 
-JEV is an external decision source, not trusted database authority. Only a validated candidate can become a legal reducer action. The browser never submits a score. Live provider confidence cannot authorize moves or override rules.
+Jev is an external decision source, not trusted database authority. Only a validated candidate can become a legal reducer action. The browser never submits a score. Live provider confidence cannot authorize moves or override rules.
 
 ## Controls implemented
 
 - Secret targets and salts remain on the server until termination. Both codes are committed before the human starts; salted hashes prevent enumeration of the small code domain from a public unsalted hash.
-- Public and JEV views are explicit projections. Tests mutate hidden information and inspect provider request bodies for leaks.
+- Public and Jev views are explicit projections. Tests mutate hidden information and inspect provider request bodies for leaks.
 - Production cookies use `__Host-jev`, `Secure`, `HttpOnly`, `SameSite=Lax`, and `/`; sessions store token hashes. The session is rotated after OAuth.
 - Browser writes check origin, fetch-site and a session CSRF secret. OAuth uses browser-bound, expiring single-use state. Provider access/refresh tokens are discarded after identity fetch.
 - Discord signatures validate original raw bytes and timestamp. Launches bind one user, guild, channel, application, interaction ID and expiry; duplicate interactions do not mint unlimited links.

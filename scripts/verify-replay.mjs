@@ -1,5 +1,5 @@
 import {readFile,stat} from 'node:fs/promises';
-import {verifyReplay} from '../public/mastermind/verify.js';
+import {verifyReplay} from '../public/typecrack/verify.js';
 try {
   const path=process.argv[2];if(!path)throw new Error('Usage: npm run verify -- path/to/replay.json');
   if((await stat(path)).size>1048576)throw new Error('Replay exceeds the 1 MiB safety limit.');

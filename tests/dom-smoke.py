@@ -45,10 +45,10 @@ def setup(context,api_enabled=True):
       Object.defineProperty(crypto,'subtle',{value:{digest:async(_name,b)=>new Uint8Array(await __sha256(Array.from(new Uint8Array(b)))).buffer}});
       Object.defineProperty(crypto,'randomUUID',{value:()=>{let a=crypto.getRandomValues(new Uint8Array(16));a[6]=(a[6]&15)|64;a[8]=(a[8]&63)|128;let h=Array.from(a,n=>n.toString(16).padStart(2,'0')).join('');return h.slice(0,8)+'-'+h.slice(8,12)+'-'+h.slice(12,16)+'-'+h.slice(16,20)+'-'+h.slice(20);}});
       window.fetch=async(path,options={})=>{const r=await __bridge({path:String(path),method:options.method||'GET',headers:options.headers||{},body:options.body??null});return new Response(r.text,{status:r.status,headers:r.headers});};
-      const NativeWorker=window.Worker;window.Worker=class extends NativeWorker{constructor(path,options){if(path!=='/mastermind/analytics-worker.js')throw Error('Unknown worker');super(workerURL,options);}};
+      const NativeWorker=window.Worker;window.Worker=class extends NativeWorker{constructor(path,options){if(path!=='/typecrack/analytics-worker.js')throw Error('Unknown worker');super(workerURL,options);}};
       window.__exports=[];const blobs=new Map(),nativeURL=URL.createObjectURL.bind(URL);URL.createObjectURL=b=>{const u=nativeURL(b);blobs.set(u,b);return u;};
       HTMLAnchorElement.prototype.click=function(){if(this.download&&blobs.has(this.href)){const name=this.download;blobs.get(this.href).text().then(text=>__exports.push({name,text}));}else throw Error('Unexpected navigation in offline DOM harness');};
-    }""",{'workerURL':module(PUBLIC/'mastermind/analytics-worker.js')})
+    }""",{'workerURL':module(PUBLIC/'typecrack/analytics-worker.js')})
     # brand.js owns the header/sheet behaviour and moves #jv-controls into the
     # header above 900px, so the desktop nav only exists once it has run.
     page.evaluate("async(url)=>{await import(url)}",module(PUBLIC/'brand/brand.js'))
@@ -73,7 +73,7 @@ with sync_playwright() as p:
     for turn in range(10):
         current=state()
         if current['phase']!='human_break':break
-        code=page.evaluate("async({url,history})=>{const s=await import(url);const id=s.referenceChoice(history,'minimax');return s.CODES[id].map(n=>'ABCDEF'[n]).join('')}",{'url':module(PUBLIC/'mastermind/strategy.js'),'history':current['legs']['human']['history']})
+        code=page.evaluate("async({url,history})=>{const s=await import(url);const id=s.referenceChoice(history,'minimax');return s.CODES[id].map(n=>'ABCDEF'[n]).join('')}",{'url':module(PUBLIC/'typecrack/strategy.js'),'history':current['legs']['human']['history']})
         page.locator('#guessSlots button').first.click();page.keyboard.type(code);page.keyboard.press('Enter')
         page.wait_for_function("n=>document.querySelector('#humanScore').textContent.startsWith(String(n))",arg=turn+1)
         check('Keyboard guess accepted '+str(turn+1))
@@ -121,5 +121,5 @@ result={'generatedAt':datetime.now(timezone.utc).isoformat(),'harness':'Python P
  'limitations':['Native Chromium HTTP navigation was blocked by administrator URL policy; the policy was not changed.',
  'The DOM harness loads unchanged module logic through data URLs; API transport, storage, downloads, and Web Crypto digest are test bridges.',
  'Cookie, CSRF, origin, and CSP header behavior is covered by separate native integration tests, not this offline DOM test.',
- 'The sample match uses a scripted reference solver; this is not human-subject data or live JEV.']}
+ 'The sample match uses a scripted reference solver; this is not human-subject data or live Jev.']}
 (OUT/'dom-smoke.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps({'passed':len(checks),'failed':0,'runtimeErrors':errors}))

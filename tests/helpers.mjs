@@ -1,6 +1,6 @@
 import { openDatabase } from '../server/node-db.mjs';
 import { handle } from '../server/worker.js';
-import { randomToken,sha256 } from '../public/mastermind/verify.js';
+import { randomToken,sha256 } from '../public/typecrack/verify.js';
 import { run } from '../server/db.js';
 export function fakeJev({failure=null,select=null}={}) {
   return async(_url,options)=>{
@@ -46,5 +46,5 @@ export async function harness({production=false,provider=null}={}) {
       return {hash,id};
     }};
 }
-export const createBody=(overrides={})=>({game:'mastermind',difficulty:'normal',humanCode:[0,0,2,5],ranked:false,requestId:crypto.randomUUID(),...overrides});
+export const createBody=(overrides={})=>({game:'typecrack',difficulty:'normal',humanCode:[0,0,2,5],ranked:false,requestId:crypto.randomUUID(),...overrides});
 export const actionBody=(revision,action)=>({requestId:crypto.randomUUID(),expectedRevision:revision,action});

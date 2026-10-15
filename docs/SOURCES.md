@@ -4,7 +4,7 @@ Source review date: September 22, 2026. These references informed protocol/confi
 
 ## User-provided basis
 
-`prompts/original-brief.md` preserves the attached “JEV Single-Page Game — Architecture & Implementation Planning Prompt.” The game is Mastermind, and the subsequent instruction requests exhaustive analytics and an actual ZIP project. The implemented A–Z architecture keeps the brief's deterministic rules / structured JEV / backend trust / Discord identity separation.
+`prompts/original-brief.md` preserves the attached “JEV Single-Page Game — Architecture & Implementation Planning Prompt.” The brief names the classic code-breaking game (now Typecrack), and the subsequent instruction requests exhaustive analytics and an actual ZIP project. The implemented A–Z architecture keeps the brief's deterministic rules / structured Jev / backend trust / Discord identity separation.
 
 ## Primary technical references
 
@@ -28,4 +28,4 @@ No remote NPM resolution/install was completed in the build environment, and no 
 
 ## Independently derived/measured here
 
-The feedback equations, candidate/entropy/regret calculations, code count, test outcomes and local policy performance are derived from or measured against the included implementation. The exact finite game variant and ranking rules are explicit design decisions. Neither a historical Mastermind solver guarantee nor TypeSafe marketing claims are used as proof of this application's live performance.
+The feedback equations, candidate/entropy/regret calculations, code count, test outcomes and local policy performance are derived from or measured against the included implementation. The exact finite game variant and ranking rules are explicit design decisions. Neither a historical code-breaking solver guarantee nor TypeSafe marketing claims are used as proof of this application's live performance.

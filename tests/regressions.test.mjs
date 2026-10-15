@@ -2,14 +2,14 @@ import test from 'node:test';import assert from 'node:assert/strict';
 import {readdirSync} from 'node:fs';import {resolve} from 'node:path';import {spawnSync} from 'node:child_process';
 import {harness,createBody,actionBody,fakeJev,roundedJev,roundedDistribution} from './helpers.mjs';
 import {one,run,getMatch,quota} from '../server/db.js';
-import {analyzeMatch} from '../public/mastermind/analytics.js';
-import {createInitialState,applyAction} from '../public/mastermind/rules.js';
-import {randomToken,sha256} from '../public/mastermind/verify.js';
+import {analyzeMatch} from '../public/typecrack/analytics.js';
+import {createInitialState,applyAction} from '../public/typecrack/rules.js';
+import {randomToken,sha256} from '../public/typecrack/verify.js';
 import {handle} from '../server/worker.js';
 import {validateChoice,PROBABILITY_GRAIN} from '../server/jev.js';
 const root=resolve(import.meta.dirname,'..');
 test('all shipped JavaScript parses, including browser-only controller',()=>{
-  for(const dir of ['public','public/mastermind','server','scripts','bench'])for(const file of readdirSync(resolve(root,dir))){if(!/\.(mjs|js)$/.test(file))continue;const p=spawnSync(process.execPath,['--check',resolve(root,dir,file)],{encoding:'utf8'});assert.equal(p.status,0,p.stderr);}
+  for(const dir of ['public','public/typecrack','server','scripts','bench'])for(const file of readdirSync(resolve(root,dir))){if(!/\.(mjs|js)$/.test(file))continue;const p=spawnSync(process.execPath,['--check',resolve(root,dir,file)],{encoding:'utf8'});assert.equal(p.status,0,p.stderr);}
 });
 test('unobserved reserved inference attempts keep usage incomplete',()=>{
   const state=applyAction(createInitialState({matchId:'test'}),{type:'RESIGN',actor:'human'},{targetForHuman:[0,0,0,0],targetForJev:[1,1,1,1]});
@@ -17,7 +17,7 @@ test('unobserved reserved inference attempts keep usage incomplete',()=>{
   assert.equal(report.provider.usageIncomplete,true);assert.equal(report.provider.jevCalls,0);
 });
 test('a quota reservation cannot exceed the limit on its first insertion',async()=>{const h=await harness();try{await assert.rejects(quota(h.db,'too-large',1,60000,Date.now(),2));}finally{h.close();}});
-test('late JEV response cannot change a resigned match',async()=>{
+test('late Jev response cannot change a resigned match',async()=>{
   let release,entered;const gate=new Promise(r=>release=r),started=new Promise(r=>entered=r);
   const h=await harness({production:true,provider:async(...args)=>{entered();await gate;return fakeJev()(...args);}});
   try{await h.signIn();let m=(await h.request('/api/matches',{method:'POST',body:createBody({ranked:true})})).data;
