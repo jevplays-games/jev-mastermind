@@ -77,7 +77,8 @@ test('the pre-rename hostname keeps being served on its own origin until cutover
     const smuggled=[['https://user:pw@evil.example','forbidden_character'],['https://evil.example#@mastermind.jevplay.games','forbidden_character'],
       ['https://evil.example/path','not_bare_origin'],['https://evil.example?q=1','forbidden_character'],['https://*.jevplay.games','forbidden_character'],
       ['https://a.jevplay.games;https://b.example','not_bare_origin'],['https://a.jevplay.games;evil','invalid_host'],
-      ['https://evil.example:443','not_bare_origin'],['https://Evil.example','not_bare_origin']];
+      ['https://evil.example:443','not_bare_origin'],['https://Evil.example','not_bare_origin'],
+      ['https://:pw@evil.example','forbidden_character'],['https://user@evil.example','forbidden_character'],['https://evil.example?','forbidden_character'],['https://evil.example#','forbidden_character']];
     for(const [LEGACY_ORIGINS] of smuggled){
       const bad={...env,LEGACY_ORIGINS:'https://mastermind.jevplay.games, '+LEGACY_ORIGINS};
       assert.deepEqual(config(bad).legacyOrigins,['https://mastermind.jevplay.games'],LEGACY_ORIGINS);
