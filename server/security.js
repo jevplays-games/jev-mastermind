@@ -19,7 +19,7 @@ function legacyOriginProblem(entry,url,env) {
   if(!HOSTNAME.test(url.hostname))return 'invalid_host';
   return null;
 }
-function parseLegacyOrigins(env) {
+export function parseLegacyOrigins(env) {
   const origins=[];
   for(const entry of String(env.LEGACY_ORIGINS||'').split(',').map(s=>s.trim()).filter(Boolean)) {
     let url=null;try{url=new URL(entry);}catch{}

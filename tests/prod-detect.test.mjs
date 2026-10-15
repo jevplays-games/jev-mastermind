@@ -32,3 +32,18 @@ test('loopback origin stays local dev',async()=>{
   try{assert.match(s.out(),/loopback development server/);assert.equal((await get(port,'127.0.0.1:'+port,'/api/health')).status,200);}
   finally{await stop(s);}
 });
+test('the Node production server serves LEGACY_ORIGINS hosts like the Worker and skips malformed entries (D9)',async()=>{
+  const hostile=['https://user:pw@evil.example','https://evil.example#@mastermind.jevplay.games','https://evil.example/path','https://evil.example?q=1','https://*.jevplay.games','http://evil.example','not a url'];
+  const port=39400+Math.floor(Math.random()*500),s=await boot({APP_ORIGIN:'https://typecrack.jevplay.games',HOST:'127.0.0.1',LEGACY_ORIGINS:[...hostile,'https://mastermind.jevplay.games'].join(',')},port);
+  try{
+    for(const host of ['typecrack.jevplay.games','mastermind.jevplay.games']){
+      assert.equal((await get(port,host,'/brand/brand.css')).status,200,host);
+      assert.equal((await get(port,host,'/api/me')).status,200,host);
+      assert.equal((await get(port,host,'/play/mastermind?launch=x')).status,301,host);
+    }
+    for(const host of ['evil.example','user:pw@evil.example','x.jevplay.games','mastermind.jevplay.games.evil.example'])
+      assert.equal((await get(port,host,'/brand/brand.css')).status,421,host);
+    const warnings=s.out().split('\n').filter(l=>l.includes('legacy_origin_skipped'));
+    assert.equal(warnings.length,hostile.length);assert.ok(warnings.every(l=>!l.includes('evil')),'skipped entries are never echoed');
+  }finally{await stop(s);}
+});
