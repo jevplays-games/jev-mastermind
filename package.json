@@ -19,7 +19,8 @@
     "db:local": "wrangler d1 migrations apply mastermind --local",
     "db:remote": "wrangler d1 migrations apply mastermind --remote",
     "deploy": "wrangler deploy",
-    "discord:register": "node scripts/register-commands.mjs"
+    "discord:register": "node scripts/register-commands.mjs",
+    "deploy:godaddy": "node --env-file-if-exists=.env scripts/godaddy-deploy.js"
   },
   "devDependencies": {
     "@playwright/test": "1.58.2",
