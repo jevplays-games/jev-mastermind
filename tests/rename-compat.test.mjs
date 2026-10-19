@@ -115,7 +115,8 @@ test('Discord /play accepts the new typecrack choice and the pre-rename mastermi
 const legacyMatches=JSON.parse(readFileSync(new URL('./fixtures/legacy-mastermind-matches.json',import.meta.url),'utf8')).rows;
 async function withLegacyMatch(phase,patch={}){
   const h=await harness(),{owner_key}=await one(h.db,'SELECT owner_key FROM web_sessions');
-  const row={...legacyMatches.find(r=>r.phase===phase),owner_key,...patch},cols=Object.keys(row);
+  // The recorded rows carry their original one-day expiry; keep them live unless the test patches expires_at itself.
+  const row={...legacyMatches.find(r=>r.phase===phase),owner_key,expires_at:Date.now()+3600000,...patch},cols=Object.keys(row);
   assert.equal(JSON.parse(row.state_json).game,'mastermind');
   await run(h.db,`INSERT INTO matches(${cols.join(',')}) VALUES(${cols.map(()=>'?').join(',')})`,...cols.map(c=>row[c]));
   return {h,id:row.id};
